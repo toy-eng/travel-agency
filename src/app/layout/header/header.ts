@@ -7,7 +7,6 @@ import { filter, map, startWith } from 'rxjs';
   selector: 'app-header',
   imports: [RouterLink, RouterLinkActive],
   templateUrl: './header.html',
-  styleUrls: ['./header.css'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class Header {
