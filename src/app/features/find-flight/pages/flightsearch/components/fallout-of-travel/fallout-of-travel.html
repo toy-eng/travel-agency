@@ -1,0 +1,57 @@
+<section
+  #cardsSection
+  class="max-w-[1240px] mx-auto py-12 px-4 pb-16 sm:px-6 lg:px-8"
+  aria-labelledby="fallout-title"
+>
+  <div #cardsHeader class="mb-7 flex items-start justify-between gap-8">
+    <div>
+      <h2 id="fallout-title" class="section-heading">Fall into travel</h2>
+      <p class="section-subtitle max-w-3xl">
+        Going somewhere to celebrate this season? Whether you're going home or somewhere to roam,
+        we've got the travel tools to get you to your destination.
+      </p>
+    </div>
+    <button type="button" class="section-button px-5 py-3 rounded-md border-[1.5px]">
+      See All
+    </button>
+  </div>
+
+  <div #cardsGrid class="grid grid-cols-1 gap-3 md:grid-cols-2 xl:grid-cols-4">
+    @for (destination of destinations; track destination.name) {
+      <article
+        #cardItem
+        class="relative min-h-105 overflow-hidden max-w-74 rounded-[9px] bg-[#112211] hover-scale cursor-pointer"
+      >
+        <div class="img-zoom absolute inset-0">
+          <img
+            [ngSrc]="destination.imageUrl"
+            [alt]="destination.name + ' travel destination'"
+            width="900"
+            height="900"
+            priority
+            class="h-full w-full object-cover"
+          />
+        </div>
+        <div
+          class="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-[rgba(17,34,17,0.9)]"
+          aria-hidden="true"
+        ></div>
+        <div class="absolute right-4 bottom-4 left-4">
+          <div class="flex items-end justify-between gap-2 text-white">
+            <div>
+              <h3 class="m-0 font-semibold text-[1.5rem] leading-none">{{ destination.name }}</h3>
+              <p class="mt-0.5 text-[0.875rem] text-white/86">{{ destination.description }}</p>
+            </div>
+            <strong class="shrink-0 text-[1.5rem]">{{ destination.price }}</strong>
+          </div>
+          <button
+            type="button"
+            class="motion-tap w-full mt-2.5 py-2.5 px-3 border-0 rounded-[3px] bg-mint text-[#112211] font-medium text-[0.875rem] cursor-pointer hover:bg-mint-dark"
+          >
+            Book Flight
+          </button>
+        </div>
+      </article>
+    }
+  </div>
+</section>
