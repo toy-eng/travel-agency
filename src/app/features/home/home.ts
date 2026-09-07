@@ -5,7 +5,6 @@ import type { ReviewCardItem } from './components/review-card/review-card';
 import { destinationsMock } from '../../shared/data/destinations.mock';
 import { HeroComponent } from './components/hero/hero';
 import { SearchFormComponent } from './components/search-form/search-form';
-import { DestinationsSectionComponent } from './components/destinations-section/destinations-section';
 import { PromoSectionComponent } from './components/promo-section/promo-section';
 import { ReviewsSectionComponent } from './components/reviews-section/reviews-section';
 
@@ -14,7 +13,6 @@ import { ReviewsSectionComponent } from './components/reviews-section/reviews-se
   imports: [
     HeroComponent,
     SearchFormComponent,
-    DestinationsSectionComponent,
     PromoSectionComponent,
     ReviewsSectionComponent,
   ],
