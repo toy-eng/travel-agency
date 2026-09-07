@@ -4,7 +4,6 @@ import { Component, Input } from '@angular/core';
   selector: 'app-flightlisting-flight-card',
   standalone: true,
   templateUrl: './flight-card.html',
-  styleUrl: './flight-card.css',
 })
 export class FlightCardComponent {
   @Input() airline = 'Emirates';

@@ -5,6 +5,9 @@ import { FilterSidebarComponent } from './components/filter-sidebar/filter-sideb
 import { FlightCardComponent } from './components/flight-card/flight-card';
 import { ResultsToolbarComponent } from './components/results-toolbar/results-toolbar';
 import { ShowMoreComponent } from './components/show-more/show-more';
+import { DestinationsSectionComponent } from '../../../home/components/destinations-section/destinations-section';
+import { destinationsMock } from '../../../../shared/data/destinations.mock';
+import { ScrollRevealDirective } from '../../../../shared/directives/scroll-reveal';
 
 @Component({
   selector: 'app-flightlisting',
@@ -15,19 +18,21 @@ import { ShowMoreComponent } from './components/show-more/show-more';
     ResultsToolbarComponent,
     FlightCardComponent,
     ShowMoreComponent,
+    DestinationsSectionComponent,
+    ScrollRevealDirective,
   ],
   templateUrl: './flightlisting.html',
-  styleUrl: './flightlisting.css',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class Flightlisting {
+  readonly destinations = destinationsMock;
   readonly fromLocation = signal('Lahore');
   readonly toLocation = signal('Karachi');
   readonly tripType = signal('Return');
   readonly departReturn = signal('07 Nov 22 - 13 Nov 22');
   readonly passengerClass = signal('1 Passenger, Economy');
 
-  readonly sortOptions = ['Cheapest', 'Fastest', 'Best', 'Recommended'];
+  readonly sortOptions = ['Cheapest', 'Best', 'Quickest', 'Recommended'];
   readonly selectedSort = 'Cheapest';
   readonly flights = [
     {

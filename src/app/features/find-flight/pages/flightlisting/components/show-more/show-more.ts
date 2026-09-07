@@ -4,6 +4,5 @@ import { Component } from '@angular/core';
   selector: 'app-flightlisting-show-more',
   standalone: true,
   templateUrl: './show-more.html',
-  styleUrl: './show-more.css',
 })
 export class ShowMoreComponent {}

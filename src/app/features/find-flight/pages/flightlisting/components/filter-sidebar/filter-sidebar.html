@@ -1,51 +1,82 @@
-<aside class="filter-panel">
-  <div class="filter-panel__header">
-    <h3>{{ title }}</h3>
-    <button type="button" aria-label="Reset filters">Reset</button>
+<aside class="w-full bg-transparent border-0 rounded-none py-4 px-5 pb-6">
+  <div class="flex items-center justify-between gap-3 mb-3">
+    <h3 class="m-0 text-xl font-bold text-[#112211]">{{ title }}</h3>
+    <button type="button" class="border-none bg-transparent text-[#5d7a73] text-[0.8rem] font-bold cursor-pointer" aria-label="Reset filters">Reset</button>
   </div>
 
-  <div class="filter-group">
-    <p class="filter-group__label">Price</p>
-    <div class="price-box">
-      <span class="price-box__label">Range</span>
-      <strong>{{ priceRange }}</strong>
-    </div>
-    <input type="range" min="0" max="100" value="55" aria-label="Price range" />
-  </div>
+  <section class="py-[1.05rem] pb-[1.2rem]">
+    <button type="button" class="flex items-center justify-between w-full p-0 border-0 bg-transparent text-[#112211] font-[inherit] text-[0.92rem] font-semibold text-left cursor-pointer" [attr.aria-expanded]="isExpanded('price')" (click)="toggleSection('price')">
+      <span>Price</span>
+      <span class="w-2 h-2 mr-[0.15rem] border-t-[1.5px] border-l-[1.5px] border-current translate-y-0.5 rotate-45 transition-transform" [class.-translate-y-0.5]="!isExpanded('price')" [class.rotate-[225deg]]="!isExpanded('price')" aria-hidden="true"></span>
+    </button>
+    @if (isExpanded('price')) {
+      <div class="mt-4">
+        <div class="flex justify-between mb-1.5 text-[#112211] text-[0.68rem]"><span>${{ priceMinimum() }}</span><span>${{ priceMaximum() }}</span></div>
+        <div class="relative h-5 range-slider">
+          <span class="absolute top-[0.55rem] right-2 left-2 h-[2px] bg-[#112211]"></span>
+          <input type="range" min="50" max="1200" [value]="priceMinimum()" (input)="updatePriceMinimum($event)" class="absolute top-0 left-0 w-full h-5 m-0 appearance-none bg-transparent pointer-events-none" aria-label="Minimum price" />
+          <input type="range" min="50" max="1200" [value]="priceMaximum()" (input)="updatePriceMaximum($event)" class="absolute top-0 left-0 w-full h-5 m-0 appearance-none bg-transparent pointer-events-none" aria-label="Maximum price" />
+        </div>
+      </div>
+    }
+  </section>
 
-  <div class="filter-group">
-    <p class="filter-group__label">Stops</p>
-    <div class="option-list">
-      @for (option of stopOptions; track option) {
-        <label class="option-item">
-          <input type="checkbox" checked />
-          <span>{{ option }}</span>
-        </label>
-      }
-    </div>
-  </div>
+  <section class="py-[1.05rem] pb-[1.2rem] mt-5">
+    <button type="button" class="flex items-center justify-between w-full p-0 border-0 bg-transparent text-[#112211] font-[inherit] text-[0.92rem] font-semibold text-left cursor-pointer" [attr.aria-expanded]="isExpanded('departure')" (click)="toggleSection('departure')">
+      <span>Departure Time</span>
+      <span class="w-2 h-2 mr-[0.15rem] border-t-[1.5px] border-l-[1.5px] border-current translate-y-0.5 rotate-45 transition-transform" [class.-translate-y-0.5]="!isExpanded('departure')" [class.rotate-[225deg]]="!isExpanded('departure')" aria-hidden="true"></span>
+    </button>
+    @if (isExpanded('departure')) {
+      <div class="mt-4">
+        <div class="flex justify-between mb-1.5 text-[#112211] text-[0.68rem]"><span>{{ formatTime(departureMinimum()) }}</span><span>{{ formatTime(departureMaximum()) }}</span></div>
+        <div class="relative h-5 range-slider">
+          <span class="absolute top-[0.55rem] right-2 left-2 h-[2px] bg-[#112211]"></span>
+          <input type="range" min="0" max="1439" [value]="departureMinimum()" (input)="updateDepartureMinimum($event)" class="absolute top-0 left-0 w-full h-5 m-0 appearance-none bg-transparent pointer-events-none" aria-label="Earliest departure time" />
+          <input type="range" min="0" max="1439" [value]="departureMaximum()" (input)="updateDepartureMaximum($event)" class="absolute top-0 left-0 w-full h-5 m-0 appearance-none bg-transparent pointer-events-none" aria-label="Latest departure time" />
+        </div>
+      </div>
+    }
+  </section>
 
-  <div class="filter-group">
-    <p class="filter-group__label">Airlines</p>
-    <div class="option-list">
-      @for (option of airlineOptions; track option) {
-        <label class="option-item">
-          <input type="checkbox" checked />
-          <span>{{ option }}</span>
-        </label>
-      }
-    </div>
-  </div>
+  <section class="py-[1.05rem] pb-[1.2rem] mt-5">
+    <button type="button" class="flex items-center justify-between w-full p-0 border-0 bg-transparent text-[#112211] font-[inherit] text-[0.92rem] font-semibold text-left cursor-pointer" [attr.aria-expanded]="isExpanded('rating')" (click)="toggleSection('rating')">
+      <span>Rating</span>
+      <span class="w-2 h-2 mr-[0.15rem] border-t-[1.5px] border-l-[1.5px] border-current translate-y-0.5 rotate-45 transition-transform" [class.-translate-y-0.5]="!isExpanded('rating')" [class.rotate-[225deg]]="!isExpanded('rating')" aria-hidden="true"></span>
+    </button>
+    @if (isExpanded('rating')) {
+      <div class="flex gap-2.5 mt-4">
+        @for (rating of ratings; track rating) {
+          <button type="button" class="min-w-[2.15rem] py-1.5 px-[0.35rem] border border-mint rounded-[3px] bg-transparent text-[#112211] text-[0.68rem] cursor-pointer hover:bg-[#edf8f4] focus-visible:bg-[#edf8f4] focus-visible:outline-none">{{ rating }}</button>
+        }
+      </div>
+    }
+  </section>
 
-  <div class="filter-group">
-    <p class="filter-group__label">Departure time</p>
-    <div class="option-list">
-      @for (option of timeOptions; track option) {
-        <label class="option-item">
-          <input type="checkbox" />
-          <span>{{ option }}</span>
-        </label>
-      }
-    </div>
-  </div>
+  <section class="py-[1.05rem] pb-[1.2rem] mt-5">
+    <button type="button" class="flex items-center justify-between w-full p-0 border-0 bg-transparent text-[#112211] font-[inherit] text-[0.92rem] font-semibold text-left cursor-pointer" [attr.aria-expanded]="isExpanded('airlines')" (click)="toggleSection('airlines')">
+      <span>Airlines</span>
+      <span class="w-2 h-2 mr-[0.15rem] border-t-[1.5px] border-l-[1.5px] border-current translate-y-0.5 rotate-45 transition-transform" [class.-translate-y-0.5]="!isExpanded('airlines')" [class.rotate-[225deg]]="!isExpanded('airlines')" aria-hidden="true"></span>
+    </button>
+    @if (isExpanded('airlines')) {
+      <div class="flex flex-col gap-2.5 mt-4">
+        @for (option of airlineOptions; track option) {
+          <label class="flex items-center gap-2.5 text-[#1a2d2a] text-[0.92rem] cursor-pointer"><input type="checkbox" class="w-[1.1rem] h-[1.1rem] m-0 appearance-none border-2 border-[#112211] rounded-[3px] bg-transparent accent-mint cursor-pointer" /><span>{{ option }}</span></label>
+        }
+      </div>
+    }
+  </section>
+
+  <section class="py-[1.05rem] pb-[1.2rem] mt-5">
+    <button type="button" class="flex items-center justify-between w-full p-0 border-0 bg-transparent text-[#112211] font-[inherit] text-[0.92rem] font-semibold text-left cursor-pointer" [attr.aria-expanded]="isExpanded('trips')" (click)="toggleSection('trips')">
+      <span>Trips</span>
+      <span class="w-2 h-2 mr-[0.15rem] border-t-[1.5px] border-l-[1.5px] border-current translate-y-0.5 rotate-45 transition-transform" [class.-translate-y-0.5]="!isExpanded('trips')" [class.rotate-[225deg]]="!isExpanded('trips')" aria-hidden="true"></span>
+    </button>
+    @if (isExpanded('trips')) {
+      <div class="flex flex-col gap-2.5 mt-4">
+        @for (option of tripOptions; track option) {
+          <label class="flex items-center gap-2.5 text-[#1a2d2a] text-[0.92rem] cursor-pointer"><input type="checkbox" class="w-[1.1rem] h-[1.1rem] m-0 appearance-none border-2 border-[#112211] rounded-[3px] bg-transparent accent-mint cursor-pointer" /><span>{{ option }}</span></label>
+        }
+      </div>
+    }
+  </section>
 </aside>
