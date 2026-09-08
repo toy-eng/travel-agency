@@ -1,0 +1,16 @@
+<section aria-labelledby="features-title">
+  <div class="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+    <h2 id="features-title" class="font-display text-xl font-extrabold text-[#112211] sm:text-2xl">Basic Economy Features</h2>
+    <div class="flex items-center gap-5 font-medium text-xs text-[#112211]">
+      <label class="flex items-center gap-2"><input checked type="checkbox" class="size-3.5 accent-[#8dd3bb]" /> Economy</label>
+      <label class="flex items-center gap-2"><input type="checkbox" class="size-3.5 accent-[#8dd3bb]" /> First Class</label>
+      <label class="flex items-center gap-2"><input type="checkbox" class="size-3.5 accent-[#8dd3bb]" /> Business Class</label>
+    </div>
+  </div>
+
+  <div class="mt-4 grid grid-cols-3 gap-3 sm:grid-cols-5 lg:grid-cols-9">
+    @for (image of images; track $index) {
+      <img [src]="image" [alt]="'Emirates flight feature ' + ($index + 1)" class="aspect-[1.25] w-full rounded-lg object-cover" />
+    }
+  </div>
+</section>

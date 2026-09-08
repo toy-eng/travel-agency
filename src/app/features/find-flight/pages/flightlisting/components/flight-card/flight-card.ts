@@ -1,7 +1,9 @@
 import { Component, Input } from '@angular/core';
+import { RouterLink } from '@angular/router';
 
 @Component({
   selector: 'app-flightlisting-flight-card',
+  imports: [RouterLink],
   standalone: true,
   templateUrl: './flight-card.html',
 })

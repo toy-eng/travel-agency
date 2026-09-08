@@ -1,0 +1,12 @@
+<main class="mx-auto flex max-w-[1240px] flex-col gap-16 px-4 py-8 pb-16 text-[#112211] sm:px-6">
+	<app-flightdetails-summary />
+	<app-flightdetails-features />
+	<app-flightdetails-policies />
+
+	<section class="space-y-5" aria-labelledby="itinerary-title">
+		<div class="grid gap-5">
+			<app-flightdetails-itinerary-card />
+			<app-flightdetails-itinerary-card date="Return Wed, Dec 8" />
+		</div>
+	</section>
+</main>

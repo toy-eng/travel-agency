@@ -1,0 +1,41 @@
+<section class="space-y-5" aria-labelledby="flight-title">
+  <nav class="flex flex-wrap items-center gap-3 text-xs text-[#52635c]" aria-label="Breadcrumb">
+    <a routerLink="/find-flight/flightlisting" class="text-[#ff706c] hover:underline">Turkey</a>
+    <span aria-hidden="true">›</span>
+    <span class="text-[#52635c]">Istanbul</span>
+    <span aria-hidden="true">›</span>
+    <span>CVK Park Bosphorus Hotel Istanbul</span>
+  </nav>
+
+  <div class="flex flex-col gap-5 lg:flex-row lg:items-end lg:justify-between">
+    <div>
+      <h1 id="flight-title" class="font-display text-2xl font-extrabold tracking-[-0.035em] text-[#112211] sm:text-[2rem]">Emirates A380 Airbus</h1>
+      <p class="mt-2 flex items-center gap-1.5 text-xs text-[#52635c]">
+        <span aria-hidden="true">●</span>
+        Gümüşsuyu Mah. İnönü Cad. No:8, Istanbul 34437
+      </p>
+      <div class="mt-2 inline-flex items-center gap-2 text-xs text-[#112211]">
+        <span class="rounded border border-mint px-2 py-1">4.2</span>
+        <strong>Very Good</strong>
+        <span>54 reviews</span>
+      </div>
+    </div>
+
+    <div class="flex items-center gap-3 lg:flex-col lg:items-end">
+      <strong class="font-display text-3xl font-extrabold text-[#ff706c]">$240</strong>
+      <div class="flex items-center gap-3">
+        <button type="button" class="grid size-10 place-items-center rounded border border-mint bg-white text-xl text-[#112211] hover:bg-[#e8f7f1]" aria-label="Save flight">♡</button>
+        <button type="button" class="grid size-10 place-items-center rounded border border-mint bg-white text-lg text-[#112211] hover:bg-[#e8f7f1]" aria-label="Share flight">↗</button>
+        <a routerLink="/find-flight/bookingdetails" class="inline-flex h-10 items-center rounded bg-mint px-7 text-sm font-bold text-[#112211] hover:bg-mint-dark">Book now</a>
+      </div>
+    </div>
+  </div>
+
+  <img
+    ngSrc="/flightsImg.jpg"
+    width="1240"
+    height="420"
+    alt="Emirates Airbus aircraft at an airport gate"
+    class="h-[250px] w-full rounded-xl object-cover object-center sm:h-[360px] lg:h-[420px]"
+  />
+</section>

@@ -27,6 +27,22 @@ export const findFlightRoutes: Routes = [
             (m) => m.Flightlisting,
           ),
       },
+      {
+        path: 'flightdetails',
+        title: 'Flight Details',
+        loadComponent: () =>
+          import('./pages/flightdetails/flightdetails').then(
+            (m) => m.Flightdetails,
+          ),
+      },
+      {
+        path: 'bookingdetails',
+        title: 'Book Flight',
+        loadComponent: () =>
+          import('./pages/bookingdetails/bookingdetails').then(
+            (m) => m.Bookingdetails,
+          ),
+      },
     ],
   },
 ];
