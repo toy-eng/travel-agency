@@ -1,0 +1,31 @@
+<section class="rounded-xl bg-white p-3 shadow-[0_8px_22px_rgba(17,34,17,0.06)] sm:p-4" aria-labelledby="payment-method-title">
+  <h2 id="payment-method-title" class="sr-only">Payment method</h2>
+
+  <button
+    type="button"
+    class="flex min-h-[57px] w-full items-center justify-between rounded-lg px-3 py-3 text-left transition-colors"
+    [class.bg-mint]="selectedMethod() === 'visa'"
+    [attr.aria-pressed]="selectedMethod() === 'visa'"
+    (click)="selectMethod('visa')"
+  >
+    <span class="flex items-center gap-6 text-xs text-[#112211]">
+      <strong class="rounded-sm bg-[#112211] px-1.5 py-0.5 text-[0.55rem] font-bold tracking-[-0.04em] text-white">VISA</strong>
+      <span class="font-medium">**** 4321</span>
+      <span>02/27</span>
+    </span>
+    <span class="grid size-4 shrink-0 place-items-center rounded-full border-2" [class.border-white]="selectedMethod() === 'visa'" [class.border-[#112211]]="selectedMethod() !== 'visa'" aria-hidden="true">
+      <span class="size-2 rounded-full" [class.bg-white]="selectedMethod() === 'visa'" [class.opacity-0]="selectedMethod() !== 'visa'"></span>
+    </span>
+  </button>
+
+  <button
+    type="button"
+    class="mt-3 flex min-h-[132px] w-full flex-col items-center justify-center rounded-lg border border-dashed border-mint px-4 py-5 text-center text-[#52635c] transition-colors hover:bg-[#f1fbf7]"
+    [class.bg-[#f1fbf7]]="selectedMethod() === 'new'"
+    [attr.aria-pressed]="selectedMethod() === 'new'"
+    (click)="selectMethod('new'); openCardModal()"
+  >
+    <span class="grid size-9 place-items-center rounded-full border border-mint text-2xl font-light leading-none text-[#74c0a3]" aria-hidden="true">+</span>
+    <span class="mt-3 text-[0.68rem]">Add a new card</span>
+  </button>
+</section>
