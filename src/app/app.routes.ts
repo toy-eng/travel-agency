@@ -20,6 +20,13 @@ export const routes: Routes = [
           ),
       },
       {
+        path: 'find-stays',
+        loadChildren: () =>
+          import('./features/find-stays/find-stays.routes').then(
+            (m) => m.findStaysRoutes,
+          ),
+      },
+      {
         path: 'login',
         title: 'Login',
         loadComponent: () =>
