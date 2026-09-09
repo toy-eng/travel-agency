@@ -16,13 +16,18 @@
             <path d="M0 0h24v24H0z" fill="none" />
             <path
               fill="currentColor"
-              d="M20.56 3.91c.59.59.59 1.54 0 2.12l-3.89 3.89l2.12 9.19l-1.41 1.42l-3.88-7.43L9.6 17l.36 2.47l-1.07 1.06l-1.76-3.18l-3.19-1.77L5 14.5l2.5.37L11.37 11L3.94 7.09l1.42-1.41l9.19 2.12l3.89-3.89c.56-.58 1.56-.58 2.12 0"
+              d="M20.56 3.91c.59.59.59 1.54 0 2.12l-3.89 3.89l2.12 9.19l-1.41 1.42l-3.88-7.43L9.6 17l.36 2.47l-1.07 1.06l-1.76-3.18-3.19-1.77L5 14.5l2.5.37L11.37 11L3.94 7.09l1.42-1.41l9.19 2.12l3.89-3.89c.56-.58 1.56-.58 2.12 0"
             />
           </svg>
           <span>Find Flight</span>
         </a>
-
-        <button type="button" class="nav-hover-mint flex items-center gap-2 transition">
+        <a
+          routerLink="/find-stays"
+          routerLinkActive="after:absolute after:inset-x-0 after:bottom-0 after:content-[''] after:h-[3px] after:rounded-full after:bg-[#8DD3BB]"
+          [class.nav-hover-mint]="!isFindStaysRoute()"
+          class="relative flex items-center gap-2 transition"
+          aria-label="Find Stays"
+        >
           <svg class="h-5 w-5" viewBox="0 0 24 24" aria-hidden="true">
             <path d="M0 0h24v24H0z" fill="none" />
             <path
@@ -31,73 +36,220 @@
             />
           </svg>
           <span>Find Stays</span>
-        </button>
+        </a>
       </div>
 
       <a routerLink="/" class="flex items-center justify-center" aria-label="Go home">
         <img src="/Logo.svg" alt="Golobe" class="h-9 w-auto" />
       </a>
 
-      <div class="flex items-center gap-5 text-sm font-semibold">
-        <a routerLink="/login" class="transition hover:opacity-80">Login</a>
-        <a
-          routerLink="/create-account"
-          class="rounded-[8px] bg-white px-5 py-2.5 text-sm font-semibold text-[#112211] shadow-sm transition hover:bg-gray-100"
-        >
-          Sign up
-        </a>
+      <div class="relative flex items-center gap-5 text-sm font-semibold">
+        @if (isAuthenticated()) {
+          <a routerLink="/favourites" class="flex items-center gap-2 transition hover:opacity-80">
+            <svg class="h-5 w-5" viewBox="0 0 24 24" aria-hidden="true">
+              <path
+                fill="currentColor"
+                d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"
+              />
+            </svg>
+            <span>Favourites</span>
+          </a>
+
+          <span class="h-4 w-px bg-white/20" aria-hidden="true"></span>
+
+          <div class="relative">
+            <button
+              #profileButton
+              type="button"
+              (click)="toggleProfileMenu(); $event.stopPropagation()"
+              class="flex items-center gap-2.5 transition hover:opacity-80"
+              aria-label="User profile"
+              [attr.aria-expanded]="showProfileMenu()"
+            >
+              <span class="relative size-9 overflow-hidden rounded-full border border-white/30">
+                <img src="https://i.pravatar.cc/80?img=12" alt="John D." class="size-full object-cover" />
+                <span class="absolute bottom-0 right-0 size-2.5 rounded-full border-2 border-white bg-[#8dd3bb]" aria-label="Verified"></span>
+              </span>
+              <span class="text-sm">John D.</span>
+            </button>
+
+            @if (showProfileMenu()) {
+              <div class="absolute right-0 top-full z-50 mt-3 w-[270px] rounded-xl border border-[#e2e9e5] bg-white p-4 text-[#112211] shadow-[0_12px_40px_rgba(17,34,17,0.15)]">
+                <div class="flex items-center gap-3 pb-4">
+                  <span class="relative size-12 overflow-hidden rounded-full border border-[#e2e9e5]">
+                    <img src="https://i.pravatar.cc/80?img=12" alt="John Doe." class="size-full object-cover" />
+                    <span class="absolute bottom-0 right-0 size-3 rounded-full border-2 border-white bg-[#8dd3bb]"></span>
+                  </span>
+                  <div>
+                    <strong class="block text-sm">John Doe.</strong>
+                    <span class="text-xs text-[#71807a]">Online</span>
+                  </div>
+                </div>
+
+                <div class="border-t border-[#e2e9e5] pt-2">
+                  <a routerLink="/account" class="flex items-center justify-between rounded-lg px-2 py-2.5 text-sm transition hover:bg-[#f1fbf7]" (click)="closeProfileMenu()">
+                    <span class="flex items-center gap-3">
+                      <svg class="size-4 text-[#52635c]" viewBox="0 0 24 24" fill="currentColor"><path d="M12 12c2.7 0 4.8-2.1 4.8-4.8S14.7 2.4 12 2.4 7.2 4.5 7.2 7.2 9.1 12 12 12zm0 2.4c-3.2 0-9.6 1.6-9.6 4.8v1.2h19.2v-1.2c0-3.2-6.4-4.8-9.6-4.8z"/></svg>
+                      My account
+                    </span>
+                    <svg class="size-4 text-[#a7a7ad]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
+                  </a>
+
+                  <a routerLink="/payments" class="flex items-center justify-between rounded-lg px-2 py-2.5 text-sm transition hover:bg-[#f1fbf7]" (click)="closeProfileMenu()">
+                    <span class="flex items-center gap-3">
+                      <svg class="size-4 text-[#52635c]" viewBox="0 0 24 24" fill="currentColor"><path d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 14H4v-6h16v6zm0-10H4V6h16v2z"/></svg>
+                      Payments
+                    </span>
+                    <svg class="size-4 text-[#a7a7ad]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
+                  </a>
+
+                  <a routerLink="/settings" class="flex items-center justify-between rounded-lg px-2 py-2.5 text-sm transition hover:bg-[#f1fbf7]" (click)="closeProfileMenu()">
+                    <span class="flex items-center gap-3">
+                      <svg class="size-4 text-[#52635c]" viewBox="0 0 24 24" fill="currentColor"><path d="M19.14 12.94c.04-.3.06-.61.06-.94 0-.32-.02-.64-.07-.94l2.03-1.58c.12-.09.15-.27.12-.43l-1.92-3.32c-.12-.22-.37-.29-.59-.22l-2.39.96c-.5-.38-1.03-.7-1.62-.94l-.36-2.54c-.04-.24-.24-.41-.48-.41h-3.84c-.24 0-.43.17-.47.41l-.36 2.54c-.59.24-1.13.56-1.62.94l-2.39-.96c-.22-.08-.47 0-.59.22L2.74 8.87c-.12.21-.08.47.12.61l2.03 1.58c-.05.3-.07.62-.07.94s.02.64.07.94l-2.03 1.58c-.12.09-.15.27-.12.43l1.92 3.32c.12.22.37.29.59.22l2.39-.96c.5.38 1.03.7 1.62.94l.36 2.54c.05.24.24.41.48.41h3.84c.24 0 .44-.17.47-.41l.36-2.54c.59-.24 1.13-.56 1.62-.94l2.39.96c.22.08.47 0 .59-.22l1.92-3.32c.12-.22.07-.47-.12-.61l-2.01-1.58zM12 15.6c-1.98 0-3.6-1.62-3.6-3.6s1.62-3.6 3.6-3.6 3.6 1.62 3.6 3.6-1.62 3.6-3.6 3.6z"/></svg>
+                      Settings
+                    </span>
+                    <svg class="size-4 text-[#a7a7ad]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
+                  </a>
+                </div>
+
+                <div class="border-t border-[#e2e9e5] pt-2">
+                  <a routerLink="/support" class="flex items-center justify-between rounded-lg px-2 py-2.5 text-sm transition hover:bg-[#f1fbf7]" (click)="closeProfileMenu()">
+                    <span class="flex items-center gap-3">
+                      <svg class="size-4 text-[#52635c]" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 17h-2v-2h2v2zm2.07-7.75l-.9.92C13.45 12.9 13 13.5 13 15h-2v-.5c0-1.1.45-2.1 1.17-2.83l1.24-1.26c.37-.36.59-.86.59-1.41 0-1.1-.9-2-2-2s-2 .9-2 2H8c0-2.21 1.79-4 4-4s4 1.79 4 4c0 .88-.36 1.68-.93 2.25z"/></svg>
+                      Support
+                    </span>
+                    <svg class="size-4 text-[#a7a7ad]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
+                  </a>
+
+                  <a routerLink="/logout" class="flex items-center gap-3 rounded-lg px-2 py-2.5 text-sm transition hover:bg-[#f1fbf7]" (click)="closeProfileMenu()">
+                    <svg class="size-4 text-[#52635c]" viewBox="0 0 24 24" fill="currentColor"><path d="M17 7l-1.41 1.41L18.17 11H8v2h10.17l-2.58 2.58L17 17l5-5zM4 5h8V3H4c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h8v-2H4V5z"/></svg>
+                    Logout
+                  </a>
+                </div>
+              </div>
+            }
+          </div>
+        } @else {
+          <a routerLink="/login" class="transition hover:opacity-80">Login</a>
+          <a routerLink="/create-account" class="rounded-[8px] bg-white px-5 py-2.5 text-sm font-semibold text-[#112211] shadow-sm transition hover:bg-gray-100">Sign up</a>
+        }
       </div>
     </nav>
   </header>
 } @else {
-  <header class="border-b border-neutral-200 bg-white">
-    <nav
-      class="mx-auto flex max-w-[1240px] items-stretch justify-between px-4 text-neutral-700 sm:px-6"
-      aria-label="Primary"
-    >
+  <header class="bg-white">
+    <nav class="mx-auto flex max-w-[1240px] items-stretch justify-between px-4 text-neutral-700 sm:px-6" aria-label="Primary">
       <div class="flex items-stretch gap-6 text-sm font-semibold text-[#112211]">
-        <a
-          routerLink="/find-flight"
-          routerLinkActive="after:absolute after:inset-x-0 after:bottom-0 after:content-[''] after:h-[3px] after:rounded-full after:bg-[#8DD3BB]"
-          [class.nav-hover-mint]="!isFindFlightRoute()"
-          class="relative flex items-center gap-2 px-1 py-4 transition"
-          aria-label="Find Flight"
-        >
+        <a routerLink="/find-flight" routerLinkActive="after:absolute after:inset-x-0 after:bottom-0 after:content-[''] after:h-[3px] after:rounded-full after:bg-[#8DD3BB]" [class.nav-hover-mint]="!isFindFlightRoute()" class="relative flex items-center gap-2 px-1 py-4 transition" aria-label="Find Flight">
           <svg class="h-5 w-5" viewBox="0 0 24 24" aria-hidden="true">
             <path d="M0 0h24v24H0z" fill="none" />
-            <path
-              fill="currentColor"
-              d="M20.56 3.91c.59.59.59 1.54 0 2.12l-3.89 3.89l2.12 9.19l-1.41 1.42l-3.88-7.43L9.6 17l.36 2.47l-1.07 1.06l-1.76-3.18l-3.19-1.77L5 14.5l2.5.37L11.37 11L3.94 7.09l1.42-1.41l9.19 2.12l3.89-3.89c.56-.58 1.56-.58 2.12 0"
-            />
+            <path fill="currentColor" d="M20.56 3.91c.59.59.59 1.54 0 2.12l-3.89 3.89l2.12 9.19l-1.41 1.42l-3.88-7.43L9.6 17l.36 2.47l-1.07 1.06l-1.76-3.18-3.19-1.77L5 14.5l2.5.37L11.37 11L3.94 7.09l1.42-1.41l9.19 2.12l3.89-3.89c.56-.58 1.56-.58 2.12 0" />
           </svg>
           <span>Find Flight</span>
         </a>
 
-        <button type="button" class="nav-hover-mint flex items-center gap-2 px-1 py-4 transition">
+        <a routerLink="/find-stays" routerLinkActive="after:absolute after:inset-x-0 after:bottom-0 after:content-[''] after:h-[3px] after:rounded-full after:bg-[#8DD3BB]" [class.nav-hover-mint]="!isFindStaysRoute()" class="relative flex items-center gap-2 px-1 py-4 transition" aria-label="Find Stays">
           <svg class="h-5 w-5" viewBox="0 0 24 24" aria-hidden="true">
             <path d="M0 0h24v24H0z" fill="none" />
-            <path
-              fill="currentColor"
-              d="M2 19v-6q0-.675.275-1.225T3 10.8V8q0-1.25.875-2.125T6 5h4q.575 0 1.075.213T12 5.8q.425-.375.925-.587T14 5h4q1.25 0 2.125.875T21 8v2.8q.45.425.725.975T22 13v6h-2v-2H4v2zm11-9h6V8q0-.425-.288-.712T18 7h-4q-.425 0-.712.288T13 8zm-8 0h6V8q0-.425-.288-.712T10 7H6q-.425 0-.712.288T5 8z"
-            />
+            <path fill="currentColor" d="M2 19v-6q0-.675.275-1.225T3 10.8V8q0-1.25.875-2.125T6 5h4q.575 0 1.075.213T12 5.8q.425-.375.925-.587T14 5h4q1.25 0 2.125.875T21 8v2.8q.45.425.725.975T22 13v6h-2v-2H4v2zm11-9h6V8q0-.425-.288-.712T18 7h-4q-.425 0-.712.288T13 8zm-8 0h6V8q0-.425-.288-.712T10 7H6q-.425 0-.712.288T5 8z" />
           </svg>
           <span>Find Stays</span>
-        </button>
+        </a>
       </div>
 
       <a routerLink="/" class="flex items-center justify-center py-4" aria-label="Go home">
         <img src="/Logo2.svg" alt="Golobe" class="h-9 w-auto" />
       </a>
 
-      <div class="flex items-center gap-5 py-4 text-sm font-semibold text-[#112211]">
-        <a routerLink="/login" class="transition hover:opacity-80">Login</a>
-        <a
-          routerLink="/create-account"
-          class="rounded-[8px] bg-[#112211] px-5 py-2.5 text-sm font-semibold text-white shadow-sm transition hover:bg-[#1c2c18]"
-        >
-          Sign up
-        </a>
+      <div class="relative flex items-center gap-5 py-4 text-sm font-semibold text-[#112211]">
+        @if (isAuthenticated()) {
+          <a routerLink="/favourites" class="flex items-center gap-2 transition hover:opacity-80">
+            <svg class="h-5 w-5" viewBox="0 0 24 24" aria-hidden="true">
+              <path fill="currentColor" d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
+            </svg>
+            <span>Favourites</span>
+          </a>
+
+          <span class="h-4 w-px bg-[#112211]/20" aria-hidden="true"></span>
+
+          <div class="relative">
+            <button
+              #profileButton
+              type="button"
+              (click)="toggleProfileMenu(); $event.stopPropagation()"
+              class="flex items-center gap-2.5 transition hover:opacity-80"
+              aria-label="User profile"
+              [attr.aria-expanded]="showProfileMenu()"
+            >
+              <span class="relative size-9 overflow-hidden rounded-full border border-[#e2e9e5]">
+                <img src="https://i.pravatar.cc/80?img=12" alt="John D." class="size-full object-cover" />
+                <span class="absolute bottom-0 right-0 size-2.5 rounded-full border-2 border-white bg-[#8dd3bb]" aria-label="Verified"></span>
+              </span>
+              <span class="text-sm">John D.</span>
+            </button>
+
+            @if (showProfileMenu()) {
+              <div class="absolute right-0 top-full z-50 mt-3 w-[270px] rounded-xl border border-[#e2e9e5] bg-white p-4 text-[#112211] shadow-[0_12px_40px_rgba(17,34,17,0.15)]">
+                <div class="flex items-center gap-3 pb-4">
+                  <span class="relative size-12 overflow-hidden rounded-full border border-[#e2e9e5]">
+                    <img src="https://i.pravatar.cc/80?img=12" alt="John Doe." class="size-full object-cover" />
+                    <span class="absolute bottom-0 right-0 size-3 rounded-full border-2 border-white bg-[#8dd3bb]"></span>
+                  </span>
+                  <div>
+                    <strong class="block text-sm">John Doe.</strong>
+                    <span class="text-xs text-[#71807a]">Online</span>
+                  </div>
+                </div>
+
+                <div class="border-t border-[#e2e9e5] pt-2">
+                  <a routerLink="/account" class="flex items-center justify-between rounded-lg px-2 py-2.5 text-sm transition hover:bg-[#f1fbf7]" (click)="closeProfileMenu()">
+                    <span class="flex items-center gap-3">
+                      <svg class="size-4 text-[#52635c]" viewBox="0 0 24 24" fill="currentColor"><path d="M12 12c2.7 0 4.8-2.1 4.8-4.8S14.7 2.4 12 2.4 7.2 4.5 7.2 7.2 9.1 12 12 12zm0 2.4c-3.2 0-9.6 1.6-9.6 4.8v1.2h19.2v-1.2c0-3.2-6.4-4.8-9.6-4.8z"/></svg>
+                      My account
+                    </span>
+                    <svg class="size-4 text-[#a7a7ad]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
+                  </a>
+
+                  <a routerLink="/payments" class="flex items-center justify-between rounded-lg px-2 py-2.5 text-sm transition hover:bg-[#f1fbf7]" (click)="closeProfileMenu()">
+                    <span class="flex items-center gap-3">
+                      <svg class="size-4 text-[#52635c]" viewBox="0 0 24 24" fill="currentColor"><path d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 14H4v-6h16v6zm0-10H4V6h16v2z"/></svg>
+                      Payments
+                    </span>
+                    <svg class="size-4 text-[#a7a7ad]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
+                  </a>
+
+                  <a routerLink="/settings" class="flex items-center justify-between rounded-lg px-2 py-2.5 text-sm transition hover:bg-[#f1fbf7]" (click)="closeProfileMenu()">
+                    <span class="flex items-center gap-3">
+                      <svg class="size-4 text-[#52635c]" viewBox="0 0 24 24" fill="currentColor"><path d="M19.14 12.94c.04-.3.06-.61.06-.94 0-.32-.02-.64-.07-.94l2.03-1.58c.12-.09.15-.27.12-.43l-1.92-3.32c-.12-.22-.37-.29-.59-.22l-2.39.96c-.5-.38-1.03-.7-1.62-.94l-.36-2.54c-.04-.24-.24-.41-.48-.41h-3.84c-.24 0-.43.17-.47.41l-.36 2.54c-.59.24-1.13.56-1.62.94l-2.39-.96c-.22-.08-.47 0-.59.22L2.74 8.87c-.12.21-.08.47.12.61l2.03 1.58c-.05.3-.07.62-.07.94s.02.64.07.94l-2.03 1.58c-.12.09-.15.27-.12.43l1.92 3.32c.12.22.37.29.59.22l2.39-.96c.5.38 1.03.7 1.62.94l.36 2.54c.05.24.24.41.48.41h3.84c.24 0 .44-.17.47-.41l.36-2.54c.59-.24 1.13-.56 1.62-.94l2.39.96c.22.08.47 0 .59-.22l1.92-3.32c.12-.22.07-.47-.12-.61l-2.01-1.58zM12 15.6c-1.98 0-3.6-1.62-3.6-3.6s1.62-3.6 3.6-3.6 3.6 1.62 3.6 3.6-1.62 3.6-3.6 3.6z"/></svg>
+                      Settings
+                    </span>
+                    <svg class="size-4 text-[#a7a7ad]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
+                  </a>
+                </div>
+
+                <div class="border-t border-[#e2e9e5] pt-2">
+                  <a routerLink="/support" class="flex items-center justify-between rounded-lg px-2 py-2.5 text-sm transition hover:bg-[#f1fbf7]" (click)="closeProfileMenu()">
+                    <span class="flex items-center gap-3">
+                      <svg class="size-4 text-[#52635c]" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 17h-2v-2h2v2zm2.07-7.75l-.9.92C13.45 12.9 13 13.5 13 15h-2v-.5c0-1.1.45-2.1 1.17-2.83l1.24-1.26c.37-.36.59-.86.59-1.41 0-1.1-.9-2-2-2s-2 .9-2 2H8c0-2.21 1.79-4 4-4s4 1.79 4 4c0 .88-.36 1.68-.93 2.25z"/></svg>
+                      Support
+                    </span>
+                    <svg class="size-4 text-[#a7a7ad]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
+                  </a>
+
+                  <a routerLink="/logout" class="flex items-center gap-3 rounded-lg px-2 py-2.5 text-sm transition hover:bg-[#f1fbf7]" (click)="closeProfileMenu()">
+                    <svg class="size-4 text-[#52635c]" viewBox="0 0 24 24" fill="currentColor"><path d="M17 7l-1.41 1.41L18.17 11H8v2h10.17l-2.58 2.58L17 17l5-5zM4 5h8V3H4c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h8v-2H4V5z"/></svg>
+                    Logout
+                  </a>
+                </div>
+              </div>
+            }
+          </div>
+        } @else {
+          <a routerLink="/login" class="transition hover:opacity-80">Login</a>
+          <a routerLink="/create-account" class="rounded-[8px] bg-[#112211] px-5 py-2.5 text-sm font-semibold text-white shadow-sm transition hover:bg-[#1c2c18]">Sign up</a>
+        }
       </div>
     </nav>
   </header>
 }
+
