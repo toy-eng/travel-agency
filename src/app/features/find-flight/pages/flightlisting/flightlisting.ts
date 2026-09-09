@@ -5,7 +5,6 @@ import { FilterSidebarComponent } from './components/filter-sidebar/filter-sideb
 import { FlightCardComponent } from './components/flight-card/flight-card';
 import { ResultsToolbarComponent } from './components/results-toolbar/results-toolbar';
 import { ShowMoreComponent } from './components/show-more/show-more';
-import { DestinationsSectionComponent } from '../../../home/components/destinations-section/destinations-section';
 import { destinationsMock } from '../../../../shared/data/destinations.mock';
 import { ScrollRevealDirective } from '../../../../shared/directives/scroll-reveal';
 
@@ -18,7 +17,6 @@ import { ScrollRevealDirective } from '../../../../shared/directives/scroll-reve
     ResultsToolbarComponent,
     FlightCardComponent,
     ShowMoreComponent,
-    DestinationsSectionComponent,
     ScrollRevealDirective,
   ],
   templateUrl: './flightlisting.html',
