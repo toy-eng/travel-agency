@@ -9,7 +9,11 @@ export const findFlightRoutes: Routes = [
       {
         path: '',
         pathMatch: 'full',
-        redirectTo: 'search',
+        title: 'Search Flight',
+        loadComponent: () =>
+          import('./pages/flightsearch/flightsearch').then(
+            (m) => m.Flightsearch,
+          ),
       },
       {
         path: 'search',
