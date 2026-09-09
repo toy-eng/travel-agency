@@ -1,3 +1,11 @@
+<h2 mat-dialog-title class="!m-0 !px-6 !pb-2 !pt-0 font-display !text-2xl !font-extrabold !leading-tight text-[#112211]">Add a new Card</h2>
+<button type="button" mat-dialog-close class="group absolute right-4 top-5 grid size-8 place-items-center rounded-full text-[#52635c] transition-all duration-200 hover:rotate-90 hover:bg-[#e8f7f1] hover:text-[#112211] hover:shadow-[0_4px_12px_rgba(17,34,17,0.12)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#8dd3bb]" aria-label="Close add card dialog">
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" class="size-4 transition-transform duration-200 group-hover:scale-110" aria-hidden="true">
+    <path d="M0 0h32v32H0z" fill="none" />
+    <path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2 30L30 2m0 28L2 2" />
+  </svg>
+</button>
+<mat-dialog-content class="!max-h-none !px-6 !pb-4 !pt-2">
 <form class="grid gap-3" (submit)="$event.preventDefault(); submit()">
   <div>
     <label for="card-number" class="block text-[0.62rem] text-[#52635c]">Card Number</label>
@@ -41,3 +49,4 @@
   <button type="submit" class="mt-1 h-8 rounded bg-mint text-[0.68rem] font-medium text-[#112211] hover:bg-mint-dark">Add Card</button>
   <p class="text-center text-[0.48rem] leading-3 text-[#71807a]">By confirming your subscription, you allow the Customer in Credit Limited to charge your card for this payment and future payments in accordance with their terms.</p>
 </form>
+</mat-dialog-content>

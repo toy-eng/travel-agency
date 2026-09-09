@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component, signal } from '@angular/core';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 
-import { CardModalComponent } from '../card-modal/card-modal';
+import { NewCardFormComponent } from '../new-card-form/new-card-form';
 
 @Component({
   selector: 'app-bookingdetails-payment-method',
@@ -21,7 +21,7 @@ export class PaymentMethodComponent {
 
   openCardModal() {
     this.selectedMethod.set('new');
-    this.dialog.open(CardModalComponent, {
+    this.dialog.open(NewCardFormComponent, {
       width: '360px',
       maxWidth: 'calc(100vw - 2rem)',
       panelClass: 'booking-card-dialog',
