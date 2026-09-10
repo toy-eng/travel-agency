@@ -13,7 +13,7 @@ import {
 import { isPlatformBrowser } from '@angular/common';
 import { PLATFORM_ID } from '@angular/core';
 
-import { gsap } from '../../../../../../shared/motion/gsap';
+import { gsap } from '../../motion/gsap';
 
 interface FalloutDestination {
   name: string;

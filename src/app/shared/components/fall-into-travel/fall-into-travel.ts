@@ -10,7 +10,7 @@ import {
 import { isPlatformBrowser } from '@angular/common';
 import { PLATFORM_ID } from '@angular/core';
 
-import { gsap } from '../../../../../../shared/motion/gsap';
+import { gsap } from '../../motion/gsap';
 
 @Component({
   selector: 'app-fall-into-travel',
