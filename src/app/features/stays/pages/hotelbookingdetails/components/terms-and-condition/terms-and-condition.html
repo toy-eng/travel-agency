@@ -1,0 +1,124 @@
+<section class="grid gap-8" aria-labelledby="stay-pass-title">
+  <h2 id="stay-pass-title" class="sr-only">Hotel stay pass and terms and conditions</h2>
+
+  <article class="grid overflow-hidden rounded-2xl border border-[#e2e9e5] bg-white shadow-[0_8px_22px_rgba(17,34,17,0.05)] lg:grid-cols-[170px_minmax(0,1fr)_300px]">
+    <!-- Check-in / Check-out dates -->
+    <div class="flex flex-col justify-between gap-8 bg-[#eaf6f2] p-5 sm:p-7">
+      <div>
+        <strong class="block font-display text-2xl font-extrabold text-[#112211] sm:text-3xl">{{ checkInDate() }}</strong>
+        <span class="mt-1 block text-xs text-[#52635c]">Check-In</span>
+      </div>
+
+      <div class="flex items-center justify-center gap-2 self-center text-[#c3d8cf]" aria-hidden="true">
+        <span class="h-10 w-px bg-[repeating-linear-gradient(180deg,currentColor_0_3px,transparent_3px_7px)]"></span>
+        <span class="grid size-7 shrink-0 place-items-center rounded-md border border-[#cfded7] bg-white text-mint-dark">
+          <svg class="h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M4 21V8l5-2v2.2l6-1.2V9h5v12h-7v-4h-2v4H4Zm2-2h2v-3h2v3h2v-7H6v7Zm10-8v-2l-6 1.2V11h6Z" />
+          </svg>
+        </span>
+        <span class="h-10 w-px bg-[repeating-linear-gradient(180deg,currentColor_0_3px,transparent_3px_7px)]"></span>
+      </div>
+
+      <div>
+        <strong class="block font-display text-2xl font-extrabold text-[#112211] sm:text-3xl">{{ checkOutDate() }}</strong>
+        <span class="mt-1 block text-xs text-[#52635c]">Check-Out</span>
+      </div>
+    </div>
+
+    <!-- Guest and stay details -->
+    <div class="min-w-0">
+      <header class="flex flex-wrap items-center justify-between gap-4 bg-mint px-5 py-5 sm:px-7">
+        <div class="flex items-center gap-3">
+          <img
+            [src]="guestAvatar()"
+            alt=""
+            class="size-10 shrink-0 rounded-full border-2 border-white object-cover"
+          />
+          <h3 class="font-display text-xl font-extrabold text-[#112211] sm:text-2xl">{{ guestName() }}</h3>
+        </div>
+        <p class="text-sm font-semibold text-[#112211] sm:text-base">{{ roomName() }}</p>
+      </header>
+
+      <dl class="grid gap-5 px-5 py-6 text-xs sm:grid-cols-3 sm:px-7">
+        <div class="flex items-start gap-3">
+          <span class="grid size-7 shrink-0 place-items-center rounded bg-[#eaf6f2] text-[#3f7d68]" aria-hidden="true">
+            <svg class="h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20Zm1 5h-2v6l5 3 1-1.7-4-2.3V7Z" />
+            </svg>
+          </span>
+          <div>
+            <dt class="block text-[#52635c]">Check-In time</dt>
+            <dd class="font-bold text-[#112211]">{{ checkInTime() }}</dd>
+          </div>
+        </div>
+
+        <div class="flex items-start gap-3">
+          <span class="grid size-7 shrink-0 place-items-center rounded bg-[#eaf6f2] text-[#3f7d68]" aria-hidden="true">
+            <svg class="h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20Zm1 5h-2v6l5 3 1-1.7-4-2.3V7Z" />
+            </svg>
+          </span>
+          <div>
+            <dt class="block text-[#52635c]">Check-Out time</dt>
+            <dd class="font-bold text-[#112211]">{{ checkOutTime() }}</dd>
+          </div>
+        </div>
+
+        <div class="flex items-start gap-3">
+          <span class="grid size-7 shrink-0 place-items-center rounded bg-[#eaf6f2] text-[#3f7d68]" aria-hidden="true">
+            <svg class="h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M7 13c1.66 0 3-1.34 3-3S8.66 7 7 7s-3 1.34-3 3 1.34 3 3 3ZM19 7h-8v7H3V6H1v15h2v-3h18v3h2v-9a4 4 0 0 0-4-4Z" />
+            </svg>
+          </span>
+          <div>
+            <dt class="block text-[#52635c]">Room no.</dt>
+            <dd class="font-bold text-[#112211]">{{ roomNumber() }}</dd>
+          </div>
+        </div>
+      </dl>
+
+      <footer class="flex flex-wrap items-end justify-between gap-5 px-5 pb-6 sm:px-7">
+        <div>
+          <strong class="block font-display text-3xl font-extrabold text-[#112211]">{{ bookingInitials() }}</strong>
+          <small class="text-xs text-[#52635c]">{{ bookingRef() }}</small>
+        </div>
+        <span
+          class="h-12 w-40 bg-[repeating-linear-gradient(90deg,#112211_0_2px,transparent_2px_4px,#112211_4px_5px,transparent_5px_7px)]"
+          role="img"
+          [attr.aria-label]="'Stay pass barcode for booking ' + bookingRef()"
+        ></span>
+      </footer>
+    </div>
+
+    <!-- Hotel logo -->
+    <div class="flex min-h-[230px] items-center justify-center border-t border-[#e2e9e5] bg-white p-6 lg:border-l lg:border-t-0">
+      <p class="flex w-full max-w-[190px] flex-col items-center gap-1 text-center text-[#112211]">
+        <span class="font-display text-[2rem] font-extrabold uppercase leading-none tracking-[0.12em]">{{ hotelLogo() }}</span>
+        <span class="w-full border-y border-[rgba(17,34,17,0.35)] py-1 text-[0.6rem] font-medium uppercase tracking-[0.16em]">{{ hotelLogoSub() }}</span>
+        <span class="text-[0.55rem] uppercase tracking-[0.32em]">{{ hotelLogoCity() }}</span>
+      </p>
+    </div>
+  </article>
+
+  <article class="mx-auto max-w-[1080px] text-sm leading-6 text-[#52635c]" aria-labelledby="terms-title">
+    <h2 id="terms-title" class="font-display text-xl font-extrabold text-[#112211] sm:text-2xl">Terms and Conditions</h2>
+
+    <h3 class="mt-5 font-display text-base font-extrabold text-[#112211]">Payments</h3>
+    <ul class="mt-3 grid list-disc gap-3 pl-4 text-xs leading-5">
+      <li>If you are purchasing your stay using a debit or credit card via the Website, we will process these payments via the automated secure common payment gateway which will be subject to fraud screening purposes.</li>
+      <li>If you do not supply the correct card billing address and/or cardholder information, your booking will not be confirmed and the overall cost may increase. We reserve the right to cancel your booking if payment is declined for any reason or if you have supplied incorrect card information. If we become aware of, or is notified of, any fraud or illegal activity associated with the payment for the booking, the booking will be cancelled and you will be liable for all costs and expenses arising from such cancellation, without prejudice to any action that may be taken against us.</li>
+      <li>Golobe may require the card holder to provide additional payment verification upon request by either submitting an online form or visiting the nearest Golobe office, or at the airport at the time of check-in. Golobe reserves the right to deny boarding or to collect a guarantee payment (in cash or from another credit card) if the card originally used for the purchase cannot be presented by the cardholder at check-in or when collecting the tickets, or in the case the original payment has been withheld or disputed by the card issuing bank. Credit card details are held in a secured environment and transferred through an internationally accepted system.</li>
+    </ul>
+
+    <h3 class="mt-6 font-display text-base font-extrabold text-[#112211]">Contact Us</h3>
+    <p class="mt-3 text-xs leading-5">
+      If you have any questions about our Website or our Terms of Use, please contact:<br />
+      Golobe Group Q.C.S.C<br />
+      Golobe Tower<br />
+      P.O. Box: 22550<br />
+      Doha, State of Qatar<br />
+      Further contact details can be found at
+      <a href="https://golobe.com/help" class="underline" target="_blank" rel="noopener noreferrer">golobe.com/help</a>
+    </p>
+  </article>
+</section>

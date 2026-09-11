@@ -13,17 +13,24 @@ export const routes: Routes = [
           import('./features/home/home').then((m) => m.Home),
       },
       {
-        path: 'find-flight',
+        path: 'flights',
         loadChildren: () =>
-          import('./features/find-flight/find-flight.routes').then(
-            (m) => m.findFlightRoutes,
+          import('./features/flights/flights.routes').then(
+            (m) => m.flightsRoutes,
           ),
       },
       {
-        path: 'find-stays',
+        path: 'stays',
         loadChildren: () =>
-          import('./features/find-stays/find-stays.routes').then(
-            (m) => m.findStaysRoutes,
+          import('./features/stays/stays.routes').then(
+            (m) => m.staysRoutes,
+          ),
+      },
+      {
+        path: 'favourites',
+        loadChildren: () =>
+          import('./features/favourites/favourites.routes').then(
+            (m) => m.favouritesRoutes,
           ),
       },
       {

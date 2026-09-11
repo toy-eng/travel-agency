@@ -1,0 +1,32 @@
+<section #goSection class="relative mt-16 overflow-hidden bg-white text-[#112211] sm:mt-20">
+  <div class="mx-auto max-w-[1240px] px-4 pt-16 sm:px-6 sm:pt-24">
+    <div
+      #goHeading
+      class="flex flex-col items-start justify-between gap-6 sm:flex-row sm:items-center"
+    >
+      <div>
+        <h2 class="section-heading">Let&rsquo;s go places together</h2>
+        <p class="section-subtitle max-w-lg">
+          Discover the latest offers and news and start planning your next trip with us.
+        </p>
+      </div>
+      <button class="section-button">
+        See All
+        <svg class="h-4 w-4 fill-current" viewBox="0 0 24 24">
+          <path d="M12 4l-1.41 1.41L16.17 11H4v2h12.17l-5.58 5.59L12 20l8-8z" />
+        </svg>
+      </button>
+    </div>
+  </div>
+
+  <div #mapWrap class="relative mt-12 w-full sm:mt-16">
+    <img
+      #mapImage
+      ngSrc="/worldMap.png"
+      width="1440"
+      height="486"
+      alt="World map of travel routes"
+      class="h-auto w-full opacity-95"
+    />
+  </div>
+</section>

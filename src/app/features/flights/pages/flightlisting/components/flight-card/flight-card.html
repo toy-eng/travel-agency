@@ -1,0 +1,44 @@
+<article class="relative grid grid-cols-[30%_minmax(0,70%)] min-h-[235px] overflow-hidden rounded-xl bg-white shadow-[0_8px_22px_rgba(17,34,17,0.06)] hover-lift" [class.flight-card--featured]="isFeatured">
+  <div class="flex flex-col items-center justify-center p-5 text-center">
+    <div class="grid place-items-center w-[4.25rem] h-[4.25rem] mb-1 text-[#e63146] font-[Georgia] text-[3.7rem] font-bold leading-none" aria-hidden="true">{{ airline.slice(0, 1) }}</div>
+    <p class="m-0 text-[#e63146] font-[Georgia] text-[1.55rem] font-bold leading-none">{{ airline }}</p>
+    <span class="mt-2 text-[#9aa7a2] text-[0.72rem]">{{ flightCode }}</span>
+  </div>
+
+  <div class="flex min-w-0 flex-col py-6 pr-3 pl-3">
+    <div class="flex items-center gap-1 text-[#71807a] text-[0.75rem]">
+      <span class="inline-grid place-items-center min-w-[2.35rem] min-h-[1.85rem] border border-mint rounded text-[#214d40] text-[0.75rem]">{{ rating.toFixed(1) }}</span>
+      <strong class="ml-1 text-[#112211]">Very Good</strong>
+      <span>{{ rating >= 4.5 ? '54' : '32' }} reviews</span>
+    </div>
+
+    <div class="flex flex-col mt-3.5">
+      @for (route of [1, 2]; track route) {
+        <label class="grid grid-cols-[22px_245px_85px_75px] items-center gap-[0.45rem] min-h-[53px] text-[#112211] cursor-pointer">
+          <input type="checkbox" class="w-[1.2rem] h-[1.2rem] m-0 appearance-none border-2 border-[#b8c1bd] rounded-[3px] bg-transparent cursor-pointer checked:border-mint checked:bg-mint checked:shadow-[inset_0_0_0_3px_#ffffff]" [attr.aria-label]="'Select ' + airline + ' itinerary ' + route" />
+          <span class="flex flex-col gap-0.5">
+            <strong class="text-[0.95rem] whitespace-nowrap">{{ departureTime }} <span class="text-[#71807a] font-normal">-</span> {{ arrivalTime }}</strong>
+            <small class="text-[#a5afab] text-[0.72rem]">{{ airline }}</small>
+          </span>
+          <span class="text-[#52635c] text-[0.82rem] whitespace-nowrap">non stop</span>
+          <span class="flex flex-col gap-0.5">
+            <strong class="text-[0.95rem] whitespace-nowrap">{{ duration }}</strong>
+            <small class="text-[#a5afab] text-[0.72rem]">{{ departureLabel }}-{{ arrivalLabel }}</small>
+          </span>
+        </label>
+      }
+    </div>
+
+    <div class="grid grid-cols-[46px_minmax(0,1fr)] gap-4 mt-auto pt-3 border-t border-[#e4eae7]">
+      <button type="button" class="w-[46px] h-[46px] border border-mint rounded bg-transparent text-[#52635c] text-[1.55rem] leading-none cursor-pointer hover:bg-mint" aria-label="Save flight">
+        <span aria-hidden="true">&#9825;</span>
+      </button>
+      <a routerLink="/flights/flightdetails" class="inline-flex items-center justify-center w-full h-[46px] border-0 rounded bg-mint text-[#112211] text-[0.9rem] font-bold cursor-pointer hover:bg-mint-dark">View Deals</a>
+    </div>
+  </div>
+
+  <div class="absolute top-5 right-5 flex flex-col items-end text-[#52635c] text-[0.72rem] text-right">
+    <span>starting from</span>
+    <strong class="mt-0.5 text-[#ff706c] text-[1.45rem]">{{ price }}</strong>
+  </div>
+</article>

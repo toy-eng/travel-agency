@@ -1,0 +1,35 @@
+<div class="flex items-center justify-between gap-4 px-[0.1rem] mb-6 max-md:flex-col max-md:items-start">
+  <p class="m-0 text-[#112211] text-[0.95rem] font-medium">Showing <strong class="text-mint-dark">{{ resultCount }}</strong> of <strong class="text-mint-dark">{{ totalPlaces }}</strong> places</p>
+
+  <div class="relative inline-flex items-center gap-[0.18rem] text-[#112211] text-[0.95rem] whitespace-nowrap">
+    <span>Sort by</span>
+    <button
+      type="button"
+      class="inline-flex items-center gap-[0.28rem] p-0 border-0 bg-transparent text-[#112211] font-[inherit] font-bold cursor-pointer outline-none focus-visible:text-mint-dark focus-visible:outline-none"
+      aria-haspopup="listbox"
+      [attr.aria-expanded]="secondarySortOpen()"
+      (click)="toggleSecondarySort()"
+    >
+      <span>{{ activeSecondarySort() }}</span>
+      <span class="w-[7px] h-[7px] border-r-2 border-b-2 border-current -translate-y-0.5 rotate-45 pointer-events-none transition-transform" [class.translate-y-0.5]="secondarySortOpen()" [class.rotate-[225deg]]="secondarySortOpen()" aria-hidden="true"></span>
+    </button>
+
+    @if (secondarySortOpen()) {
+      <div class="absolute z-10 top-[calc(100%+0.6rem)] right-0 min-w-[9.5rem] p-1.5 border border-[rgba(141,211,187,0.4)] rounded-lg bg-white shadow-[0_10px_24px_rgba(17,34,17,0.12)]" role="listbox" aria-label="Sort hotel results by">
+        @for (option of sortOptions; track option) {
+          <button
+            type="button"
+            class="block w-full py-2 px-[0.7rem] border-0 rounded-[5px] bg-transparent text-[#112211] font-[inherit] text-[0.88rem] text-left cursor-pointer hover:bg-[#edf8f4] hover:text-[#214d40] focus-visible:bg-[#edf8f4] focus-visible:outline-none"
+            [class.bg-[#edf8f4]]="activeSecondarySort() === option"
+            [class.text-[#214d40]]="activeSecondarySort() === option"
+            role="option"
+            [attr.aria-selected]="activeSecondarySort() === option"
+            (click)="selectSecondarySort(option)"
+          >
+            {{ option }}
+          </button>
+        }
+      </div>
+    }
+  </div>
+</div>

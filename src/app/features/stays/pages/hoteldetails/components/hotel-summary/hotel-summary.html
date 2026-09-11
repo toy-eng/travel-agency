@@ -1,0 +1,124 @@
+<section class="space-y-5" aria-labelledby="hotel-title">
+  <!-- Breadcrumb -->
+  <nav class="flex flex-wrap items-center gap-2 text-[0.78rem] text-[#52635c]" aria-label="Breadcrumb">
+    <a routerLink="/stays/hotellisting" class="text-[#f26a5e] hover:underline">Turkey</a>
+    <span aria-hidden="true">›</span>
+    <span class="text-[#0f8b7a]">Istanbul</span>
+    <span aria-hidden="true">›</span>
+    <span>{{ hotelName() }}</span>
+  </nav>
+
+  <!-- Title row -->
+  <div class="flex flex-col gap-5 lg:flex-row lg:items-start lg:justify-between">
+    <div class="min-w-0">
+      <div class="flex flex-wrap items-center gap-3">
+        <h1 id="hotel-title" class="font-display text-[1.6rem] font-extrabold tracking-[-0.02em] text-[#112211] sm:text-[1.85rem]">
+          {{ hotelName() }}
+        </h1>
+
+        <span class="flex items-center gap-1 text-[#f26a5e]" aria-label="5 star hotel">
+          @for (star of stars; track star) {
+            <svg class="h-4 w-4 fill-current" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" aria-hidden="true">
+              <path d="m12 17.27 6.18 3.73-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21l6.18-3.73z"/>
+            </svg>
+          }
+          <span class="ml-1 text-[0.85rem] font-medium text-[#112211]">{{ category() }}</span>
+        </span>
+      </div>
+
+      <p class="mt-2 flex items-start gap-1.5 text-[0.82rem] text-[#52635c]">
+        <svg class="mt-0.5 h-4 w-4 shrink-0" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+          <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/>
+        </svg>
+        <span>{{ address() }}</span>
+      </p>
+
+      <div class="mt-2.5 flex items-center gap-2 text-[0.82rem]">
+        <span class="inline-grid min-h-[1.7rem] min-w-[2.1rem] place-items-center rounded-[6px] border border-mint text-[#112211] font-semibold">
+          {{ rating().toFixed(1) }}
+        </span>
+        <strong class="font-semibold text-[#112211]">Very Good</strong>
+        <span class="text-[#67757A]">{{ reviewCount() }} reviews</span>
+      </div>
+    </div>
+
+    <!-- Price + actions -->
+    <div class="flex shrink-0 flex-col items-start gap-3 sm:items-end">
+      <p class="text-[0.85rem] text-[#52635c]">
+        <strong class="font-display text-[1.9rem] font-extrabold text-[#f26a5e]">{{ pricePerNight() }}</strong>
+        <span class="text-[0.8rem]">/night</span>
+      </p>
+
+      <div class="flex items-center gap-3">
+        <button
+          type="button"
+          class="grid h-[46px] w-[46px] place-items-center rounded-[10px] border border-[rgba(17,34,17,0.14)] bg-white text-[#112211] transition-colors hover:bg-[#f5f7f6]"
+          [attr.aria-pressed]="saved()"
+          aria-label="Save hotel"
+          (click)="saved.set(!saved())"
+        >
+          <svg class="h-5 w-5" [class.fill-current]="saved()" [class.text-[#f26a5e]]="saved()" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" [attr.fill]="saved() ? 'currentColor' : 'none'" stroke="currentColor" stroke-width="1.8" aria-hidden="true">
+            <path d="M12 21.35 10.55 20C5.4 15.36 2 12.28 2 8.5A4.5 4.5 0 0 1 6.5 4c1.74 0 3.41.81 4.5 2.09A6.07 6.07 0 0 1 15.5 4 4.5 4.5 0 0 1 20 8.5c0 3.78-3.4 6.86-8.55 11.5L12 21.35Z"/>
+          </svg>
+        </button>
+
+        <button
+          type="button"
+          class="grid h-[46px] w-[46px] place-items-center rounded-[10px] border border-[rgba(17,34,17,0.14)] bg-white text-[#112211] transition-colors hover:bg-[#f5f7f6]"
+          aria-label="Share hotel"
+        >
+          <svg class="h-5 w-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+            <path d="M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7c.05-.23.09-.46.09-.7s-.04-.47-.09-.7l7.05-4.11c.54.5 1.25.81 2.04.81a3 3 0 1 0-3-3c0 .24.04.47.09.7L8.04 9.81A2.99 2.99 0 0 0 3 12a3 3 0 0 0 5.04 2.19l7.12 4.16c-.05.21-.08.43-.08.65a2.92 2.92 0 1 0 2.92-2.92z"/>
+          </svg>
+        </button>
+
+        <a
+          routerLink="/stays/hotelbookingdetails"
+          class="inline-flex h-[46px] items-center justify-center rounded-[10px] bg-[#8DD3BB] px-8 text-[0.9rem] font-bold text-[#112211] transition-colors hover:bg-[#7ac7ae]"
+        >
+          Book now
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Gallery -->
+  <div class="grid grid-cols-1 gap-3 sm:grid-cols-2">
+    <div class="group relative overflow-hidden rounded-[14px] bg-[#dfeaf7]">
+      <img
+        ngSrc="/hotelsImg.jpg"
+        width="620"
+        height="480"
+        priority
+        alt="CVK Park Bosphorus Hotel Istanbul exterior at night"
+        class="h-[240px] w-full object-cover transition-transform duration-300 group-hover:scale-[1.03] sm:h-[300px] lg:h-[380px]"
+      />
+    </div>
+
+    <div class="relative">
+      <div class="grid grid-cols-2 gap-3">
+        @for (image of galleryImages; track $index) {
+          <div class="group overflow-hidden rounded-[14px] bg-[#dfeaf7]">
+            <img
+              ngSrc="/hotelsImg.jpg"
+              width="300"
+              height="220"
+              [alt]="'Room view ' + ($index + 1)"
+              class="h-[115px] w-full object-cover transition-transform duration-300 group-hover:scale-[1.06] sm:h-[143px] lg:h-[184px]"
+            />
+          </div>
+        }
+      </div>
+
+      <button
+        type="button"
+        class="absolute bottom-3 right-3 inline-flex items-center gap-2 rounded-[10px] bg-[rgba(17,34,17,0.7)] px-4 py-2 text-[0.78rem] font-semibold text-white backdrop-blur-sm transition-colors hover:bg-[rgba(17,34,17,0.85)]"
+      >
+        <svg class="h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+          <path d="M21 19V5c0-1.1-.9-2-2-2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2zM8.5 13.5l2.5 3.01L14.5 12l4.5 6H5l3.5-4.5z"/>
+        </svg>
+        View all photos
+      </button>
+    </div>
+  </div>
+</section>

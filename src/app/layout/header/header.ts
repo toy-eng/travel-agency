@@ -32,19 +32,27 @@ export class Header implements AfterViewInit, OnDestroy {
     ),
   );
 
-  readonly isFindFlightRoute = toSignal(
+  readonly isFlightsRoute = toSignal(
     this.router.events.pipe(
       filter((event): event is NavigationEnd => event instanceof NavigationEnd),
-      map(() => this.router.url.startsWith('/find-flight')),
-      startWith(this.router.url.startsWith('/find-flight')),
+      map(() => this.router.url.startsWith('/flights')),
+      startWith(this.router.url.startsWith('/flights')),
     ),
   );
 
-  readonly isFindStaysRoute = toSignal(
+  readonly isStaysRoute = toSignal(
     this.router.events.pipe(
       filter((event): event is NavigationEnd => event instanceof NavigationEnd),
-      map(() => this.router.url.startsWith('/find-stays')),
-      startWith(this.router.url.startsWith('/find-stays')),
+      map(() => this.router.url.startsWith('/stays')),
+      startWith(this.router.url.startsWith('/stays')),
+    ),
+  );
+
+  readonly isFavouritesRoute = toSignal(
+    this.router.events.pipe(
+      filter((event): event is NavigationEnd => event instanceof NavigationEnd),
+      map(() => this.router.url.startsWith('/favourites')),
+      startWith(this.router.url.startsWith('/favourites')),
     ),
   );
 
