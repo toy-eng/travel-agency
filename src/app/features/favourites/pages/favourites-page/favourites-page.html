@@ -1,0 +1,73 @@
+<main class="mx-auto flex max-w-[1240px] flex-col gap-8 px-4 py-8 pb-16 text-[#112211] sm:px-6">
+  <h1 class="font-display text-[1.75rem] font-extrabold text-[#112211] sm:text-[2rem]">Favourites</h1>
+
+  <app-favourites-tabs
+    [activeTab]="activeTab()"
+    [flightCount]="flightCount()"
+    [placeCount]="placeCount()"
+    (tabChange)="setTab($event)"
+  />
+
+  @switch (activeTab()) {
+    @case ('places') {
+      <section
+        id="favourites-panel-places"
+        role="tabpanel"
+        aria-labelledby="favourites-tab-places"
+        class="grid gap-6"
+      >
+        @for (place of places(); track place.name) {
+          <app-favourite-place-card
+            [name]="place.name"
+            [location]="place.location"
+            [pricePerNight]="place.pricePerNight"
+            [priceNote]="place.priceNote"
+            [imageUrl]="place.imageUrl"
+            [imageCount]="place.imageCount"
+            [rating]="place.rating"
+            [ratingLabel]="place.ratingLabel"
+            [reviewCount]="place.reviewCount"
+            [stars]="place.stars"
+            [category]="place.category"
+            [amenities]="place.amenities"
+            (remove)="removePlace(place.name)"
+          />
+        } @empty {
+          <p class="rounded-[18px] border border-dashed border-[rgba(17,34,17,0.18)] bg-white px-6 py-10 text-center text-[0.9rem] text-[#52635c]">
+            You have not marked any places yet.
+          </p>
+        }
+      </section>
+    }
+
+    @case ('flights') {
+      <section
+        id="favourites-panel-flights"
+        role="tabpanel"
+        aria-labelledby="favourites-tab-flights"
+        class="grid gap-6"
+      >
+        @for (flight of flights(); track flight.flightCode) {
+          <app-favourite-flight-card
+            [airline]="flight.airline"
+            [flightCode]="flight.flightCode"
+            [departureTime]="flight.departureTime"
+            [arrivalTime]="flight.arrivalTime"
+            [departureLabel]="flight.departureLabel"
+            [arrivalLabel]="flight.arrivalLabel"
+            [duration]="flight.duration"
+            [aircraft]="flight.aircraft"
+            [price]="flight.price"
+            [rating]="flight.rating"
+            [reviewCount]="flight.reviewCount"
+            (remove)="removeFlight(flight.flightCode)"
+          />
+        } @empty {
+          <p class="rounded-[18px] border border-dashed border-[rgba(17,34,17,0.18)] bg-white px-6 py-10 text-center text-[0.9rem] text-[#52635c]">
+            You have not marked any flights yet.
+          </p>
+        }
+      </section>
+    }
+  }
+</main>

@@ -42,6 +42,10 @@
     color: #cdeae1;
   }
 
+  .nav-hover-mint-dark:hover {
+    color: #74c0a3;
+  }
+
   .sort-option--active::after {
     position: absolute;
     right: 1rem;

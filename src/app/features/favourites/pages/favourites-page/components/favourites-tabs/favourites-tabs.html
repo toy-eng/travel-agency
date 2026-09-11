@@ -1,0 +1,38 @@
+<div
+  class="grid grid-cols-2 overflow-hidden rounded-[14px] bg-white shadow-[0_8px_22px_rgba(17,34,17,0.06)]"
+  role="tablist"
+  aria-label="Favourites"
+  (keydown)="onKeydown($event)"
+>
+  <button
+    type="button"
+    id="favourites-tab-flights"
+    role="tab"
+    class="border-b-[3px] px-6 py-5 text-left transition-colors"
+    [class.border-mint]="activeTab() === 'flights'"
+    [class.border-transparent]="activeTab() !== 'flights'"
+    [attr.aria-selected]="activeTab() === 'flights'"
+    [attr.tabindex]="activeTab() === 'flights' ? 0 : -1"
+    aria-controls="favourites-panel-flights"
+    (click)="tabChange.emit('flights')"
+  >
+    <strong class="block text-[1.05rem] font-semibold text-[#112211]">Flights</strong>
+    <span class="mt-1 block text-[0.85rem] text-[#52635c]">{{ flightCount() }} marked</span>
+  </button>
+
+  <button
+    type="button"
+    id="favourites-tab-places"
+    role="tab"
+    class="border-b-[3px] px-6 py-5 text-left transition-colors"
+    [class.border-mint]="activeTab() === 'places'"
+    [class.border-transparent]="activeTab() !== 'places'"
+    [attr.aria-selected]="activeTab() === 'places'"
+    [attr.tabindex]="activeTab() === 'places' ? 0 : -1"
+    aria-controls="favourites-panel-places"
+    (click)="tabChange.emit('places')"
+  >
+    <strong class="block text-[1.05rem] font-semibold text-[#112211]">Places</strong>
+    <span class="mt-1 block text-[0.85rem] text-[#52635c]">{{ placeCount() }} marked</span>
+  </button>
+</div>
