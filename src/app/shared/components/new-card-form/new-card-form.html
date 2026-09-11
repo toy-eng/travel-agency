@@ -1,0 +1,52 @@
+<h2 mat-dialog-title class="!m-0 !px-6 !pb-2 !pt-0 font-display !text-2xl !font-extrabold !leading-tight text-[#112211]">Add a new Card</h2>
+<button type="button" mat-dialog-close class="group absolute right-4 top-5 grid size-8 place-items-center rounded-full text-[#52635c] transition-all duration-200 hover:rotate-90 hover:bg-[#e8f7f1] hover:text-[#112211] hover:shadow-[0_4px_12px_rgba(17,34,17,0.12)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#8dd3bb]" aria-label="Close add card dialog">
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" class="size-4 transition-transform duration-200 group-hover:scale-110" aria-hidden="true">
+    <path d="M0 0h32v32H0z" fill="none" />
+    <path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2 30L30 2m0 28L2 2" />
+  </svg>
+</button>
+<mat-dialog-content class="!max-h-none !px-6 !pb-4 !pt-2">
+<form class="grid gap-3" (submit)="$event.preventDefault(); submit()">
+  <div>
+    <label for="card-number" class="block text-[0.62rem] text-[#52635c]">Card Number</label>
+    <div class="relative mt-1">
+      <input id="card-number" type="text" inputmode="numeric" placeholder="4321 4321 4321 4321" [ngModel]="cardNumber()" (ngModelChange)="cardNumber.set($event)" name="cardNumber" class="h-8 w-full rounded border border-[#a7a7ad] px-2 text-[0.68rem] text-[#112211]" />
+      <span class="absolute right-2 top-1/2 -translate-y-1/2 rounded-sm bg-[#143b35] px-1 text-[0.45rem] font-bold text-white" aria-hidden="true">VISA</span>
+    </div>
+  </div>
+
+  <div class="grid grid-cols-2 gap-3">
+    <div>
+      <label for="card-expiry" class="block text-[0.62rem] text-[#52635c]">Exp. Date</label>
+      <input id="card-expiry" type="text" placeholder="02/27" [ngModel]="expiryDate()" (ngModelChange)="expiryDate.set($event)" name="expiryDate" class="mt-1 h-8 w-full rounded border border-[#a7a7ad] px-2 text-[0.68rem] text-[#112211]" />
+    </div>
+    <div>
+      <label for="card-cvc" class="block text-[0.62rem] text-[#52635c]">CVC</label>
+      <input id="card-cvc" type="text" inputmode="numeric" placeholder="123" [ngModel]="cvc()" (ngModelChange)="cvc.set($event)" name="cvc" class="mt-1 h-8 w-full rounded border border-[#a7a7ad] px-2 text-[0.68rem] text-[#112211]" />
+    </div>
+  </div>
+
+  <div>
+    <label for="card-name" class="block text-[0.62rem] text-[#52635c]">Name on Card</label>
+    <input id="card-name" type="text" placeholder="John Doe" [ngModel]="nameOnCard()" (ngModelChange)="nameOnCard.set($event)" name="nameOnCard" class="mt-1 h-8 w-full rounded border border-[#a7a7ad] px-2 text-[0.68rem] text-[#112211]" />
+  </div>
+
+  <div>
+    <label for="card-country" class="block text-[0.62rem] text-[#52635c]">Country or Region</label>
+    <select id="card-country" [ngModel]="country()" (ngModelChange)="country.set($event)" name="country" class="mt-1 h-8 w-full rounded border border-[#a7a7ad] bg-white px-2 text-[0.68rem] text-[#112211]">
+      <option>United States</option>
+      <option>United Kingdom</option>
+      <option>Pakistan</option>
+      <option>Turkey</option>
+    </select>
+  </div>
+
+  <label class="flex items-center gap-2 text-[0.6rem] text-[#112211]">
+    <input type="checkbox" [ngModel]="secureCheckout()" (ngModelChange)="secureCheckout.set($event)" name="secureCheckout" class="size-3 accent-[#112211]" />
+    Securely save my information for 1-click checkout
+  </label>
+
+  <button type="submit" class="mt-1 h-8 rounded bg-mint text-[0.68rem] font-medium text-[#112211] hover:bg-mint-dark">Add Card</button>
+  <p class="text-center text-[0.48rem] leading-3 text-[#71807a]">By confirming your subscription, you allow the Customer in Credit Limited to charge your card for this payment and future payments in accordance with their terms.</p>
+</form>
+</mat-dialog-content>
