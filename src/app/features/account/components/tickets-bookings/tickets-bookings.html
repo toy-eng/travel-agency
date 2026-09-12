@@ -1,0 +1,60 @@
+<section role="tabpanel" id="account-panel-tickets" aria-labelledby="account-tab-tickets">
+  <div class="flex flex-wrap items-center justify-between gap-4">
+    <h2 class="font-display text-[1.6rem] font-extrabold text-[#112211] sm:text-[1.85rem]">Tickets/Bookings</h2>
+
+    <div class="relative flex items-center">
+      <label class="sr-only" for="ticket-sort">Sort tickets</label>
+      <select
+        id="ticket-sort"
+        class="cursor-pointer appearance-none rounded-md bg-transparent py-1 pl-2 pr-6 text-[0.82rem] font-medium text-[#112211] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#8dd3bb]"
+        [ngModel]="sort()"
+        (ngModelChange)="sort.set($event)"
+        name="ticketSort"
+      >
+        @for (option of sortOptions; track option) {
+          <option [value]="option">{{ option }}</option>
+        }
+      </select>
+      <svg class="pointer-events-none absolute right-1 size-4 text-[#112211]" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <path d="M6 9l6 6 6-6" />
+      </svg>
+    </div>
+  </div>
+
+  <app-tab-bar
+    class="mt-5 block"
+    idPrefix="booking"
+    ariaLabel="Booking type"
+    [tabs]="bookingTabs"
+    [activeTab]="activeType()"
+    (tabChange)="setBookingType($event)"
+  />
+
+  <div class="mt-6 rounded-[14px] bg-white px-5 shadow-[0_8px_22px_rgba(17,34,17,0.06)] sm:px-6">
+    @switch (activeType()) {
+      @case ('flights') {
+        @for (ticket of flightTickets; track $index) {
+          <div class="border-b border-[rgba(17,34,17,0.08)] last:border-b-0">
+            <app-flight-ticket-card [ticket]="ticket" />
+          </div>
+        } @empty {
+          <p class="py-12 text-center text-[0.9rem] text-[#52635c]">
+            You have no upcoming flights.
+          </p>
+        }
+      }
+
+      @case ('stays') {
+        @for (ticket of stayTickets; track $index) {
+          <div class="border-b border-[rgba(17,34,17,0.08)] last:border-b-0">
+            <app-stay-ticket-card [ticket]="ticket" />
+          </div>
+        } @empty {
+          <p class="py-12 text-center text-[0.9rem] text-[#52635c]">
+            You have no upcoming stays.
+          </p>
+        }
+      }
+    }
+  </div>
+</section>

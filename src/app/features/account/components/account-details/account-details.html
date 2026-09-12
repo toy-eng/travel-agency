@@ -1,0 +1,41 @@
+<section role="tabpanel" id="account-panel-account" aria-labelledby="account-tab-account">
+  <h2 class="font-display text-[1.6rem] font-extrabold text-[#112211] sm:text-[1.85rem]">Account</h2>
+
+  <div class="mt-5 rounded-[14px] bg-white px-5 py-2 shadow-[0_8px_22px_rgba(17,34,17,0.06)] sm:px-6">
+    @for (field of fields; track field.label) {
+      <div class="flex flex-wrap items-center justify-between gap-4 border-b border-[rgba(17,34,17,0.08)] py-4 last:border-b-0">
+        <div class="min-w-0">
+          <p class="text-[0.82rem] text-[#52635c]">{{ field.label }}</p>
+          <p class="mt-1 break-words font-semibold text-[#112211]">{{ field.value }}</p>
+        </div>
+
+        <div class="flex shrink-0 items-center gap-3">
+          @if (field.secondaryAction) {
+            <button
+              type="button"
+              class="inline-flex h-10 items-center gap-2 rounded-[8px] border border-mint bg-white px-4 text-[0.82rem] font-medium text-[#112211] transition-all duration-200 hover:-translate-y-0.5 hover:bg-[#f1fbf7] hover:shadow-[0_4px_12px_rgba(0,0,0,0.15)]"
+              (click)="changeField.emit(field)"
+            >
+              <svg class="size-3.5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" fill="currentColor" aria-hidden="true">
+                <path d="M17 15V5h-2v10H5v2h10v10h2V17h10v-2z" />
+              </svg>
+              {{ field.secondaryAction }}
+            </button>
+          }
+
+          <button
+            type="button"
+            class="inline-flex h-10 items-center gap-2 rounded-[8px] border border-mint bg-white px-5 text-[0.82rem] font-medium text-[#112211] transition-all duration-200 hover:-translate-y-0.5 hover:bg-[#f1fbf7] hover:shadow-[0_4px_12px_rgba(0,0,0,0.15)]"
+            [attr.aria-label]="'Change ' + field.label.toLowerCase()"
+            (click)="changeField.emit(field)"
+          >
+            <svg class="size-3.5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+              <path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25ZM20.71 7.04a1 1 0 0 0 0-1.41l-2.34-2.34a1 1 0 0 0-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83Z" />
+            </svg>
+            Change
+          </button>
+        </div>
+      </div>
+    }
+  </div>
+</section>

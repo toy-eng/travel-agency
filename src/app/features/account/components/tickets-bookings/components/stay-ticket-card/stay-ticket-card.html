@@ -1,0 +1,91 @@
+<article class="flex flex-wrap items-center justify-between gap-6 py-5">
+  <div class="flex min-w-0 flex-wrap items-center gap-6 lg:gap-10">
+    <!-- Hotel logo -->
+    <span class="grid h-[70px] w-[92px] shrink-0 place-items-center rounded-[10px] border border-[rgba(17,34,17,0.1)] bg-white" aria-hidden="true">
+      <span class="flex w-[70px] flex-col items-center text-center leading-none text-[#8b9a94]">
+        <span class="font-display text-[0.85rem] font-extrabold tracking-[0.06em]">CVK</span>
+        <span class="mt-[2px] w-full border-y border-[rgba(139,154,148,0.5)] py-[1px] text-[0.28rem] font-semibold uppercase tracking-[0.06em]">Park Bosphorus Hotel</span>
+        <span class="mt-[2px] text-[0.24rem] uppercase tracking-[0.2em]">Istanbul</span>
+      </span>
+    </span>
+
+    <!-- Check-in / Check-out dates -->
+    <div class="flex items-center gap-4">
+      <div>
+        <p class="text-[0.75rem] text-[#52635c]">Check-In</p>
+        <p class="mt-0.5 text-[0.95rem] font-bold text-[#112211]">{{ ticket().checkInDate }}</p>
+      </div>
+      <span class="mt-3 h-px w-6 shrink-0 bg-[#112211]" aria-hidden="true"></span>
+      <div>
+        <p class="text-[0.75rem] text-[#52635c]">Check-Out</p>
+        <p class="mt-0.5 text-[0.95rem] font-bold text-[#112211]">{{ ticket().checkOutDate }}</p>
+      </div>
+    </div>
+
+    <!-- Stay meta -->
+    <dl class="flex items-start gap-6 lg:gap-10">
+      <div class="grid gap-3">
+        <div class="flex items-start gap-2.5">
+          <span class="grid size-6 shrink-0 place-items-center rounded bg-[#eaf6f2] text-[#3f7d68]" aria-hidden="true">
+            <svg class="size-3.5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20Zm1 5h-2v6l5 3 1-1.7-4-2.3V7Z" />
+            </svg>
+          </span>
+          <div>
+            <dt class="text-[0.7rem] text-[#52635c]">Check-in time</dt>
+            <dd class="font-semibold text-[#112211]">{{ ticket().checkInTime }}</dd>
+          </div>
+        </div>
+
+        <div class="flex items-start gap-2.5">
+          <span class="grid size-6 shrink-0 place-items-center rounded bg-[#eaf6f2] text-[#3f7d68]" aria-hidden="true">
+            <svg class="size-3.5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20Zm1 5h-2v6l5 3 1-1.7-4-2.3V7Z" />
+            </svg>
+          </span>
+          <div>
+            <dt class="text-[0.7rem] text-[#52635c]">Check-out time</dt>
+            <dd class="font-semibold text-[#112211]">{{ ticket().checkOutTime }}</dd>
+          </div>
+        </div>
+      </div>
+
+      <div class="flex items-start gap-2.5">
+        <span class="grid size-6 shrink-0 place-items-center rounded bg-[#eaf6f2] text-[#3f7d68]" aria-hidden="true">
+          <svg class="size-3.5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M7 12a3 3 0 1 0 0-6 3 3 0 0 0 0 6Zm12-6h-8v8H3V5H1v15h2v-3h18v3h2v-9a4 4 0 0 0-4-4Z" />
+          </svg>
+        </span>
+        <div>
+          <dt class="text-[0.7rem] text-[#52635c]">Room no.</dt>
+          <dd class="font-semibold text-[#112211]">{{ ticket().roomNumber }}</dd>
+        </div>
+      </div>
+    </dl>
+  </div>
+
+  <div class="flex shrink-0 items-center gap-3">
+    <button
+      type="button"
+      class="inline-flex h-11 items-center gap-2 rounded-[8px] bg-mint px-5 text-[0.85rem] font-bold text-[#112211] transition-all duration-200 hover:-translate-y-0.5 hover:bg-mint-dark hover:shadow-[0_4px_12px_rgba(0,0,0,0.15)]"
+      [attr.aria-label]="'Download ticket for stay ' + ticket().checkInDate"
+      (click)="download.emit()"
+    >
+      <svg class="size-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <path d="M12 15V3m0 12l-4-4m4 4l4-4M2 17l.621 2.485A2 2 0 0 0 4.561 21h14.877a2 2 0 0 0 1.94-1.515L22 17" />
+      </svg>
+      Download Ticket
+    </button>
+
+    <button
+      type="button"
+      class="grid size-11 place-items-center rounded-[8px] border border-[rgba(17,34,17,0.14)] bg-white text-[#112211] transition-all duration-200 hover:-translate-y-0.5 hover:bg-[#f5f7f6] hover:shadow-[0_4px_12px_rgba(0,0,0,0.15)]"
+      aria-label="View ticket details"
+      (click)="open.emit()"
+    >
+      <svg class="size-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <path d="M9 6l6 6-6 6" />
+      </svg>
+    </button>
+  </div>
+</article>

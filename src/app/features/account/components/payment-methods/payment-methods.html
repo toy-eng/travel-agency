@@ -1,0 +1,50 @@
+<section role="tabpanel" id="account-panel-payment-methods" aria-labelledby="account-tab-payment-methods">
+  <h2 class="font-display text-[1.6rem] font-extrabold text-[#112211] sm:text-[1.85rem]">Payment methods</h2>
+
+  <div class="mt-5 rounded-[14px] bg-white p-6 shadow-[0_8px_22px_rgba(17,34,17,0.06)] sm:p-8">
+    <div class="grid gap-6 sm:grid-cols-[300px_minmax(0,300px)]">
+      @for (card of cards; track card.last4) {
+        <article class="relative flex h-[180px] flex-col justify-between rounded-[12px] bg-mint p-5 text-[#112211]">
+          <div class="flex items-start justify-between">
+            <div>
+              <p class="text-[0.8rem] font-medium tracking-[0.15em]" aria-hidden="true">**** **** ****</p>
+              <p class="mt-2 font-display text-[1.75rem] font-extrabold leading-none">{{ card.last4 }}</p>
+            </div>
+
+            <button
+              type="button"
+              class="grid size-8 place-items-center rounded-md text-[#112211] transition-colors hover:bg-white/40"
+              [attr.aria-label]="'Remove card ending ' + card.last4"
+              (click)="removeCard.emit(card)"
+            >
+              <svg class="size-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                <path d="M6 19a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V7H6v12ZM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4Z" />
+              </svg>
+            </button>
+          </div>
+
+          <div class="flex items-end justify-between">
+            <div>
+              <p class="text-[0.68rem]">Valid Thru</p>
+              <p class="text-[0.9rem] font-bold">{{ card.expiry }}</p>
+            </div>
+            <span class="rounded bg-[#112211] px-2 py-1 text-[0.7rem] font-bold italic tracking-tight text-white">{{ card.brand }}</span>
+          </div>
+        </article>
+      }
+
+      <button
+        type="button"
+        class="grid h-[180px] place-items-center rounded-[12px] border border-dashed border-mint bg-white text-center text-[0.82rem] text-[#52635c] transition-all duration-200 hover:-translate-y-0.5 hover:bg-[#f1fbf7] hover:shadow-[0_4px_12px_rgba(0,0,0,0.15)]"
+        (click)="addCard.emit()"
+      >
+        <span class="flex flex-col items-center">
+          <span class="grid size-11 place-items-center rounded-full border border-mint text-[#74c0a3]" aria-hidden="true">
+            <span class="block -translate-y-px text-2xl font-light leading-none">+</span>
+          </span>
+          <span class="mt-3">Add a new card</span>
+        </span>
+      </button>
+    </div>
+  </div>
+</section>

@@ -1,0 +1,30 @@
+﻿<main class="mx-auto flex max-w-[1240px] flex-col px-4 py-8 pb-16 text-[#112211] sm:px-6">
+  <app-profile-cover
+    [name]="name()"
+    [email]="email()"
+    [avatarUrl]="avatarUrl()"
+  />
+
+  <app-tab-bar
+    class="mt-12 block"
+    idPrefix="account"
+    ariaLabel="Account sections"
+    [tabs]="tabs"
+    [activeTab]="activeTab()"
+    (tabChange)="setTab($event)"
+  />
+
+  <div class="mt-8">
+    @switch (activeTab()) {
+      @case ('account') {
+        <app-account-details />
+      }
+      @case ('tickets') {
+        <app-tickets-bookings />
+      }
+      @case ('payment-methods') {
+        <app-payment-methods (addCard)="openCardModal()" />
+      }
+    }
+  </div>
+</main>

@@ -1,0 +1,40 @@
+<section class="relative" aria-label="Profile cover">
+  <div
+    class="h-[250px] rounded-[16px] bg-[linear-gradient(120deg,#1f4e4a_0%,#1f4e4a_20%,#f4712b_20%,#f4712b_46%,#f8a548_46%,#fdd44f_100%)]"
+    aria-hidden="true"
+  ></div>
+
+  <button
+    type="button"
+    class="absolute right-4 bottom-4 inline-flex items-center gap-2 rounded-[8px] bg-mint-light px-4 py-2.5 text-[0.82rem] font-medium text-[#112211] transition-all duration-200 hover:-translate-y-0.5 hover:bg-[#b8e0d0] hover:shadow-[0_4px_12px_rgba(0,0,0,0.15)]"
+    (click)="uploadCover.emit()"
+  >
+    <svg class="size-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+      <path d="M12 12v9m0-9l-2.5 2m2.5-2l2.5 2M5.034 9.117A4.002 4.002 0 0 0 6 17h1" />
+      <path d="M15.83 7.138a5.5 5.5 0 0 0-10.796 1.98S5.187 10 5.5 10.5" />
+      <path d="M17 17a5 5 0 1 0-1.17-9.862L14.5 7.5" />
+    </svg>
+    Upload new cover
+  </button>
+
+  <div class="absolute left-1/2 top-full -translate-x-1/2 -translate-y-1/2">
+    <div class="relative">
+      <img [src]="avatarUrl()" alt="" class="size-28 rounded-full border-4 border-white object-cover" />
+      <button
+        type="button"
+        class="absolute bottom-1 right-0 grid size-9 place-items-center rounded-full bg-[#ff706c] text-white transition-colors hover:bg-[#f4605c]"
+        aria-label="Change profile photo"
+        (click)="changeAvatar.emit()"
+      >
+        <svg class="size-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+          <path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25ZM20.71 7.04a1 1 0 0 0 0-1.41l-2.34-2.34a1 1 0 0 0-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83Z" />
+        </svg>
+      </button>
+    </div>
+  </div>
+</section>
+
+<div class="mt-[70px] text-center">
+  <h1 class="font-display text-[1.5rem] font-extrabold text-[#112211]">{{ name() }}</h1>
+  <p class="mt-1 text-[0.95rem] text-[#52635c]">{{ email() }}</p>
+</div>

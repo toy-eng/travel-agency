@@ -34,6 +34,12 @@ export const routes: Routes = [
           ),
       },
       {
+        path: 'account',
+        title: 'Account',
+        loadComponent: () =>
+          import('./features/account/account').then((m) => m.Account),
+      },
+      {
         path: 'login',
         title: 'Login',
         loadComponent: () =>
