@@ -3,11 +3,11 @@ import { ChangeDetectionStrategy, Component, computed, signal } from '@angular/c
 import {
   FavouriteFlight,
   FavouriteFlightCardComponent,
-} from '../../../../shared/components/favourite-flight-card/favourite-flight-card';
+} from '../../shared/components/favourite-flight-card/favourite-flight-card';
 import {
   FavouritePlace,
   FavouritePlaceCardComponent,
-} from '../../../../shared/components/favourite-place-card/favourite-place-card';
+} from '../../shared/components/favourite-place-card/favourite-place-card';
 import {
   FavouritesTab,
   FavouritesTabsComponent,
@@ -20,7 +20,7 @@ import {
     FavouritePlaceCardComponent,
     FavouriteFlightCardComponent,
   ],
-  templateUrl: './favourites-page.html',
+  templateUrl: './favourites.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class FavouritesPage {
