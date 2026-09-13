@@ -353,6 +353,16 @@
     transform: scale(0.88);
   }
 
+  /* Horizontally scrollable strips (tab bars, chip rows) without a visible scrollbar. */
+  .no-scrollbar {
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+  }
+
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+
   /* Pointer-tracked spotlight wash for key cards (e.g. the search panel). */
   .spotlight-card {
     isolation: isolate;
