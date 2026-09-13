@@ -1,4 +1,5 @@
-<section class="mx-auto mt-2 max-w-[1360px] px-4 pb-16 sm:px-6 lg:px-8">
+<!-- Mobile: px-2 here + the parent's p-4 = 24px insets, matching the mobile navbar so the card lines up with the logo/hamburger -->
+<section class="mx-auto mt-6 max-w-[1360px] px-2 pb-16 sm:px-6 lg:px-4">
   <div class="grid gap-6 lg:grid-cols-2">
     @for (card of cards(); track card.title) {
       <app-promo-card [item]="card" />
