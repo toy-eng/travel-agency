@@ -1,0 +1,133 @@
+@if (open()) {
+  <div
+    class="fixed inset-0 z-[60] bg-[#0b1a0f]/60 backdrop-blur-[2px] md:hidden transition-opacity duration-300"
+    (click)="closed.emit()"
+    aria-hidden="true"
+  ></div>
+
+  <aside
+    class="fixed inset-y-0 right-0 z-[61] flex w-[85%] max-w-[380px] flex-col bg-white text-[#112211] shadow-[-12px_0_40px_rgba(17,34,17,0.18)] md:hidden transition-transform duration-300 ease-out"
+    [class.translate-x-full]="!open()"
+    [class.translate-x-0]="open()"
+    role="dialog"
+    aria-modal="true"
+    aria-label="Mobile navigation"
+  >
+    <!-- Header (no logo) -->
+    <div class="flex items-center justify-between px-6 pb-4 pt-6">
+      <span class="font-display text-[1.05rem] font-extrabold tracking-wide text-[#112211]">Menu</span>
+      <button
+        type="button"
+        class="grid size-10 place-items-center rounded-full bg-[#f1f7f4] text-[#112211] transition-all duration-200 hover:rotate-90 hover:bg-mint-light"
+        (click)="closed.emit()"
+        aria-label="Close menu"
+      >
+        <svg class="size-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="M18 6L6 18M6 6l12 12" />
+        </svg>
+      </button>
+    </div>
+
+    <!-- Nav links -->
+    <nav class="flex-1 overflow-y-auto px-5 pb-4" aria-label="Mobile menu">
+      @for (item of navItems; track item.path) {
+        <a
+          [routerLink]="item.path"
+          [routerLinkActiveOptions]="{ exact: item.exact ?? false }"
+          routerLinkActive="bg-mint-light/50 font-semibold after:absolute after:inset-x-6 after:bottom-0 after:h-[3px] after:rounded-full after:bg-mint"
+          class="relative flex items-center gap-3.5 rounded-xl px-3 py-3 text-[0.95rem] font-medium text-[#112211] transition-colors hover:bg-[#f6faf8]"
+          (click)="closed.emit()"
+        >
+          <span class="grid size-10 shrink-0 place-items-center rounded-xl bg-mint-light text-[#2f6b58]">
+            @switch (item.icon) {
+              @case ('home') {
+                <svg class="size-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                  <path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z" />
+                </svg>
+              }
+              @case ('plane') {
+                <svg class="size-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                  <path d="M20.56 3.91c.59.59.59 1.54 0 2.12l-3.89 3.89l2.12 9.19l-1.41 1.42l-3.88-7.43L9.6 17l.36 2.47l-1.07 1.06l-1.76-3.18l-3.19-1.77L5 14.5l2.5.37L11.37 11L3.94 7.09l1.42-1.41l9.19 2.12l3.89-3.89c.56-.58 1.56-.58 2.12 0" />
+                </svg>
+              }
+              @case ('bed') {
+                <svg class="size-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                  <path d="M2 19v-6q0-.675.275-1.225T3 10.8V8q0-1.25.875-2.125T6 5h4q.575 0 1.075.213T12 5.8q.425-.375.925-.587T14 5h4q1.25 0 2.125.875T21 8v2.8q.45.425.725.975T22 13v6h-2v-2H4v2zm11-9h6V8q0-.425-.288-.712T18 7h-4q-.425 0-.712.288T13 8zm-8 0h6V8q0-.425-.288-.712T10 7H6q-.425 0-.712.288T5 8z" />
+                </svg>
+              }
+              @case ('heart') {
+                <svg class="size-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                  <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" />
+                </svg>
+              }
+            }
+          </span>
+          {{ item.label }}
+        </a>
+      }
+    </nav>
+
+    <!-- Bottom: profile + auth -->
+    <div class="border-t border-[#e2e9e5] bg-[#f9fcfb] px-5 py-5">
+      @if (isAuthenticated()) {
+        <a
+          routerLink="/account"
+          routerLinkActive="ring-1 ring-mint"
+          class="group mb-3 flex items-center gap-3 rounded-xl border border-transparent bg-white p-3 shadow-[0_2px_10px_rgba(17,34,17,0.06)] transition-colors hover:border-mint hover:bg-[#f6faf8]"
+          (click)="closed.emit()"
+          aria-label="Go to account"
+        >
+          <span class="relative size-11 shrink-0 overflow-hidden rounded-full border border-[#e2e9e5]">
+            <img src="https://i.pravatar.cc/80?img=12" alt="John D." class="size-full object-cover" />
+            <span class="absolute bottom-0 right-0 size-3 rounded-full border-2 border-white bg-mint" aria-hidden="true"></span>
+          </span>
+          <div class="min-w-0 flex-1">
+            <strong class="block truncate text-sm text-[#112211]">John Doe.</strong>
+            <span class="block truncate text-xs text-[#52635c]">john.doe@gmail.com</span>
+          </div>
+          <svg
+            class="size-5 shrink-0 text-[#71807a] transition-transform duration-200 group-hover:translate-x-0.5 group-hover:text-[#2f6b58]"
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            aria-hidden="true"
+          >
+            <path d="M9 18l6-6-6-6" />
+          </svg>
+        </a>
+
+        <a
+          routerLink="/logout"
+          class="flex items-center gap-3.5 rounded-xl px-3 py-3 text-[0.95rem] font-semibold text-[#c0392b] transition-colors hover:bg-[#fdeceb]"
+          (click)="closed.emit()"
+        >
+          <span class="grid size-10 shrink-0 place-items-center rounded-xl bg-[#fdeceb] text-[#c0392b]">
+            <svg class="size-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+              <path d="M17 7l-1.41 1.41L18.17 11H8v2h10.17l-2.58 2.58L17 17l5-5zM4 5h8V3H4c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h8v-2H4V5z" />
+            </svg>
+          </span>
+          Logout
+        </a>
+      } @else {
+        <a
+          routerLink="/login"
+          class="block w-full rounded-xl bg-[#112211] py-3.5 text-center text-sm font-semibold text-white transition-colors hover:bg-[#1c2c18]"
+          (click)="closed.emit()"
+        >
+          Login
+        </a>
+        <a
+          routerLink="/create-account"
+          class="mt-3 block w-full rounded-xl border border-mint bg-white py-3.5 text-center text-sm font-semibold text-[#112211] transition-colors hover:bg-[#f1fbf7]"
+          (click)="closed.emit()"
+        >
+          Sign up
+        </a>
+      }
+    </div>
+  </aside>
+}

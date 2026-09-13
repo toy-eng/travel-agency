@@ -14,10 +14,11 @@ import {
 import { NavigationEnd, Router, RouterLink, RouterLinkActive } from '@angular/router';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { filter, map, startWith } from 'rxjs';
+import { MobileMenuComponent } from './components/mobile-menu/mobile-menu';
 
 @Component({
   selector: 'app-header',
-  imports: [RouterLink, RouterLinkActive],
+  imports: [RouterLink, RouterLinkActive, MobileMenuComponent],
   templateUrl: './header.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
   host: {
@@ -84,6 +85,7 @@ export class Header implements AfterViewInit, OnDestroy {
 
   readonly isAuthenticated = signal(true);
   readonly showProfileMenu = signal(false);
+  readonly menuOpen = signal(false);
 
   private readonly profileButton = viewChild<ElementRef<HTMLButtonElement>>('profileButton');
 
@@ -114,6 +116,16 @@ export class Header implements AfterViewInit, OnDestroy {
 
   closeProfileMenu(): void {
     this.showProfileMenu.set(false);
+  }
+
+  toggleMenu(): void {
+    this.menuOpen.update((v) => !v);
+    this.document.body.style.overflow = this.menuOpen() ? 'hidden' : '';
+  }
+
+  closeMenu(): void {
+    this.menuOpen.set(false);
+    this.document.body.style.overflow = '';
   }
 
   private onDocumentClick(event: Event): void {
