@@ -30,15 +30,17 @@
     (tabChange)="setBookingType($event)"
   />
 
-  <div class="mt-6 rounded-[14px] bg-white px-5 shadow-[0_8px_22px_rgba(17,34,17,0.06)] sm:px-6">
+  <div class="mt-6 grid gap-4 md:grid-cols-2 lg:grid-cols-1">
     @switch (activeType()) {
       @case ('flights') {
         @for (ticket of flightTickets; track $index) {
-          <div class="border-b border-[rgba(17,34,17,0.08)] last:border-b-0">
+          <div class="rounded-[14px] bg-white px-5 shadow-[0_8px_22px_rgba(17,34,17,0.06)] sm:px-6">
             <app-flight-ticket-card [ticket]="ticket" />
           </div>
         } @empty {
-          <p class="py-12 text-center text-[0.9rem] text-[#52635c]">
+          <p
+            class="col-span-full rounded-[14px] bg-white px-5 py-12 text-center text-[0.9rem] text-[#52635c] shadow-[0_8px_22px_rgba(17,34,17,0.06)] sm:px-6"
+          >
             You have no upcoming flights.
           </p>
         }
@@ -46,11 +48,13 @@
 
       @case ('stays') {
         @for (ticket of stayTickets; track $index) {
-          <div class="border-b border-[rgba(17,34,17,0.08)] last:border-b-0">
+          <div class="rounded-[14px] bg-white px-5 shadow-[0_8px_22px_rgba(17,34,17,0.06)] sm:px-6">
             <app-stay-ticket-card [ticket]="ticket" />
           </div>
         } @empty {
-          <p class="py-12 text-center text-[0.9rem] text-[#52635c]">
+          <p
+            class="col-span-full rounded-[14px] bg-white px-5 py-12 text-center text-[0.9rem] text-[#52635c] shadow-[0_8px_22px_rgba(17,34,17,0.06)] sm:px-6"
+          >
             You have no upcoming stays.
           </p>
         }
