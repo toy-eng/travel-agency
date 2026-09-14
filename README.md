@@ -60,12 +60,12 @@ The app is set up as a hybrid deployment: the CDN serves everything in `dist/tra
 (including the prerendered HTML for all 17 static routes) and anything else is rendered on demand by
 a Node function.
 
-| File | Purpose |
-| --- | --- |
-| `vercel.json` | Build command, output directory, the catch-all rewrite and the function settings |
-| `api/index.mjs` | Serverless entry point — forwards `(req, res)` to the SSR handler from the Angular build |
-| `angular.json` → `security.allowedHosts` | Hosts allowed to trigger SSR (Vercel's own host validation) |
-| `package.json` → `engines.node` | Pins the build and runtime to Node 22 |
+| File                                     | Purpose                                                                                  |
+| ---------------------------------------- | ---------------------------------------------------------------------------------------- |
+| `vercel.json`                            | Build command, output directory, the catch-all rewrite and the function settings         |
+| `api/index.mjs`                          | Serverless entry point — forwards `(req, res)` to the SSR handler from the Angular build |
+| `angular.json` → `security.allowedHosts` | Hosts allowed to trigger SSR (Vercel's own host validation)                              |
+| `package.json` → `engines.node`          | Pins the build and runtime to Node 22                                                    |
 
 ### Deploy
 
