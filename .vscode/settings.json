@@ -1,0 +1,13 @@
+{
+  // The Tailwind IntelliSense "can be written as" hints (e.g. `max-w-[1240px]` -> `max-w-310`)
+  // are suggestions, not problems. The arbitrary values in this project are intentional, so they
+  // are turned off rather than rewritten.
+  "tailwindCSS.lint.suggestCanonicalClasses": "ignore",
+
+  // Build output changes on every ng build/serve. Watching it makes the TypeScript server rebuild
+  // a stale program, which shows up as diagnostics for files that no longer exist.
+  "files.watcherExclude": {
+    "**/dist/**": true,
+    "**/.angular/**": true
+  }
+}
