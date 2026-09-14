@@ -70,35 +70,90 @@
     <!-- Bottom: profile + auth -->
     <div class="border-t border-[#e2e9e5] bg-[#f9fcfb] px-5 py-5">
       @if (isAuthenticated()) {
-        <a
-          routerLink="/account"
-          routerLinkActive="ring-1 ring-mint"
-          class="group mb-3 flex items-center gap-3 rounded-xl border border-transparent bg-white p-3 shadow-[0_2px_10px_rgba(17,34,17,0.06)] transition-colors hover:border-mint hover:bg-[#f6faf8]"
-          (click)="closed.emit()"
-          aria-label="Go to account"
-        >
-          <span class="relative size-11 shrink-0 overflow-hidden rounded-full border border-[#e2e9e5]">
-            <img src="https://i.pravatar.cc/80?img=12" alt="John D." class="size-full object-cover" />
-            <span class="absolute bottom-0 right-0 size-3 rounded-full border-2 border-white bg-mint" aria-hidden="true"></span>
-          </span>
-          <div class="min-w-0 flex-1">
-            <strong class="block truncate text-sm text-[#112211]">John Doe.</strong>
-            <span class="block truncate text-xs text-[#52635c]">john.doe@gmail.com</span>
-          </div>
-          <svg
-            class="size-5 shrink-0 text-[#71807a] transition-transform duration-200 group-hover:translate-x-0.5 group-hover:text-[#2f6b58]"
-            xmlns="http://www.w3.org/2000/svg"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            stroke-width="2"
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            aria-hidden="true"
+        <div class="relative mb-3">
+          <button
+            type="button"
+            class="group flex w-full items-center gap-3 rounded-xl border bg-white p-3 shadow-[0_2px_10px_rgba(17,34,17,0.06)] transition-colors hover:border-mint hover:bg-[#f6faf8]"
+            [class.border-mint]="showProfileMenu()"
+            [class.border-transparent]="!showProfileMenu()"
+            [attr.aria-expanded]="showProfileMenu()"
+            aria-haspopup="menu"
+            aria-label="Open profile menu"
+            (click)="toggleProfileMenu(); $event.stopPropagation()"
           >
-            <path d="M9 18l6-6-6-6" />
-          </svg>
-        </a>
+            <span class="relative size-11 shrink-0 overflow-hidden rounded-full border border-[#e2e9e5]">
+              <img src="https://i.pravatar.cc/80?img=12" alt="John D." class="size-full object-cover" />
+              <span class="absolute bottom-0 right-0 size-3 rounded-full border-2 border-white bg-mint" aria-hidden="true"></span>
+            </span>
+            <span class="min-w-0 flex-1 text-left">
+              <strong class="block truncate text-sm text-[#112211]">John Doe.</strong>
+              <span class="block truncate text-xs text-[#52635c]">john.doe@gmail.com</span>
+            </span>
+            <svg
+              class="size-5 shrink-0 text-[#71807a] transition-transform duration-300"
+              [class.rotate-90]="showProfileMenu()"
+              xmlns="http://www.w3.org/2000/svg"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              aria-hidden="true"
+            >
+              <path d="M9 18l6-6-6-6" />
+            </svg>
+          </button>
+
+          @if (showProfileMenu()) {
+            <div
+              #profileMenu
+              class="animate-scale-in absolute inset-x-0 bottom-[calc(100%+0.6rem)] z-10 origin-bottom rounded-xl border border-[#e2e9e5] bg-white p-2 shadow-[0_16px_40px_rgba(17,34,17,0.18)]"
+              role="menu"
+              aria-label="Profile menu"
+            >
+              @for (link of profileLinks; track link.path) {
+                <a
+                  [routerLink]="link.path"
+                  role="menuitem"
+                  class="flex items-center justify-between rounded-lg px-2 py-2.5 text-sm font-medium text-[#112211] transition-colors hover:bg-[#f1fbf7]"
+                  (click)="closeProfileMenu(); closed.emit()"
+                >
+                  <span class="flex items-center gap-3">
+                    <span class="grid size-7 place-items-center rounded-lg bg-[#eaf6f2] text-[#3f7d68]" aria-hidden="true">
+                      @switch (link.icon) {
+                        @case ('user') {
+                          <svg class="size-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M12 12c2.7 0 4.8-2.1 4.8-4.8S14.7 2.4 12 2.4 7.2 4.5 7.2 7.2 9.1 12 12 12zm0 2.4c-3.2 0-9.6 1.6-9.6 4.8v1.2h19.2v-1.2c0-3.2-6.4-4.8-9.6-4.8z" />
+                          </svg>
+                        }
+                        @case ('card') {
+                          <svg class="size-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 14H4v-6h16v6zm0-10H4V6h16v2z" />
+                          </svg>
+                        }
+                        @case ('gear') {
+                          <svg class="size-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M19.14 12.94c.04-.3.06-.61.06-.94 0-.32-.02-.64-.07-.94l2.03-1.58c.12-.09.15-.27.12-.43l-1.92-3.32c-.12-.22-.37-.29-.59-.22l-2.39.96c-.5-.38-1.03-.7-1.62-.94l-.36-2.54c-.04-.24-.24-.41-.48-.41h-3.84c-.24 0-.43.17-.47.41l-.36 2.54c-.59.24-1.13.56-1.62.94l-2.39-.96c-.22-.08-.47 0-.59.22L2.74 8.87c-.12.21-.08.47.12.61l2.03 1.58c-.05.3-.07.62-.07.94s.02.64.07.94l-2.03 1.58c-.12.09-.15.27-.12.43l1.92 3.32c.12.22.37.29.59.22l2.39-.96c.5.38 1.03.7 1.62.94l.36 2.54c.05.24.24.41.48.41h3.84c.24 0 .44-.17.47-.41l.36-2.54c.59-.24 1.13-.56 1.62-.94l2.39.96c.22.08.47 0 .59-.22l1.92-3.32c.12-.22.07-.47-.12-.61l-2.01-1.58zM12 15.6c-1.98 0-3.6-1.62-3.6-3.6s1.62-3.6 3.6-3.6 3.6 1.62 3.6 3.6-1.62 3.6-3.6 3.6z" />
+                          </svg>
+                        }
+                        @case ('help') {
+                          <svg class="size-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 17h-2v-2h2v2zm2.07-7.75-.9.92C13.45 12.9 13 13.5 13 15h-2v-.5c0-1.1.45-2.1 1.17-2.83l1.24-1.26c.37-.36.59-.86.59-1.41 0-1.1-.9-2-2-2s-2 .9-2 2H8c0-2.21 1.79-4 4-4s4 1.79 4 4c0 .88-.36 1.68-.93 2.25z" />
+                          </svg>
+                        }
+                      }
+                    </span>
+                    {{ link.label }}
+                  </span>
+                  <svg class="size-4 shrink-0 text-[#a7a7ad]" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                    <path d="M9 18l6-6-6-6" />
+                  </svg>
+                </a>
+              }
+            </div>
+          }
+        </div>
 
         <a
           routerLink="/logout"
