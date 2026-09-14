@@ -40,6 +40,12 @@ export const routes: Routes = [
           import('./features/account/account').then((m) => m.Account),
       },
       {
+        path: 'settings',
+        title: 'Settings',
+        loadComponent: () =>
+          import('./features/settings/settings').then((m) => m.Settings),
+      },
+      {
         path: 'login',
         title: 'Login',
         loadComponent: () =>

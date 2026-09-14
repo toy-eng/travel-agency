@@ -1,0 +1,237 @@
+<main class="mx-auto flex max-w-[1240px] flex-col px-4 py-8 pb-16 text-[#112211] sm:px-6">
+  <header class="flex flex-wrap items-end justify-between gap-4" scrollReveal>
+    <div>
+      <h1 class="font-display text-[1.75rem] font-extrabold leading-tight sm:text-[2rem]">Settings</h1>
+      <p class="mt-2 max-w-2xl text-[0.95rem] leading-relaxed text-[#52635c]">
+        Shape how Golobe looks, when we get in touch, and what we remember about your trips.
+      </p>
+    </div>
+
+    <div class="flex h-9 items-center">
+      @if (feedback(); as message) {
+        <span
+          class="animate-fade-in inline-flex items-center gap-2 rounded-full bg-mint-light px-3.5 py-2 text-[0.78rem] font-semibold text-[#2f6b58]"
+          role="status"
+          aria-live="polite"
+        >
+          <svg class="size-3.5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+            <path d="M12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20Zm-1 15-4-4 1.4-1.4L11 14.2l5.6-5.6L18 10l-7 7Z" />
+          </svg>
+          {{ message }}
+        </span>
+      }
+    </div>
+  </header>
+
+  <div class="mt-6 lg:grid lg:grid-cols-[248px_minmax(0,1fr)] lg:items-start lg:gap-8">
+    <app-settings-nav
+      [sections]="sections"
+      [activeId]="activeSection()"
+      (select)="goToSection($event)"
+    />
+
+    <div class="mt-5 min-w-0 space-y-6 lg:mt-0">
+      <!-- Notifications -->
+      <app-settings-card
+        id="notifications"
+        class="block scroll-mt-24"
+        scrollReveal
+        title="Notifications"
+        hint="Choose what reaches you, and how often."
+      >
+        @for (item of notificationToggles; track item.id) {
+          <app-setting-row [label]="item.label" [hint]="item.hint" [compact]="isCompact()">
+            <app-toggle-switch
+              [checked]="toggles()[item.id]"
+              [label]="item.label"
+              (checkedChange)="setToggle(item.id, $event)"
+            />
+          </app-setting-row>
+        }
+      </app-settings-card>
+
+      <!-- Travel preferences -->
+      <app-settings-card
+        id="travel"
+        class="block scroll-mt-24"
+        scrollReveal
+        [scrollRevealDelay]="1"
+        title="Travel preferences"
+        hint="Defaults we apply the moment you start searching."
+      >
+        @for (setting of selectSettings; track setting.id) {
+          <app-setting-row [label]="setting.label" [hint]="setting.hint" [compact]="isCompact()">
+            <div class="relative flex items-center">
+              <select
+                class="cursor-pointer appearance-none rounded-md bg-transparent py-1 pl-2 pr-6 text-[0.82rem] font-medium text-[#112211] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-mint"
+                [attr.aria-label]="setting.label"
+                [value]="selects()[setting.id]"
+                (change)="setSelect(setting.id, $any($event.target).value)"
+              >
+                @for (option of setting.options; track option) {
+                  <option [value]="option">{{ option }}</option>
+                }
+              </select>
+              <svg
+                class="pointer-events-none absolute right-1 size-4 text-[#112211]"
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                aria-hidden="true"
+              >
+                <path d="M6 9l6 6 6-6" />
+              </svg>
+            </div>
+          </app-setting-row>
+        }
+
+        @for (item of preferenceToggles; track item.id) {
+          <app-setting-row [label]="item.label" [hint]="item.hint" [compact]="isCompact()">
+            <app-toggle-switch
+              [checked]="toggles()[item.id]"
+              [label]="item.label"
+              (checkedChange)="setToggle(item.id, $event)"
+            />
+          </app-setting-row>
+        }
+      </app-settings-card>
+
+      <!-- Appearance -->
+      <app-settings-card
+        id="appearance"
+        class="block scroll-mt-24"
+        scrollReveal
+        [scrollRevealDelay]="2"
+        title="Appearance"
+        hint="Applies to this device only."
+      >
+        <app-setting-row
+          label="Layout density"
+          hint="Compact tightens every row on this page."
+          [compact]="isCompact()"
+        >
+          <app-segmented-control
+            label="Layout density"
+            [options]="densityOptions"
+            [value]="density()"
+            (valueChange)="setDensity($event)"
+          />
+        </app-setting-row>
+
+        <app-setting-row
+          label="Reduce motion"
+          hint="Turns off lifts, slides and fade-ins across the site."
+          [compact]="isCompact()"
+        >
+          <app-toggle-switch
+            [checked]="toggles()['reduceMotion']"
+            label="Reduce motion"
+            (checkedChange)="setToggle('reduceMotion', $event)"
+          />
+        </app-setting-row>
+      </app-settings-card>
+
+      <!-- Privacy & security -->
+      <app-settings-card
+        id="privacy"
+        class="block scroll-mt-24"
+        scrollReveal
+        [scrollRevealDelay]="3"
+        title="Privacy & security"
+        hint="Control what we remember and how your account is protected."
+      >
+        @for (item of privacyToggles; track item.id) {
+          <app-setting-row [label]="item.label" [hint]="item.hint" [compact]="isCompact()">
+            <app-toggle-switch
+              [checked]="toggles()[item.id]"
+              [label]="item.label"
+              (checkedChange)="setToggle(item.id, $event)"
+            />
+          </app-setting-row>
+        }
+
+        @for (action of privacyActions; track action.id) {
+          <app-setting-row [label]="action.label" [hint]="action.hint" [compact]="isCompact()">
+            <button
+              type="button"
+              class="action"
+              [class.action--danger]="action.tone === 'danger'"
+              [attr.aria-label]="action.cta + ' for ' + action.label.toLowerCase()"
+              (click)="runAction(action)"
+            >
+              {{ action.cta }}
+            </button>
+          </app-setting-row>
+        }
+      </app-settings-card>
+
+      <!-- Support -->
+      <app-settings-card
+        id="support"
+        class="block scroll-mt-24"
+        scrollReveal
+        [scrollRevealDelay]="4"
+        title="Support"
+        hint="Real people, 24 hours a day, in 12 languages."
+      >
+        <div class="grid gap-3 border-b border-[rgba(17,34,17,0.08)] py-5 sm:grid-cols-2">
+          <a href="mailto:support@golobe.com" class="contact">
+            <span class="contact__icon" aria-hidden="true">
+              <svg class="size-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M20 4H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2Zm0 4-8 5-8-5V6l8 5 8-5v2Z" />
+              </svg>
+            </span>
+            <span class="min-w-0">
+              <span class="contact__label">Email support</span>
+              <span class="contact__value">support@golobe.com</span>
+            </span>
+          </a>
+
+          <a href="tel:+10000000000" class="contact">
+            <span class="contact__icon" aria-hidden="true">
+              <svg class="size-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M6.6 10.8c1.1 2.2 2.9 4 5.1 5.1l1.7-1.7c.2-.2.5-.3.8-.2 1 .3 2 .5 3.1.5.4 0 .7.3.7.7V18c0 .4-.3.7-.7.7C9.6 18.7 5.3 14.4 5.3 9c0-.4.3-.7.7-.7h2.1c.4 0 .7.3.7.7 0 1.1.2 2.1.5 3.1.1.3 0 .6-.2.8l-1.5 1.9Z" />
+              </svg>
+            </span>
+            <span class="min-w-0">
+              <span class="contact__label">Call us</span>
+              <span class="contact__value">+1 000-000-0000</span>
+            </span>
+          </a>
+        </div>
+
+        <div class="pt-1">
+          @for (faq of faqs; track faq.question) {
+            <details class="group border-b border-[rgba(17,34,17,0.08)] last:border-b-0">
+              <summary
+                class="flex cursor-pointer list-none items-center justify-between gap-4 py-3.5 text-[0.9rem] font-semibold text-[#112211] transition-colors duration-200 hover:text-[#2f6b58] [&::-webkit-details-marker]:hidden"
+              >
+                {{ faq.question }}
+                <svg
+                  class="size-4 shrink-0 text-[#52635c] transition-transform duration-300 group-open:rotate-180"
+                  xmlns="http://www.w3.org/2000/svg"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  aria-hidden="true"
+                >
+                  <path d="M6 9l6 6 6-6" />
+                </svg>
+              </summary>
+              <p class="faq-answer pb-4 pr-8 text-[0.84rem] leading-relaxed text-[#52635c]">
+                {{ faq.answer }}
+              </p>
+            </details>
+          }
+        </div>
+      </app-settings-card>
+    </div>
+  </div>
+</main>

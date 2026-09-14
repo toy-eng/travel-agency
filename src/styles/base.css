@@ -404,3 +404,16 @@
     transition-delay: 0ms !important;
   }
 }
+
+/*
+ * Same treatment, but opt-in from Settings → Appearance → Reduce motion.
+ * The class is toggled on <html> so it wins over every utility in the app.
+ */
+.force-reduce-motion *,
+.force-reduce-motion *::before,
+.force-reduce-motion *::after {
+  animation-duration: 0.01ms !important;
+  animation-iteration-count: 1 !important;
+  transition-duration: 0.01ms !important;
+  transition-delay: 0ms !important;
+}
