@@ -1,4 +1,6 @@
-import { ChangeDetectionStrategy, Component, output } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, OnInit, output } from '@angular/core';
+import { UserService } from '../../../../core/services/user/user';
+import { User } from '../../../../core/models/user';
 
 export interface AccountField {
   label: string;
@@ -12,8 +14,13 @@ export interface AccountField {
   templateUrl: './account-details.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class AccountDetailsComponent {
+export class AccountDetailsComponent implements OnInit {
   readonly changeField = output<AccountField>();
+  public userService = inject(UserService)
+
+  user: User = {} as User;
+  isLoading = false;
+  errorMessage = '';
 
   readonly fields: AccountField[] = [
     { label: 'Name', value: 'John Doe' },
@@ -30,4 +37,32 @@ export class AccountDetailsComponent {
     },
     { label: 'Date of birth', value: '01-01-1992' },
   ];
+
+  constructor() {
+    console.log('[AccountDetails] component created');
+  }
+
+  ngOnInit(): void {
+    console.log('[AccountDetails] ngOnInit fired');
+    this.loadUsers();
+  }
+
+  loadUsers(): void {
+    console.log('[AccountDetails] loading user...');
+    this.isLoading = true;
+    
+    // 4. Subscribe to the observable to get the data
+    this.userService.getUser().subscribe({
+      next: (response) => {
+        this.user = response;
+        console.log('user', response);
+        this.isLoading = false;
+      },
+      error: (err) => {
+        this.errorMessage = 'Failed to load users from backend.';
+        this.isLoading = false;
+        console.error(err);
+      }
+    });
+  }
 }
