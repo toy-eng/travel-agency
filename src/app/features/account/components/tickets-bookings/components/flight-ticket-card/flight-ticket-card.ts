@@ -14,6 +14,7 @@ export interface FlightTicket {
 
 @Component({
   selector: 'app-flight-ticket-card',
+  standalone: true,
   templateUrl: './flight-ticket-card.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

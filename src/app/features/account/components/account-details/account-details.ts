@@ -1,6 +1,14 @@
-import { ChangeDetectionStrategy, Component, inject, OnInit, output } from '@angular/core';
-import { UserService } from '../../../../core/services/user/user';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  OnInit,
+  computed,
+  inject,
+  output,
+  signal,
+} from '@angular/core';
 import { User } from '../../../../core/models/user';
+import { UserService } from '../../../../core/services/user/user';
 
 export interface AccountField {
   label: string;
@@ -11,58 +19,82 @@ export interface AccountField {
 
 @Component({
   selector: 'app-account-details',
+  standalone: true,
   templateUrl: './account-details.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class AccountDetailsComponent implements OnInit {
+  private readonly userService = inject(UserService);
+
   readonly changeField = output<AccountField>();
-  public userService = inject(UserService)
+  readonly user = signal<User | null>(null);
+  readonly isLoading = signal(true);
+  readonly errorMessage = signal('');
 
-  user: User = {} as User;
-  isLoading = false;
-  errorMessage = '';
+  readonly fields = computed<AccountField[]>(() => {
+    const user = this.user();
+    const fullName = user ? `${user.firstName} ${user.lastName}`.trim() : 'John Doe';
+    const address = user?.address;
+    const addressLine = address
+      ? [
+          address.street,
+          address.neighbourhood,
+          address.city,
+          address.state,
+          address.postalCode,
+          address.countryCode,
+        ]
+          .filter(Boolean)
+          .join(', ')
+      : 'St 32 main downtown, Los Angeles, California, USA';
 
-  readonly fields: AccountField[] = [
-    { label: 'Name', value: 'John Doe' },
-    {
-      label: 'Email',
-      value: 'john.doe@gmail.com',
-      secondaryAction: 'Add another email',
-    },
-    { label: 'Password', value: '*************' },
-    { label: 'Phone number', value: '+1 000-000-0000' },
-    {
-      label: 'Address',
-      value: 'St 32 main downtown, Los Angeles, California, USA',
-    },
-    { label: 'Date of birth', value: '01-01-1992' },
-  ];
-
-  constructor() {
-    console.log('[AccountDetails] component created');
-  }
+    return [
+      { label: 'Name', value: fullName },
+      {
+        label: 'Email',
+        value: user?.email ?? 'john.doe@gmail.com',
+        secondaryAction: 'Add another email',
+      },
+      { label: 'Password', value: '••••••••••••' },
+      { label: 'Phone number', value: user?.phone ?? '+1 000-000-0000' },
+      { label: 'Address', value: addressLine },
+      { label: 'Date of birth', value: this.formatDateOfBirth(user?.dateOfBirth) },
+    ];
+  });
 
   ngOnInit(): void {
-    console.log('[AccountDetails] ngOnInit fired');
-    this.loadUsers();
+    this.loadUser();
   }
 
-  loadUsers(): void {
-    console.log('[AccountDetails] loading user...');
-    this.isLoading = true;
-    
-    // 4. Subscribe to the observable to get the data
+  private loadUser(): void {
+    this.isLoading.set(true);
     this.userService.getUser().subscribe({
-      next: (response) => {
-        this.user = response;
-        console.log('user', response);
-        this.isLoading = false;
+      next: (user) => {
+        this.user.set(user);
+        this.isLoading.set(false);
       },
-      error: (err) => {
-        this.errorMessage = 'Failed to load users from backend.';
-        this.isLoading = false;
-        console.error(err);
-      }
+      error: () => {
+        this.errorMessage.set('Profile details could not be loaded. Showing your saved defaults.');
+        this.isLoading.set(false);
+      },
     });
+  }
+
+  private formatDateOfBirth(value: string | undefined): string {
+    if (!value) {
+      return '01-01-1992';
+    }
+
+    const date = new Date(`${value}T12:00:00Z`);
+    if (Number.isNaN(date.getTime())) {
+      return value;
+    }
+
+    return new Intl.DateTimeFormat('en-GB', {
+      day: '2-digit',
+      month: 'short',
+      year: 'numeric',
+      timeZone: 'UTC',
+    }).format(date);
   }
 }

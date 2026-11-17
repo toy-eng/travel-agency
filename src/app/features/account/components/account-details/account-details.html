@@ -1,23 +1,80 @@
-<section role="tabpanel" id="account-panel-account" aria-labelledby="account-tab-account">
-  <h2 class="font-display text-[1.6rem] font-extrabold text-[#112211] sm:text-[1.85rem]">Account</h2>
+<section
+  role="tabpanel"
+  id="account-panel-account"
+  aria-labelledby="account-tab-account"
+  class="rounded-[24px] border border-[#dfe7e2] bg-white p-5 shadow-[0_10px_34px_rgba(17,34,17,0.05)] sm:p-7"
+>
+  <div
+    class="flex flex-col justify-between gap-3 border-b border-[#edf1ee] pb-5 sm:flex-row sm:items-end"
+  >
+    <div>
+      <span class="text-[10px] font-bold uppercase tracking-[0.16em] text-[#4f8b75]"
+        >Personal details</span
+      >
+      <h2
+        class="mt-2 font-display text-2xl font-semibold tracking-[-0.035em] text-[#112211] sm:text-3xl"
+      >
+        Your account information
+      </h2>
+      <p class="mt-1.5 text-sm text-[#6d7972]">
+        Keep your travel documents and contact details current.
+      </p>
+    </div>
 
-  <div class="mt-5 rounded-[14px] bg-white px-5 py-2 shadow-[0_8px_22px_rgba(17,34,17,0.06)] sm:px-6">
-    @for (field of fields; track field.label) {
-      <div class="flex flex-wrap items-center justify-between gap-4 border-b border-[rgba(17,34,17,0.08)] py-4 last:border-b-0">
+    <div class="flex items-center gap-2">
+      @if (isLoading()) {
+        <span
+          class="rounded-full bg-[#eff7f3] px-3 py-1.5 text-[10px] font-bold uppercase tracking-[0.12em] text-[#2f6d57]"
+        >
+          Syncing profile
+        </span>
+      }
+      <span
+        class="rounded-full border border-[#dfe7e2] px-3 py-1.5 text-[10px] font-bold uppercase tracking-[0.12em] text-[#7b8780]"
+      >
+        Private
+      </span>
+    </div>
+  </div>
+
+  @if (errorMessage()) {
+    <p
+      class="mt-4 rounded-xl border border-[#f0d9c7] bg-[#fff8f1] px-4 py-3 text-xs font-medium text-[#8a5a35]"
+    >
+      {{ errorMessage() }}
+    </p>
+  }
+
+  <div class="mt-5 grid gap-3 md:grid-cols-2">
+    @for (field of fields(); track field.label) {
+      <div
+        class="flex min-h-[132px] flex-col justify-between gap-4 rounded-2xl border border-[#e5ece8] bg-[#fbfdfc] p-4 transition hover:border-[#cfe3da] hover:bg-white hover:shadow-[0_8px_22px_rgba(17,34,17,0.05)] sm:p-5"
+      >
         <div class="min-w-0">
-          <p class="text-[0.82rem] text-[#52635c]">{{ field.label }}</p>
-          <p class="mt-1 break-words font-semibold text-[#112211]">{{ field.value }}</p>
+          <span class="block text-[10px] font-bold uppercase tracking-[0.14em] text-[#7b8780]">{{
+            field.label
+          }}</span>
+          <p class="mt-2 break-words text-sm font-semibold leading-relaxed text-[#112211]">
+            {{ field.value }}
+          </p>
         </div>
 
-        <div class="flex shrink-0 items-center gap-3">
+        <div class="flex flex-wrap items-center gap-2">
           @if (field.secondaryAction) {
             <button
               type="button"
-              class="inline-flex h-10 items-center gap-2 rounded-[8px] border border-mint bg-white px-4 text-[0.82rem] font-medium text-[#112211] transition-all duration-200 hover:-translate-y-0.5 hover:bg-[#f1fbf7] hover:shadow-[0_4px_12px_rgba(0,0,0,0.15)]"
+              class="inline-flex items-center gap-1.5 rounded-lg bg-[#eff7f3] px-3 py-2 text-[11px] font-bold text-[#2f6d57] transition hover:bg-[#e3f2eb] active:scale-[0.98]"
               (click)="changeField.emit(field)"
             >
-              <svg class="size-3.5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" fill="currentColor" aria-hidden="true">
-                <path d="M17 15V5h-2v10H5v2h10v10h2V17h10v-2z" />
+              <svg
+                class="size-3"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2.5"
+                aria-hidden="true"
+              >
+                <path stroke-linecap="round" d="M12 5v14M5 12h14" />
               </svg>
               {{ field.secondaryAction }}
             </button>
@@ -25,12 +82,14 @@
 
           <button
             type="button"
-            class="inline-flex h-10 items-center gap-2 rounded-[8px] border border-mint bg-white px-5 text-[0.82rem] font-medium text-[#112211] transition-all duration-200 hover:-translate-y-0.5 hover:bg-[#f1fbf7] hover:shadow-[0_4px_12px_rgba(0,0,0,0.15)]"
+            class="inline-flex items-center gap-1.5 rounded-lg border border-[#dce7e1] bg-white px-3 py-2 text-[11px] font-bold text-[#52635c] transition hover:border-[#8DD3BB] hover:text-[#112211] active:scale-[0.98]"
             [attr.aria-label]="'Change ' + field.label.toLowerCase()"
             (click)="changeField.emit(field)"
           >
-            <svg class="size-3.5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
-              <path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25ZM20.71 7.04a1 1 0 0 0 0-1.41l-2.34-2.34a1 1 0 0 0-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83Z" />
+            <svg class="size-3" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+              <path
+                d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25ZM20.71 7.04a1 1 0 0 0 0-1.41l-2.34-2.34a1 1 0 0 0-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83Z"
+              />
             </svg>
             Change
           </button>

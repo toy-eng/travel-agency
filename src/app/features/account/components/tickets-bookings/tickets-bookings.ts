@@ -2,13 +2,20 @@ import { ChangeDetectionStrategy, Component, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 
 import { TabBarComponent, TabItem } from '../tab-bar/tab-bar';
-import { FlightTicket, FlightTicketCardComponent } from './components/flight-ticket-card/flight-ticket-card';
-import { StayTicket, StayTicketCardComponent } from './components/stay-ticket-card/stay-ticket-card';
+import {
+  FlightTicket,
+  FlightTicketCardComponent,
+} from './components/flight-ticket-card/flight-ticket-card';
+import {
+  StayTicket,
+  StayTicketCardComponent,
+} from './components/stay-ticket-card/stay-ticket-card';
 
 export type BookingType = 'flights' | 'stays';
 
 @Component({
   selector: 'app-tickets-bookings',
+  standalone: true,
   imports: [FormsModule, TabBarComponent, FlightTicketCardComponent, StayTicketCardComponent],
   templateUrl: './tickets-bookings.html',
   changeDetection: ChangeDetectionStrategy.OnPush,

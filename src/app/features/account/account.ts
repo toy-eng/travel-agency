@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, inject, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnDestroy, inject, signal } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 
 import { NewCardFormComponent } from '../../shared/components/new-card-form/new-card-form';
@@ -12,6 +12,7 @@ export type AccountTab = 'account' | 'tickets' | 'payment-methods';
 
 @Component({
   selector: 'app-account',
+  standalone: true,
   imports: [
     TabBarComponent,
     ProfileCoverComponent,
@@ -22,10 +23,12 @@ export type AccountTab = 'account' | 'tickets' | 'payment-methods';
   templateUrl: './account.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class Account {
+export class Account implements OnDestroy {
   private readonly dialog = inject(MatDialog);
+  private feedbackTimer: ReturnType<typeof setTimeout> | null = null;
 
   readonly activeTab = signal<AccountTab>('account');
+  readonly profileFeedback = signal<string | null>(null);
 
   readonly tabs: TabItem[] = [
     { id: 'account', label: 'Account' },
@@ -47,5 +50,19 @@ export class Account {
       maxWidth: 'calc(100vw - 2rem)',
       panelClass: 'booking-card-dialog',
     });
+  }
+
+  showProfileFeedback(message: string): void {
+    this.profileFeedback.set(message);
+    if (this.feedbackTimer) {
+      clearTimeout(this.feedbackTimer);
+    }
+    this.feedbackTimer = setTimeout(() => this.profileFeedback.set(null), 2800);
+  }
+
+  ngOnDestroy(): void {
+    if (this.feedbackTimer) {
+      clearTimeout(this.feedbackTimer);
+    }
   }
 }

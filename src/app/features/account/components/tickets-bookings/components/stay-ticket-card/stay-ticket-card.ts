@@ -10,6 +10,7 @@ export interface StayTicket {
 
 @Component({
   selector: 'app-stay-ticket-card',
+  standalone: true,
   templateUrl: './stay-ticket-card.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

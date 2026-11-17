@@ -1,10 +1,18 @@
-<article class="flex flex-col gap-5 py-5 lg:flex-row lg:flex-nowrap lg:items-center lg:justify-between lg:gap-6">
+<article
+  class="flex flex-col gap-5 py-5 lg:flex-row lg:flex-nowrap lg:items-center lg:justify-between lg:gap-6"
+>
   <div class="flex flex-wrap items-center gap-4 lg:gap-6 xl:gap-10">
     <!-- Hotel logo -->
-    <span class="grid h-[70px] w-[92px] shrink-0 place-items-center rounded-[10px] border border-[rgba(17,34,17,0.1)] bg-white" aria-hidden="true">
+    <span
+      class="grid h-[70px] w-[92px] shrink-0 place-items-center rounded-[10px] border border-[rgba(17,34,17,0.1)] bg-white"
+      aria-hidden="true"
+    >
       <span class="flex w-[70px] flex-col items-center text-center leading-none text-[#8b9a94]">
         <span class="font-display text-[0.85rem] font-extrabold tracking-[0.06em]">CVK</span>
-        <span class="mt-[2px] w-full border-y border-[rgba(139,154,148,0.5)] py-[1px] text-[0.28rem] font-semibold uppercase tracking-[0.06em]">Park Bosphorus Hotel</span>
+        <span
+          class="mt-[2px] w-full border-y border-[rgba(139,154,148,0.5)] py-[1px] text-[0.28rem] font-semibold uppercase tracking-[0.06em]"
+          >Park Bosphorus Hotel</span
+        >
         <span class="mt-[2px] text-[0.24rem] uppercase tracking-[0.2em]">Istanbul</span>
       </span>
     </span>
@@ -23,40 +31,74 @@
     </div>
 
     <!-- Stay meta: three across on small screens, stacked columns from lg -->
-    <dl class="grid w-full grid-flow-col auto-cols-auto justify-between gap-x-2 gap-y-3 lg:w-auto lg:grid-flow-row lg:grid-cols-2 lg:justify-normal lg:gap-x-10 lg:gap-y-3">
+    <dl
+      class="grid w-full grid-flow-col auto-cols-auto justify-between gap-x-2 gap-y-3 lg:w-auto lg:grid-flow-row lg:grid-cols-2 lg:justify-normal lg:gap-x-10 lg:gap-y-3"
+    >
       <div class="flex min-w-0 items-start gap-1 lg:gap-2.5 lg:col-start-1 lg:row-start-1">
-        <span class="grid size-5 shrink-0 place-items-center rounded bg-[#eaf6f2] text-[#3f7d68] lg:size-6" aria-hidden="true">
-          <svg class="size-3 lg:size-3.5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+        <span
+          class="grid size-5 shrink-0 place-items-center rounded bg-[#eaf6f2] text-[#3f7d68] lg:size-6"
+          aria-hidden="true"
+        >
+          <svg
+            class="size-3 lg:size-3.5"
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 24 24"
+            fill="currentColor"
+          >
             <path d="M12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20Zm1 5h-2v6l5 3 1-1.7-4-2.3V7Z" />
           </svg>
         </span>
         <div class="min-w-0">
           <dt class="text-[0.62rem] text-[#52635c] lg:text-[0.7rem]">Check-in time</dt>
-          <dd class="text-[0.85rem] font-semibold text-[#112211] lg:text-base">{{ ticket().checkInTime }}</dd>
+          <dd class="text-[0.85rem] font-semibold text-[#112211] lg:text-base">
+            {{ ticket().checkInTime }}
+          </dd>
         </div>
       </div>
 
       <div class="flex min-w-0 items-start gap-1 lg:gap-2.5 lg:col-start-1 lg:row-start-2">
-        <span class="grid size-5 shrink-0 place-items-center rounded bg-[#eaf6f2] text-[#3f7d68] lg:size-6" aria-hidden="true">
-          <svg class="size-3 lg:size-3.5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+        <span
+          class="grid size-5 shrink-0 place-items-center rounded bg-[#eaf6f2] text-[#3f7d68] lg:size-6"
+          aria-hidden="true"
+        >
+          <svg
+            class="size-3 lg:size-3.5"
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 24 24"
+            fill="currentColor"
+          >
             <path d="M12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20Zm1 5h-2v6l5 3 1-1.7-4-2.3V7Z" />
           </svg>
         </span>
         <div class="min-w-0">
           <dt class="text-[0.62rem] text-[#52635c] lg:text-[0.7rem]">Check-out time</dt>
-          <dd class="text-[0.85rem] font-semibold text-[#112211] lg:text-base">{{ ticket().checkOutTime }}</dd>
+          <dd class="text-[0.85rem] font-semibold text-[#112211] lg:text-base">
+            {{ ticket().checkOutTime }}
+          </dd>
         </div>
       </div>
 
       <div class="flex min-w-0 items-start gap-1 lg:gap-2.5 lg:col-start-2 lg:row-start-1">
-        <span class="grid size-5 shrink-0 place-items-center rounded bg-[#eaf6f2] text-[#3f7d68] lg:size-6" aria-hidden="true">
-          <svg class="size-3 lg:size-3.5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
-            <path d="M7 12a3 3 0 1 0 0-6 3 3 0 0 0 0 6Zm12-6h-8v8H3V5H1v15h2v-3h18v3h2v-9a4 4 0 0 0-4-4Z" />
+        <span
+          class="grid size-5 shrink-0 place-items-center rounded bg-[#eaf6f2] text-[#3f7d68] lg:size-6"
+          aria-hidden="true"
+        >
+          <svg
+            class="size-3 lg:size-3.5"
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 24 24"
+            fill="currentColor"
+          >
+            <path
+              d="M7 12a3 3 0 1 0 0-6 3 3 0 0 0 0 6Zm12-6h-8v8H3V5H1v15h2v-3h18v3h2v-9a4 4 0 0 0-4-4Z"
+            />
           </svg>
         </span>
         <div class="min-w-0">
           <dt class="text-[0.62rem] text-[#52635c] lg:text-[0.7rem]">Room no.</dt>
-          <dd class="text-[0.85rem] font-semibold text-[#112211] lg:text-base">{{ ticket().roomNumber }}</dd>
+          <dd class="text-[0.85rem] font-semibold text-[#112211] lg:text-base">
+            {{ ticket().roomNumber }}
+          </dd>
         </div>
       </div>
     </dl>
@@ -69,8 +111,20 @@
       [attr.aria-label]="'Download ticket for stay ' + ticket().checkInDate"
       (click)="download.emit()"
     >
-      <svg class="size-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-        <path d="M12 15V3m0 12l-4-4m4 4l4-4M2 17l.621 2.485A2 2 0 0 0 4.561 21h14.877a2 2 0 0 0 1.94-1.515L22 17" />
+      <svg
+        class="size-4"
+        xmlns="http://www.w3.org/2000/svg"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        aria-hidden="true"
+      >
+        <path
+          d="M12 15V3m0 12l-4-4m4 4l4-4M2 17l.621 2.485A2 2 0 0 0 4.561 21h14.877a2 2 0 0 0 1.94-1.515L22 17"
+        />
       </svg>
       Download Ticket
     </button>
@@ -81,7 +135,17 @@
       aria-label="View ticket details"
       (click)="open.emit()"
     >
-      <svg class="size-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+      <svg
+        class="size-4"
+        xmlns="http://www.w3.org/2000/svg"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        aria-hidden="true"
+      >
         <path d="M9 6l6 6-6 6" />
       </svg>
     </button>

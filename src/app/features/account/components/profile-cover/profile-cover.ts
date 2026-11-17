@@ -2,6 +2,7 @@ import { ChangeDetectionStrategy, Component, input, output } from '@angular/core
 
 @Component({
   selector: 'app-profile-cover',
+  standalone: true,
   templateUrl: './profile-cover.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

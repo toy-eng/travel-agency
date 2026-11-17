@@ -1,30 +1,57 @@
-﻿<main class="mx-auto flex max-w-[1240px] flex-col px-4 py-8 pb-16 text-[#112211] sm:px-6">
-  <app-profile-cover
-    [name]="name()"
-    [email]="email()"
-    [avatarUrl]="avatarUrl()"
-  />
+<div class="bg-[#fafbfc] pb-20 pt-8 font-sans sm:pt-10">
+  <main class="mx-auto flex max-w-[1360px] flex-col px-4 text-[#112211] sm:px-6 lg:px-8">
+    <app-profile-cover
+      [name]="name()"
+      [email]="email()"
+      [avatarUrl]="avatarUrl()"
+      (uploadCover)="showProfileFeedback('Cover photo tools are ready for your next trip.')"
+      (changeAvatar)="showProfileFeedback('Avatar editing is coming soon.')"
+    />
 
-  <app-tab-bar
-    class="mt-12 block"
-    idPrefix="account"
-    ariaLabel="Account sections"
-    [tabs]="tabs"
-    [activeTab]="activeTab()"
-    (tabChange)="setTab($event)"
-  />
+    <app-tab-bar
+      class="mt-6 block"
+      idPrefix="account"
+      ariaLabel="Account sections"
+      [tabs]="tabs"
+      [activeTab]="activeTab()"
+      (tabChange)="setTab($event)"
+    />
 
-  <div class="mt-8">
-    @switch (activeTab()) {
-      @case ('account') {
-        <app-account-details />
+    <div class="mt-6">
+      @switch (activeTab()) {
+        @case ('account') {
+          <app-account-details />
+        }
+        @case ('tickets') {
+          <app-tickets-bookings />
+        }
+        @case ('payment-methods') {
+          <app-payment-methods (addCard)="openCardModal()" />
+        }
       }
-      @case ('tickets') {
-        <app-tickets-bookings />
-      }
-      @case ('payment-methods') {
-        <app-payment-methods (addCard)="openCardModal()" />
-      }
-    }
-  </div>
-</main>
+    </div>
+  </main>
+
+  @if (profileFeedback()) {
+    <div
+      class="fixed bottom-5 left-1/2 z-[70] flex max-w-[calc(100%-2rem)] -translate-x-1/2 items-center gap-2 rounded-full bg-[#112211] px-4 py-3 text-sm font-semibold text-white shadow-[0_14px_40px_rgba(17,34,17,0.3)] animate-fade-in"
+      role="status"
+    >
+      <span
+        class="grid size-5 shrink-0 place-items-center rounded-full bg-[#8DD3BB] text-[#112211]"
+      >
+        <svg
+          class="size-3"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="3"
+          aria-hidden="true"
+        >
+          <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" />
+        </svg>
+      </span>
+      {{ profileFeedback() }}
+    </div>
+  }
+</div>
