@@ -10,12 +10,18 @@ import {
   signal,
 } from '@angular/core';
 import { isPlatformBrowser } from '@angular/common';
-import { Router, RouterLink } from '@angular/router';
+import { Router } from '@angular/router';
 import { animate, style, transition, trigger } from '@angular/animations';
 import { TripPlannerService } from '../../core/services/trip-planner/trip-planner';
 import { gsap } from '../../shared/motion/gsap';
 import { prefersReducedMotion } from '../../shared/motion/prefers-reduced-motion';
-import type { FlightOption, StayOption, TripLeg } from '../../core/models/trip-planner';
+import type {
+  FlightOption,
+  StayOption,
+  TripAttraction,
+  TripLeg,
+} from '../../core/models/trip-planner';
+import { TRIP_ATTRACTIONS } from './plan-trip.data';
 
 const legPanelAnimation = trigger('legPanel', [
   transition(':enter', [
@@ -30,7 +36,6 @@ const legPanelAnimation = trigger('legPanel', [
 
 @Component({
   selector: 'app-plan-trip',
-  imports: [RouterLink],
   templateUrl: './plan-trip.html',
   styleUrl: './plan-trip.css',
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -50,10 +55,35 @@ export class PlanTrip implements AfterViewInit, OnDestroy {
   readonly cabinClass = this.service.cabinClass;
   readonly totals = this.service.totals;
   readonly attractions = this.service.attractions;
+  readonly isAddingLeg = signal(false);
+  readonly newLegDestination = signal('CGK');
+  readonly newLegNights = signal(3);
+  readonly nightOptions = [1, 2, 3, 4, 5, 7, 10, 14];
 
   readonly activeLeg = computed(() => this.legs()[this.activeLegIndex()]);
+  readonly lastLeg = computed(() => {
+    const legs = this.legs();
+    return legs[legs.length - 1];
+  });
+  readonly availableDestinations = computed(() => {
+    const legs = this.legs();
+    const lastDestination = legs[legs.length - 1]?.to;
+    return this.service.airportOptions.filter((option) => option.code !== lastDestination);
+  });
   readonly flightOptions = computed(() => this.service.flightOptionsFor(this.activeLeg()));
   readonly stayOptions = computed(() => this.service.stayOptionsFor(this.activeLeg()));
+  readonly destinationAttractions = computed(() => {
+    const leg = this.activeLeg();
+    if (!leg) {
+      return [];
+    }
+
+    const city = this.service.airportCity(leg.to);
+    return TRIP_ATTRACTIONS.filter((attraction) => attraction.city === city);
+  });
+  readonly selectedAttractionIds = computed(
+    () => new Set(this.attractions().map((attraction) => attraction.id)),
+  );
   readonly selectedFlight = computed(() => {
     const leg = this.activeLeg();
     return leg ? this.service.flights()[leg.id] : undefined;
@@ -95,6 +125,28 @@ export class PlanTrip implements AfterViewInit, OnDestroy {
     this.activeLegIndex.set(index);
   }
 
+  startAddLeg(): void {
+    const firstDestination = this.availableDestinations()[0];
+    if (firstDestination) {
+      this.newLegDestination.set(firstDestination.code);
+    }
+    this.isAddingLeg.set(true);
+  }
+
+  cancelAddLeg(): void {
+    this.isAddingLeg.set(false);
+  }
+
+  addLeg(): void {
+    const leg = this.service.addLeg(this.newLegDestination(), this.newLegNights());
+    if (!leg) {
+      return;
+    }
+
+    this.activeLegIndex.set(this.legs().length - 1);
+    this.isAddingLeg.set(false);
+  }
+
   selectFlight(flight: FlightOption): void {
     const leg = this.activeLeg();
     if (leg) {
@@ -111,6 +163,15 @@ export class PlanTrip implements AfterViewInit, OnDestroy {
 
   removeAttraction(attractionId: string): void {
     this.service.removeAttraction(attractionId);
+  }
+
+  toggleAttraction(attraction: TripAttraction): void {
+    if (this.selectedAttractionIds().has(attraction.id)) {
+      this.service.removeAttraction(attraction.id);
+      return;
+    }
+
+    this.service.addAttraction(attraction);
   }
 
   confirmBooking(): void {

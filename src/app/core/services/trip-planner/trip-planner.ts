@@ -247,6 +247,7 @@ export class TripPlannerService {
   readonly stays = this._stays.asReadonly();
   readonly attractions = this._attractions.asReadonly();
   readonly bookedTrips = this._bookedTrips.asReadonly();
+  readonly airportOptions = Object.entries(AIRPORT_CITIES).map(([code, city]) => ({ code, city }));
 
   readonly upcomingTrips = computed(() =>
     this._bookedTrips().filter((trip) => trip.status === 'upcoming'),
@@ -280,6 +281,30 @@ export class TripPlannerService {
 
   applyCuratedRoute(route: { legs: TripLegInput[] }): void {
     this.setItinerary(route.legs);
+  }
+
+  addLeg(destination: string, nights = 3): TripLeg | undefined {
+    const legs = this._legs();
+    const lastLeg = legs[legs.length - 1];
+    if (!lastLeg || destination === lastLeg.to || !AIRPORT_CITIES[destination]) {
+      return undefined;
+    }
+
+    const requestedNights = Number(nights);
+    const stayNights = Number.isFinite(requestedNights)
+      ? Math.max(0, Math.round(requestedNights))
+      : 0;
+    const leg: TripLeg = {
+      id: `leg-${legs.length + 1}`,
+      from: lastLeg.to,
+      to: destination,
+      departDate: addDays(lastLeg.departDate, Math.max(lastLeg.nights, 1)),
+      nights: stayNights,
+    };
+
+    this._legs.set([...legs, leg]);
+    this.ensureSelections();
+    return leg;
   }
 
   selectFlight(legId: string, flight: FlightOption): void {
