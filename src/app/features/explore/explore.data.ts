@@ -1,7 +1,7 @@
 import type { TripAttraction } from '../../core/models/trip-planner';
 import type { CuratedRoute } from '../home/home.models';
 
-export type ExploreRegion = 'Asia' | 'Middle East' | 'Europe';
+export type ExploreRegion = 'Asia' | 'Middle East' | 'Africa' | 'Europe';
 
 export interface ExploreRoute extends CuratedRoute {
   region: ExploreRegion;
@@ -84,6 +84,24 @@ export const exploreRoutes: ExploreRoute[] = [
       { from: 'IST', to: 'CDG', departDate: '2027-05-23', nights: 0 },
     ],
   },
+  {
+    id: 'african-coast-souk',
+    region: 'Africa',
+    eyebrow: 'New for 2027',
+    title: 'Coast & Souk',
+    description: 'Cape Town coastal drives, Marrakech medina mornings, and a Lagos homecoming.',
+    routeLabel: 'Lagos → Cape Town → Marrakech → Lagos',
+    imageUrl:
+      'https://images.unsplash.com/photo-1580060839134-75a5edca2e99?auto=format&fit=crop&w=1400&q=85',
+    price: 2260,
+    currency: 'USD',
+    durationLabel: '10 nights · 3 cities',
+    legs: [
+      { from: 'LOS', to: 'CPT', departDate: '2027-08-06', nights: 5 },
+      { from: 'CPT', to: 'RAK', departDate: '2027-08-11', nights: 5 },
+      { from: 'RAK', to: 'LOS', departDate: '2027-08-16', nights: 0 },
+    ],
+  },
 ];
 
 export const exploreAttractions: ExploreAttraction[] = [
@@ -158,5 +176,41 @@ export const exploreAttractions: ExploreAttraction[] = [
     rating: 4.8,
     imageUrl:
       'https://images.unsplash.com/photo-1513635269975-59663e0ac1ad?auto=format&fit=crop&w=1000&q=85',
+  },
+  {
+    id: 'explore-cape-town-table-mountain',
+    name: 'Table Mountain Sunrise Hike',
+    city: 'Cape Town',
+    region: 'Africa',
+    category: 'Nature',
+    duration: '5 hours',
+    price: 116,
+    rating: 4.9,
+    imageUrl:
+      'https://images.unsplash.com/photo-1580060839134-75a5edca2e99?auto=format&fit=crop&w=1000&q=85',
+  },
+  {
+    id: 'explore-marrakech-medina',
+    name: 'Marrakech Medina & Atlas Escape',
+    city: 'Marrakech',
+    region: 'Africa',
+    category: 'Culture',
+    duration: 'Full day',
+    price: 168,
+    rating: 4.8,
+    imageUrl:
+      'https://images.unsplash.com/photo-1597212618440-806262de4f6b?auto=format&fit=crop&w=1000&q=85',
+  },
+  {
+    id: 'explore-lagos-canopy-walk',
+    name: 'Lekki Conservation Canopy Walk',
+    city: 'Lagos',
+    region: 'Africa',
+    category: 'Nature',
+    duration: '3 hours',
+    price: 64,
+    rating: 4.7,
+    imageUrl:
+      'https://images.unsplash.com/photo-1559827260-dc66d52bef19?auto=format&fit=crop&w=1000&q=85',
   },
 ];

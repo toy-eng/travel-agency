@@ -18,8 +18,8 @@ import { prefersReducedMotion } from '../../shared/motion/prefers-reduced-motion
 import { exploreAttractions, exploreRoutes } from './explore.data';
 import type { ExploreAttraction, ExploreRoute } from './explore.data';
 
-type ExploreFilter =
-  'All' | 'Multi-Stop Routes' | 'Asia' | 'Middle East' | 'Europe' | 'Attractions & Tours';
+type ExploreFilter = 'All' | 'Asia' | 'Middle East' | 'Africa' | 'Popular';
+type PopularView = 'Cities' | 'Attractions & Tours';
 
 const cardMotion = trigger('cardMotion', [
   transition(':enter', [
@@ -51,33 +51,40 @@ export class Explore implements AfterViewInit, OnDestroy {
   private motionContext: gsap.Context | null = null;
   private feedbackTimer: ReturnType<typeof setTimeout> | null = null;
 
-  readonly filters: readonly ExploreFilter[] = [
-    'All',
-    'Multi-Stop Routes',
-    'Asia',
-    'Middle East',
-    'Europe',
-    'Attractions & Tours',
-  ];
+  readonly filters: readonly ExploreFilter[] = ['All', 'Asia', 'Middle East', 'Africa', 'Popular'];
+  readonly popularViews: readonly PopularView[] = ['Cities', 'Attractions & Tours'];
 
   readonly activeFilter = signal<ExploreFilter>('All');
+  readonly activePopularView = signal<PopularView>('Cities');
   readonly search = signal('');
   readonly feedback = signal<string | null>(null);
 
   readonly routes = exploreRoutes;
   readonly attractions = exploreAttractions;
   readonly savedCount = computed(() => this.service.attractions().length);
+  readonly isPopular = computed(() => this.activeFilter() === 'Popular');
+  readonly showRoutes = computed(() => !this.isPopular() || this.activePopularView() === 'Cities');
+  readonly showAttractions = computed(
+    () => this.isPopular() && this.activePopularView() === 'Attractions & Tours',
+  );
+  readonly routeSectionEyebrow = computed(() =>
+    this.isPopular() ? 'Popular cities' : 'Curated multi-stop packages',
+  );
+  readonly routeSectionHeading = computed(() =>
+    this.isPopular()
+      ? 'Cities worth making plans around.'
+      : 'Routes worth taking the long way for.',
+  );
 
   readonly filteredRoutes = computed(() => {
     const filter = this.activeFilter();
-    if (filter === 'Attractions & Tours') {
+    if (!this.showRoutes()) {
       return [];
     }
 
     const query = this.search().trim().toLowerCase();
     return this.routes.filter((route) => {
-      const regionMatches =
-        filter === 'All' || filter === 'Multi-Stop Routes' || route.region === filter;
+      const regionMatches = filter === 'All' || filter === 'Popular' || route.region === filter;
       const searchMatches =
         !query ||
         [route.title, route.description, route.routeLabel, route.region]
@@ -89,27 +96,22 @@ export class Explore implements AfterViewInit, OnDestroy {
   });
 
   readonly filteredAttractions = computed(() => {
-    const filter = this.activeFilter();
-    if (filter === 'Multi-Stop Routes') {
+    if (!this.showAttractions()) {
       return [];
     }
 
     const query = this.search().trim().toLowerCase();
     return this.attractions.filter((attraction) => {
-      const regionMatches =
-        filter === 'All' || filter === 'Attractions & Tours' || attraction.region === filter;
       const searchMatches =
         !query ||
         [attraction.name, attraction.city, attraction.category, attraction.region]
           .join(' ')
           .toLowerCase()
           .includes(query);
-      return regionMatches && searchMatches;
+      return searchMatches;
     });
   });
 
-  readonly showRoutes = computed(() => this.activeFilter() !== 'Attractions & Tours');
-  readonly showAttractions = computed(() => this.activeFilter() !== 'Multi-Stop Routes');
   readonly hasResults = computed(
     () => this.filteredRoutes().length > 0 || this.filteredAttractions().length > 0,
   );
@@ -141,11 +143,21 @@ export class Explore implements AfterViewInit, OnDestroy {
     this.activeFilter.set(filter);
   }
 
+  setPopularView(view: PopularView): void {
+    this.activePopularView.set(view);
+  }
+
   updateSearch(value: string): void {
     this.search.set(value);
   }
 
   clearSearch(): void {
+    this.search.set('');
+  }
+
+  resetFilters(): void {
+    this.activeFilter.set('All');
+    this.activePopularView.set('Cities');
     this.search.set('');
   }
 
