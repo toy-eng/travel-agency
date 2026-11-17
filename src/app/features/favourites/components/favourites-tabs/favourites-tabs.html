@@ -1,5 +1,5 @@
 <div
-  class="grid grid-cols-2 overflow-hidden rounded-[14px] bg-white shadow-[0_8px_22px_rgba(17,34,17,0.06)]"
+  class="grid grid-cols-2 gap-1 rounded-2xl border border-[#dfe7e2] bg-white p-1.5 shadow-[0_8px_26px_rgba(17,34,17,0.05)]"
   role="tablist"
   aria-label="Favourites"
   (keydown)="onKeydown($event)"
@@ -8,31 +8,75 @@
     type="button"
     id="favourites-tab-flights"
     role="tab"
-    class="border-b-[3px] px-6 py-5 text-left transition-colors"
-    [class.border-mint]="activeTab() === 'flights'"
-    [class.border-transparent]="activeTab() !== 'flights'"
+    class="flex items-center justify-between gap-3 rounded-xl px-4 py-3.5 text-left transition active:scale-[0.99] cursor-pointer sm:px-5"
+    [class]="
+      activeTab() === 'flights'
+        ? 'bg-[#112211] text-white shadow-sm'
+        : 'text-[#52635c] hover:bg-[#f2f7f4] hover:text-[#112211]'
+    "
     [attr.aria-selected]="activeTab() === 'flights'"
     [attr.tabindex]="activeTab() === 'flights' ? 0 : -1"
     aria-controls="favourites-panel-flights"
     (click)="tabChange.emit('flights')"
   >
-    <strong class="block text-[1.05rem] font-semibold text-[#112211]">Flights</strong>
-    <span class="mt-1 block text-[0.85rem] text-[#52635c]">{{ flightCount() }} marked</span>
+    <span>
+      <strong class="block text-sm font-bold">Flights</strong>
+      <span class="mt-0.5 block text-[11px] opacity-60">{{ flightCount() }} marked</span>
+    </span>
+    <span
+      class="grid size-9 place-items-center rounded-full"
+      [class]="
+        activeTab() === 'flights' ? 'bg-white/10 text-[#8DD3BB]' : 'bg-[#eff7f3] text-[#2f6d57]'
+      "
+    >
+      <svg class="size-4" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+        <path
+          d="M21 16v-2l-8-5V3.5a1.5 1.5 0 0 0-3 0V9l-8 5v2l8-2.5V19l-2 1.5V22l3.5-1 3.5 1v-1.5L13 19v-5.5l8 2.5Z"
+        />
+      </svg>
+    </span>
   </button>
 
   <button
     type="button"
     id="favourites-tab-places"
     role="tab"
-    class="border-b-[3px] px-6 py-5 text-left transition-colors"
-    [class.border-mint]="activeTab() === 'places'"
-    [class.border-transparent]="activeTab() !== 'places'"
+    class="flex items-center justify-between gap-3 rounded-xl px-4 py-3.5 text-left transition active:scale-[0.99] cursor-pointer sm:px-5"
+    [class]="
+      activeTab() === 'places'
+        ? 'bg-[#112211] text-white shadow-sm'
+        : 'text-[#52635c] hover:bg-[#f2f7f4] hover:text-[#112211]'
+    "
     [attr.aria-selected]="activeTab() === 'places'"
     [attr.tabindex]="activeTab() === 'places' ? 0 : -1"
     aria-controls="favourites-panel-places"
     (click)="tabChange.emit('places')"
   >
-    <strong class="block text-[1.05rem] font-semibold text-[#112211]">Places</strong>
-    <span class="mt-1 block text-[0.85rem] text-[#52635c]">{{ placeCount() }} marked</span>
+    <span>
+      <strong class="block text-sm font-bold">Places</strong>
+      <span class="mt-0.5 block text-[11px] opacity-60">{{ placeCount() }} marked</span>
+    </span>
+    <span
+      class="grid size-9 place-items-center rounded-full"
+      [class]="
+        activeTab() === 'places' ? 'bg-white/10 text-[#8DD3BB]' : 'bg-[#eff7f3] text-[#2f6d57]'
+      "
+    >
+      <svg
+        class="size-4"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2"
+        aria-hidden="true"
+      >
+        <path
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          d="M12 21s7-5.1 7-11a7 7 0 1 0-14 0c0 5.9 7 11 7 11z"
+        />
+        <circle cx="12" cy="10" r="2.5" />
+      </svg>
+    </span>
   </button>
 </div>

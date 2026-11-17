@@ -1,13 +1,8 @@
 import { ChangeDetectionStrategy, Component, computed, signal } from '@angular/core';
+import { RouterLink } from '@angular/router';
 
-import {
-  FavouriteFlight,
-  FavouriteFlightCardComponent,
-} from '../../shared/components/favourite-flight-card/favourite-flight-card';
-import {
-  FavouritePlace,
-  FavouritePlaceCardComponent,
-} from '../../shared/components/favourite-place-card/favourite-place-card';
+import type { FavouriteFlight } from '../../shared/components/favourite-flight-card/favourite-flight-card';
+import type { FavouritePlace } from '../../shared/components/favourite-place-card/favourite-place-card';
 import {
   FavouritesTab,
   FavouritesTabsComponent,
@@ -15,11 +10,7 @@ import {
 
 @Component({
   selector: 'app-favourites-page',
-  imports: [
-    FavouritesTabsComponent,
-    FavouritePlaceCardComponent,
-    FavouriteFlightCardComponent,
-  ],
+  imports: [FavouritesTabsComponent, RouterLink],
   templateUrl: './favourites.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
@@ -115,8 +106,6 @@ export class FavouritesPage {
   }
 
   removeFlight(flightCode: string): void {
-    this.flights.update((flights) =>
-      flights.filter((flight) => flight.flightCode !== flightCode),
-    );
+    this.flights.update((flights) => flights.filter((flight) => flight.flightCode !== flightCode));
   }
 }
