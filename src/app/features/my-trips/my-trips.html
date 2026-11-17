@@ -1,0 +1,727 @@
+<div class="bg-[#fafbfc] pb-20 pt-10 font-sans sm:pt-14">
+  <div class="mx-auto max-w-[1360px] px-4 sm:px-6 lg:px-8">
+    <header data-trips-reveal class="flex flex-col justify-between gap-5 lg:flex-row lg:items-end">
+      <div class="max-w-3xl">
+        <span class="text-[11px] font-bold uppercase tracking-[0.2em] text-[#4f8b75]">
+          Your travel desk
+        </span>
+        <h1
+          class="mt-3 font-display text-4xl font-semibold leading-[1.02] tracking-[-0.045em] text-[#112211] sm:text-5xl lg:text-6xl"
+        >
+          Every trip, in one clear timeline.
+        </h1>
+        <p class="mt-4 max-w-2xl text-sm leading-relaxed text-[#5f6b64] sm:text-base">
+          Keep upcoming bookings, unfinished itineraries, and the journeys already behind you
+          together in one place.
+        </p>
+      </div>
+
+      <a
+        routerLink="/plan-trip"
+        class="inline-flex w-fit items-center gap-2 rounded-xl bg-[#112211] px-5 py-3.5 text-sm font-bold text-white shadow-[0_10px_28px_rgba(17,34,17,0.18)] transition hover:-translate-y-0.5 hover:bg-[#1c2c18]"
+      >
+        Continue planning
+        <svg
+          class="size-4 text-[#8DD3BB]"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+          aria-hidden="true"
+        >
+          <path stroke-linecap="round" stroke-linejoin="round" d="M5 12h14M13 6l6 6-6 6" />
+        </svg>
+      </a>
+    </header>
+
+    <nav
+      data-trips-reveal
+      class="trip-tabs mt-8 flex gap-2 overflow-x-auto rounded-2xl border border-[#dfe7e2] bg-white p-2 shadow-[0_8px_26px_rgba(17,34,17,0.04)]"
+      aria-label="Trip status"
+    >
+      @for (tab of tabs; track tab.id) {
+        <button
+          type="button"
+          (click)="setTab(tab.id)"
+          class="flex shrink-0 items-center gap-2 rounded-xl px-4 py-3 text-sm font-bold transition active:scale-[0.98] cursor-pointer"
+          [class]="
+            activeTab() === tab.id
+              ? 'bg-[#112211] text-white shadow-sm'
+              : 'text-[#52635c] hover:bg-[#f2f7f4] hover:text-[#112211]'
+          "
+          [attr.aria-pressed]="activeTab() === tab.id"
+        >
+          {{ tab.label }}
+          <span
+            class="grid min-w-5 place-items-center rounded-full px-1.5 py-0.5 text-[10px]"
+            [class]="
+              activeTab() === tab.id ? 'bg-white/15 text-white' : 'bg-[#eef4f1] text-[#52635c]'
+            "
+          >
+            {{ tabCount(tab.id) }}
+          </span>
+        </button>
+      }
+    </nav>
+
+    @if (activeTab() === 'upcoming') {
+      <section @tabMotion class="mt-8" aria-labelledby="upcoming-heading">
+        <div class="flex items-center justify-between gap-4">
+          <div>
+            <span class="text-[11px] font-bold uppercase tracking-[0.18em] text-[#4f8b75]">
+              Upcoming trips
+            </span>
+            <h2
+              id="upcoming-heading"
+              class="mt-2 font-display text-3xl font-semibold tracking-[-0.04em] text-[#112211] sm:text-4xl"
+            >
+              Your next journey.
+            </h2>
+          </div>
+          <span
+            class="hidden rounded-full bg-[#eff7f3] px-3 py-2 text-xs font-semibold text-[#2f6d57] sm:inline-flex"
+          >
+            {{ upcomingTrips().length }} active booking{{ upcomingTrips().length === 1 ? '' : 's' }}
+          </span>
+        </div>
+
+        @if (activeUpcoming(); as trip) {
+          <article
+            data-trips-reveal
+            class="mt-6 overflow-hidden rounded-[28px] border border-[#dfe7e2] bg-white shadow-[0_16px_44px_rgba(17,34,17,0.08)]"
+          >
+            <div class="relative min-h-[290px] overflow-hidden bg-[#112211] p-6 text-white sm:p-8">
+              <img
+                [src]="trip.imageUrl"
+                [alt]="trip.title"
+                class="absolute inset-0 h-full w-full object-cover"
+              />
+              <div
+                class="absolute inset-0 bg-gradient-to-r from-[#07170d]/95 via-[#07170d]/70 to-[#07170d]/20"
+              ></div>
+              <div
+                class="relative z-10 flex h-full flex-col justify-between gap-10 sm:min-h-[230px]"
+              >
+                <div class="flex flex-col justify-between gap-4 sm:flex-row sm:items-start">
+                  <span
+                    class="w-fit rounded-full border border-white/20 bg-white/10 px-3 py-1.5 text-[10px] font-bold uppercase tracking-[0.15em] text-white/90 backdrop-blur-md"
+                  >
+                    Confirmed · {{ trip.confirmationCode }}
+                  </span>
+                  <span
+                    class="w-fit rounded-full bg-[#8DD3BB] px-3 py-1.5 text-[10px] font-bold uppercase tracking-[0.13em] text-[#112211]"
+                  >
+                    Upcoming
+                  </span>
+                </div>
+
+                <div>
+                  <h3
+                    class="max-w-3xl font-display text-3xl font-semibold tracking-[-0.04em] sm:text-5xl"
+                  >
+                    {{ trip.title }}
+                  </h3>
+                  <div
+                    class="mt-4 flex flex-wrap items-center gap-x-5 gap-y-2 text-sm font-medium text-white/75"
+                  >
+                    <span>{{ tripDateRange(trip) }}</span>
+                    <span class="size-1 rounded-full bg-white/35" aria-hidden="true"></span>
+                    <span>{{ tripNights(trip) }} nights · {{ trip.legs.length }} legs</span>
+                    <span class="size-1 rounded-full bg-white/35" aria-hidden="true"></span>
+                    <span>{{ trip.passengers }} · {{ trip.cabinClass }}</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="grid gap-6 p-5 sm:p-7 lg:grid-cols-[minmax(0,1fr)_300px]">
+              <div>
+                <div class="flex items-center justify-between gap-4 border-b border-[#edf1ee] pb-4">
+                  <div>
+                    <span class="text-[10px] font-bold uppercase tracking-[0.16em] text-[#4f8b75]"
+                      >Chronological itinerary</span
+                    >
+                    <h4 class="mt-1 font-display text-2xl font-semibold text-[#112211]">
+                      Flights, stays, and experiences
+                    </h4>
+                  </div>
+                  <button
+                    type="button"
+                    (click)="viewTicket(trip)"
+                    class="hidden shrink-0 rounded-full border border-[#dce7e1] px-4 py-2 text-xs font-bold text-[#2f6d57] transition hover:border-[#8DD3BB] hover:bg-[#eff7f3] sm:block"
+                  >
+                    View Ticket
+                  </button>
+                </div>
+
+                <div class="relative mt-6">
+                  <span
+                    class="absolute bottom-7 left-5 top-6 w-px bg-[#d7e5de]"
+                    aria-hidden="true"
+                  ></span>
+
+                  @for (leg of trip.legs; track leg.id; let index = $index) {
+                    <div class="relative pb-8 pl-14 last:pb-0">
+                      <span
+                        class="absolute left-0 top-0 grid size-10 place-items-center rounded-full border-4 border-white bg-[#8DD3BB] text-[#112211] shadow-sm"
+                      >
+                        <svg
+                          class="size-4"
+                          viewBox="0 0 24 24"
+                          fill="currentColor"
+                          aria-hidden="true"
+                        >
+                          <path
+                            d="M21 16v-2l-8-5V3.5A1.5 1.5 0 0 0 11.5 2 1.5 1.5 0 0 0 10 3.5V9l-8 5v2l8-2.5V19l-2 1.5V22l3.5-1 3.5 1v-1.5L13 19v-5.5L21 16z"
+                          />
+                        </svg>
+                      </span>
+
+                      <article
+                        data-trips-reveal
+                        class="rounded-2xl border border-[#dfe7e2] bg-[#fbfdfc] p-4 sm:p-5"
+                      >
+                        @if (flightFor(trip, leg); as flight) {
+                          <div
+                            class="flex flex-col justify-between gap-3 sm:flex-row sm:items-start"
+                          >
+                            <div>
+                              <span
+                                class="text-[10px] font-bold uppercase tracking-[0.14em] text-[#4f8b75]"
+                                >Flight leg {{ index + 1 }}</span
+                              >
+                              <h5 class="mt-1 text-base font-bold text-[#112211]">
+                                {{ flight.airline }} · {{ flight.flightCode }}
+                              </h5>
+                              <p class="mt-1 text-sm text-[#65726b]">{{ legLabel(leg) }}</p>
+                            </div>
+                            <div class="text-left sm:text-right">
+                              <span class="block text-sm font-bold text-[#112211]">{{
+                                formatLongDate(leg.departDate)
+                              }}</span>
+                              <span class="mt-1 block text-xs text-[#7b8780]"
+                                >{{ flight.departTime }} - {{ flight.arriveTime }} ·
+                                {{ flight.duration }}</span
+                              >
+                            </div>
+                          </div>
+                          <div
+                            class="mt-4 flex flex-wrap items-center gap-2 border-t border-[#e7eeea] pt-4"
+                          >
+                            <span
+                              class="rounded-full bg-[#eef4f1] px-2.5 py-1 text-[10px] font-bold uppercase tracking-[0.1em] text-[#52635c]"
+                              >Gate B{{ index + 12 }}</span
+                            >
+                            <span
+                              class="rounded-full bg-[#eef4f1] px-2.5 py-1 text-[10px] font-bold uppercase tracking-[0.1em] text-[#52635c]"
+                              >Seat 14A</span
+                            >
+                            <span
+                              class="rounded-full bg-[#eef4f1] px-2.5 py-1 text-[10px] font-bold uppercase tracking-[0.1em] text-[#52635c]"
+                              >{{ flight.stops }}</span
+                            >
+                          </div>
+                        }
+                      </article>
+
+                      @if (stayFor(trip, leg); as stay) {
+                        <article
+                          data-trips-reveal
+                          class="mt-3 rounded-2xl border border-[#dfe7e2] bg-white p-4 sm:p-5"
+                        >
+                          <div class="flex items-start gap-4">
+                            <img
+                              [src]="stay.imageUrl"
+                              [alt]="stay.name"
+                              class="hidden size-20 rounded-xl object-cover sm:block"
+                            />
+                            <div class="min-w-0 flex-1">
+                              <span
+                                class="text-[10px] font-bold uppercase tracking-[0.14em] text-[#4f8b75]"
+                                >Hotel stay</span
+                              >
+                              <h5 class="mt-1 text-base font-bold text-[#112211]">
+                                {{ stay.name }}
+                              </h5>
+                              <p class="mt-1 text-sm text-[#65726b]">
+                                {{ formatDate(stay.checkIn) }} - {{ formatDate(stay.checkOut) }} ·
+                                {{ stay.nights }} nights
+                              </p>
+                              <p class="mt-2 text-[11px] font-semibold text-[#7b8780]">
+                                Confirmation {{ trip.confirmationCode }}-H{{ index + 1 }}
+                              </p>
+                            </div>
+                            <span class="shrink-0 text-sm font-bold text-[#112211]"
+                              >${{ stay.totalPrice }}</span
+                            >
+                          </div>
+                        </article>
+                      }
+
+                      @if (attractionsFor(trip, leg).length) {
+                        <div
+                          data-trips-reveal
+                          class="mt-3 rounded-2xl border border-[#dfe7e2] bg-white p-4 sm:p-5"
+                        >
+                          <span
+                            class="text-[10px] font-bold uppercase tracking-[0.14em] text-[#4f8b75]"
+                            >Planned attractions</span
+                          >
+                          <div class="mt-3 grid gap-2">
+                            @for (attraction of attractionsFor(trip, leg); track attraction.id) {
+                              <div
+                                class="flex items-center justify-between gap-3 rounded-xl bg-[#f6faf8] px-3 py-2.5"
+                              >
+                                <span class="text-sm font-semibold text-[#112211]">{{
+                                  attraction.name
+                                }}</span>
+                                <span class="shrink-0 text-xs font-bold text-[#4f8b75]"
+                                  >${{ attraction.price }}</span
+                                >
+                              </div>
+                            }
+                          </div>
+                        </div>
+                      }
+                    </div>
+                  }
+                </div>
+              </div>
+
+              <aside
+                data-trips-reveal
+                class="h-fit rounded-2xl bg-[#112211] p-5 text-white lg:sticky lg:top-24"
+              >
+                <span class="text-[10px] font-bold uppercase tracking-[0.16em] text-[#8DD3BB]"
+                  >Booking snapshot</span
+                >
+                <div class="mt-5 space-y-3 text-sm text-white/70">
+                  <div class="flex justify-between gap-4">
+                    <span>Flights</span
+                    ><span class="font-semibold text-white">${{ trip.totals.flights }}</span>
+                  </div>
+                  <div class="flex justify-between gap-4">
+                    <span>Stays</span
+                    ><span class="font-semibold text-white">${{ trip.totals.stays }}</span>
+                  </div>
+                  <div class="flex justify-between gap-4">
+                    <span>Experiences</span
+                    ><span class="font-semibold text-white">${{ trip.totals.attractions }}</span>
+                  </div>
+                  <div class="flex justify-between gap-4">
+                    <span>Taxes & fees</span
+                    ><span class="font-semibold text-white">${{ trip.totals.taxes }}</span>
+                  </div>
+                </div>
+                <div class="mt-5 border-t border-white/12 pt-5">
+                  <span class="text-[10px] font-bold uppercase tracking-[0.14em] text-white/45"
+                    >Total paid</span
+                  >
+                  <p class="mt-1 font-display text-4xl font-semibold tracking-[-0.04em]">
+                    ${{ trip.totals.total }}
+                  </p>
+                </div>
+                <button
+                  type="button"
+                  (click)="viewTicket(trip)"
+                  class="mt-5 w-full rounded-xl bg-[#8DD3BB] px-4 py-3 text-sm font-bold text-[#112211] transition hover:bg-[#74C0A3]"
+                >
+                  View Ticket
+                </button>
+              </aside>
+            </div>
+          </article>
+
+          @if (upcomingTrips().length > 1) {
+            <div class="mt-5 grid gap-4 md:grid-cols-2">
+              @for (trip of upcomingTrips().slice(1); track trip.id) {
+                <article
+                  data-trips-reveal
+                  class="flex items-center justify-between gap-4 rounded-2xl border border-[#dfe7e2] bg-white p-5"
+                >
+                  <div>
+                    <h3 class="font-display text-xl font-semibold text-[#112211]">
+                      {{ trip.title }}
+                    </h3>
+                    <p class="mt-1 text-xs text-[#7b8780]">
+                      {{ tripDateRange(trip) }} · {{ tripNights(trip) }} nights
+                    </p>
+                  </div>
+                  <button
+                    type="button"
+                    (click)="viewTicket(trip)"
+                    class="shrink-0 rounded-full border border-[#dce7e1] px-4 py-2 text-xs font-bold text-[#2f6d57] transition hover:bg-[#eff7f3]"
+                  >
+                    View Ticket
+                  </button>
+                </article>
+              }
+            </div>
+          }
+        } @else {
+          <div
+            class="mt-6 rounded-[24px] border border-dashed border-[#cfded7] bg-white px-6 py-14 text-center"
+          >
+            <h3 class="font-display text-2xl font-semibold text-[#112211]">
+              No upcoming trips yet
+            </h3>
+            <p class="mt-2 text-sm text-[#6d7972]">
+              Finish an itinerary and confirm it to see it here.
+            </p>
+            <a
+              routerLink="/plan-trip"
+              class="mt-5 inline-flex rounded-xl bg-[#8DD3BB] px-5 py-3 text-sm font-bold text-[#112211]"
+              >Plan a trip</a
+            >
+          </div>
+        }
+      </section>
+    }
+
+    @if (activeTab() === 'draft') {
+      <section @tabMotion class="mt-8" aria-labelledby="draft-heading">
+        <span class="text-[11px] font-bold uppercase tracking-[0.18em] text-[#4f8b75]"
+          >Draft itineraries</span
+        >
+        <h2
+          id="draft-heading"
+          class="mt-2 font-display text-3xl font-semibold tracking-[-0.04em] text-[#112211] sm:text-4xl"
+        >
+          Pick up where you left off.
+        </h2>
+
+        <article
+          data-trips-reveal
+          class="mt-6 overflow-hidden rounded-[26px] border border-[#dfe7e2] bg-white shadow-[0_12px_38px_rgba(17,34,17,0.06)]"
+        >
+          <div class="grid gap-6 p-5 sm:p-7 lg:grid-cols-[minmax(0,1fr)_280px]">
+            <div>
+              <div class="flex flex-wrap items-center gap-2">
+                <span
+                  class="rounded-full bg-[#eff7f3] px-3 py-1.5 text-[10px] font-bold uppercase tracking-[0.13em] text-[#2f6d57]"
+                  >In progress</span
+                >
+                <span
+                  class="rounded-full bg-[#f2f7f4] px-3 py-1.5 text-[10px] font-bold uppercase tracking-[0.13em] text-[#52635c]"
+                  >{{ draftDateRange() }}</span
+                >
+              </div>
+              <h3
+                class="mt-4 font-display text-3xl font-semibold tracking-[-0.035em] text-[#112211]"
+              >
+                {{ service.draftTitle() }}
+              </h3>
+              <p class="mt-2 text-sm text-[#65726b]">
+                {{ service.passengers() }} · {{ service.cabinClass() }} · {{ draftNights() }} nights
+              </p>
+
+              <div class="mt-6 grid gap-3">
+                @for (leg of service.legs(); track leg.id; let index = $index) {
+                  <div class="rounded-2xl border border-[#dfe7e2] bg-[#fbfdfc] p-4">
+                    <div class="flex items-start justify-between gap-4">
+                      <div>
+                        <span
+                          class="text-[10px] font-bold uppercase tracking-[0.14em] text-[#7b8780]"
+                          >Leg {{ index + 1 }}</span
+                        >
+                        <h4 class="mt-1 text-sm font-bold text-[#112211]">{{ legLabel(leg) }}</h4>
+                      </div>
+                      <span class="shrink-0 text-xs font-semibold text-[#4f8b75]">{{
+                        formatDate(leg.departDate)
+                      }}</span>
+                    </div>
+                    <div class="mt-3 flex flex-wrap gap-2 text-[11px] font-semibold text-[#52635c]">
+                      @if (service.flights()[leg.id]; as flight) {
+                        <span class="rounded-full bg-white px-2.5 py-1 ring-1 ring-[#e2e9e5]"
+                          >{{ flight.airline }} · {{ flight.flightCode }}</span
+                        >
+                      }
+                      @if (service.stays()[leg.id]; as stay) {
+                        <span class="rounded-full bg-white px-2.5 py-1 ring-1 ring-[#e2e9e5]"
+                          >{{ stay.name }} · {{ stay.nights }} nights</span
+                        >
+                      }
+                    </div>
+                  </div>
+                }
+              </div>
+
+              @if (service.attractions().length) {
+                <div class="mt-5 rounded-2xl border border-[#dfe7e2] bg-white p-4">
+                  <span class="text-[10px] font-bold uppercase tracking-[0.14em] text-[#4f8b75]"
+                    >Saved experiences</span
+                  >
+                  <div class="mt-3 flex flex-wrap gap-2">
+                    @for (attraction of service.attractions(); track attraction.id) {
+                      <span
+                        class="rounded-full bg-[#eff7f3] px-3 py-1.5 text-xs font-semibold text-[#2f6d57]"
+                        >{{ attraction.name }}</span
+                      >
+                    }
+                  </div>
+                </div>
+              }
+            </div>
+
+            <aside class="h-fit rounded-2xl bg-[#112211] p-5 text-white">
+              <span class="text-[10px] font-bold uppercase tracking-[0.16em] text-[#8DD3BB]"
+                >Draft readiness</span
+              >
+              <div class="mt-5 space-y-3 text-sm">
+                <div class="flex justify-between gap-4 text-white/70">
+                  <span>Flights selected</span
+                  ><span class="font-semibold text-white"
+                    >{{ draftFlightCount() }}/{{ service.legs().length }}</span
+                  >
+                </div>
+                <div class="flex justify-between gap-4 text-white/70">
+                  <span>Stays selected</span
+                  ><span class="font-semibold text-white">{{ draftStayCount() }} hotels</span>
+                </div>
+                <div class="flex justify-between gap-4 text-white/70">
+                  <span>Experiences</span
+                  ><span class="font-semibold text-white">{{ service.attractions().length }}</span>
+                </div>
+              </div>
+              <div class="mt-5 border-t border-white/12 pt-5">
+                <span class="text-[10px] font-bold uppercase tracking-[0.14em] text-white/45"
+                  >Estimated total</span
+                >
+                <p class="mt-1 font-display text-4xl font-semibold tracking-[-0.04em]">
+                  ${{ service.totals().total }}
+                </p>
+              </div>
+              <a
+                routerLink="/plan-trip"
+                class="mt-5 flex w-full items-center justify-center gap-2 rounded-xl bg-[#8DD3BB] px-4 py-3 text-sm font-bold text-[#112211] transition hover:bg-[#74C0A3]"
+              >
+                Continue Planning
+                <svg
+                  class="size-4"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  aria-hidden="true"
+                >
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M5 12h14M13 6l6 6-6 6" />
+                </svg>
+              </a>
+            </aside>
+          </div>
+        </article>
+      </section>
+    }
+
+    @if (activeTab() === 'past') {
+      <section @tabMotion class="mt-8" aria-labelledby="past-heading">
+        <div class="flex flex-col justify-between gap-3 sm:flex-row sm:items-end">
+          <div>
+            <span class="text-[11px] font-bold uppercase tracking-[0.18em] text-[#4f8b75]"
+              >Past history</span
+            >
+            <h2
+              id="past-heading"
+              class="mt-2 font-display text-3xl font-semibold tracking-[-0.04em] text-[#112211] sm:text-4xl"
+            >
+              Journeys worth repeating.
+            </h2>
+          </div>
+          <span class="text-xs font-semibold text-[#7b8780]"
+            >{{ pastTrips().length }} completed trips</span
+          >
+        </div>
+
+        <div class="mt-6 grid gap-5 md:grid-cols-2">
+          @for (trip of pastTrips(); track trip.id) {
+            <article
+              @tabMotion
+              class="group overflow-hidden rounded-[24px] border border-[#dfe7e2] bg-white shadow-[0_8px_30px_rgba(17,34,17,0.05)] transition duration-300 hover:-translate-y-1 hover:shadow-[0_18px_42px_rgba(17,34,17,0.11)]"
+            >
+              <div class="relative h-44 overflow-hidden bg-[#112211]">
+                <img
+                  [src]="trip.imageUrl"
+                  [alt]="trip.title"
+                  class="h-full w-full object-cover transition duration-700 group-hover:scale-[1.05]"
+                />
+                <div
+                  class="absolute inset-0 bg-gradient-to-t from-[#07170d]/85 to-transparent"
+                ></div>
+                <span
+                  class="absolute left-4 top-4 rounded-full bg-white/92 px-3 py-1 text-[10px] font-bold uppercase tracking-[0.13em] text-[#52635c]"
+                  >Completed</span
+                >
+                <div class="absolute inset-x-0 bottom-0 p-5 text-white">
+                  <h3 class="font-display text-2xl font-semibold tracking-[-0.03em]">
+                    {{ trip.title }}
+                  </h3>
+                  <p class="mt-1 text-xs text-white/70">
+                    {{ tripDateRange(trip) }} · {{ tripNights(trip) }} nights
+                  </p>
+                </div>
+              </div>
+              <div class="flex items-center justify-between gap-4 p-5">
+                <div>
+                  <span class="text-[10px] font-bold uppercase tracking-[0.13em] text-[#7b8780]"
+                    >Booked {{ formatLongDate(trip.bookedAt) }}</span
+                  >
+                  <p class="mt-1 text-sm font-bold text-[#112211]">
+                    ${{ trip.totals.total }} total
+                  </p>
+                </div>
+                <button
+                  type="button"
+                  (click)="rebookTrip(trip)"
+                  class="inline-flex shrink-0 items-center gap-2 rounded-xl bg-[#eff7f3] px-4 py-2.5 text-xs font-bold text-[#2f6d57] transition hover:bg-[#8DD3BB] hover:text-[#112211] active:scale-[0.97]"
+                >
+                  Rebook Trip
+                  <svg
+                    class="size-3.5"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    aria-hidden="true"
+                  >
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      d="M20 11a8 8 0 1 0-2.3 5.7M20 4v7h-7"
+                    />
+                  </svg>
+                </button>
+              </div>
+            </article>
+          }
+        </div>
+      </section>
+    }
+  </div>
+
+  @if (showConfirmation() && confirmationTrip(); as trip) {
+    <div
+      class="fixed bottom-5 left-1/2 z-[70] flex w-[calc(100%-2rem)] max-w-lg -translate-x-1/2 items-center gap-3 rounded-2xl bg-[#112211] p-3 text-white shadow-[0_18px_50px_rgba(17,34,17,0.34)] animate-fade-in"
+      role="status"
+    >
+      <span
+        class="grid size-10 shrink-0 place-items-center rounded-full bg-[#8DD3BB] text-[#112211]"
+      >
+        <svg
+          class="size-5"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="3"
+          aria-hidden="true"
+        >
+          <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" />
+        </svg>
+      </span>
+      <div class="min-w-0 flex-1">
+        <p class="truncate text-sm font-bold">Trip booked successfully</p>
+        <p class="truncate text-xs text-white/60">{{ trip.title }} · {{ trip.confirmationCode }}</p>
+      </div>
+      <button
+        type="button"
+        (click)="showUpcoming()"
+        class="shrink-0 rounded-lg bg-white/10 px-3 py-2 text-xs font-bold text-white transition hover:bg-white/15"
+      >
+        View trip
+      </button>
+    </div>
+  }
+
+  @if (selectedTicket(); as trip) {
+    <div
+      class="fixed inset-0 z-[80] flex items-end justify-center bg-[#07170d]/55 p-0 backdrop-blur-sm sm:items-center sm:p-4"
+      (click)="closeTicket()"
+    >
+      <section
+        class="max-h-[92dvh] w-full max-w-2xl overflow-y-auto rounded-t-[28px] bg-white shadow-[0_24px_80px_rgba(7,23,13,0.3)] sm:rounded-[28px]"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="ticket-heading"
+        (click)="$event.stopPropagation()"
+      >
+        <div
+          class="sticky top-0 z-10 flex items-start justify-between gap-4 border-b border-[#e7eeea] bg-white/95 px-5 py-5 backdrop-blur sm:px-7"
+        >
+          <div>
+            <span class="text-[10px] font-bold uppercase tracking-[0.16em] text-[#4f8b75]"
+              >Digital travel ticket</span
+            >
+            <h2 id="ticket-heading" class="mt-1 font-display text-2xl font-semibold text-[#112211]">
+              {{ trip.title }}
+            </h2>
+            <p class="mt-1 text-xs text-[#7b8780]">Confirmation {{ trip.confirmationCode }}</p>
+          </div>
+          <button
+            type="button"
+            (click)="closeTicket()"
+            class="grid size-9 shrink-0 place-items-center rounded-full bg-[#f2f7f4] text-[#52635c] transition hover:bg-[#e7f1ec] hover:text-[#112211]"
+            aria-label="Close ticket"
+          >
+            <svg
+              class="size-4"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              aria-hidden="true"
+            >
+              <path stroke-linecap="round" d="M6 6l12 12M18 6L6 18" />
+            </svg>
+          </button>
+        </div>
+
+        <div class="space-y-4 px-5 py-5 sm:px-7 sm:py-6">
+          @for (leg of trip.legs; track leg.id; let index = $index) {
+            <div class="rounded-2xl border border-[#dfe7e2] bg-[#fbfdfc] p-4">
+              @if (flightFor(trip, leg); as flight) {
+                <div class="flex items-start justify-between gap-4">
+                  <div>
+                    <span class="text-[10px] font-bold uppercase tracking-[0.14em] text-[#7b8780]"
+                      >Leg {{ index + 1 }} · {{ flight.airline }}</span
+                    >
+                    <h3 class="mt-1 text-lg font-bold text-[#112211]">{{ legLabel(leg) }}</h3>
+                    <p class="mt-1 text-xs text-[#65726b]">
+                      {{ flight.flightCode }} · {{ flight.departTime }} - {{ flight.arriveTime }}
+                    </p>
+                  </div>
+                  <span class="rounded-xl bg-[#112211] px-3 py-2 text-xs font-bold text-white">{{
+                    formatDate(leg.departDate)
+                  }}</span>
+                </div>
+              }
+              @if (stayFor(trip, leg); as stay) {
+                <div class="mt-3 border-t border-[#e7eeea] pt-3">
+                  <p class="text-xs font-semibold text-[#112211]">{{ stay.name }}</p>
+                  <p class="mt-1 text-[11px] text-[#7b8780]">
+                    {{ formatDate(stay.checkIn) }} - {{ formatDate(stay.checkOut) }} ·
+                    {{ stay.nights }} nights
+                  </p>
+                </div>
+              }
+            </div>
+          }
+        </div>
+
+        <div class="border-t border-[#e7eeea] bg-[#fbfdfc] px-5 py-5 sm:px-7">
+          <div class="flex items-center justify-between gap-4">
+            <div>
+              <span class="text-[10px] font-bold uppercase tracking-[0.14em] text-[#7b8780]"
+                >Total paid</span
+              >
+              <p class="mt-1 font-display text-3xl font-semibold text-[#112211]">
+                ${{ trip.totals.total }}
+              </p>
+            </div>
+            <span class="rounded-full bg-[#eff7f3] px-3 py-2 text-xs font-bold text-[#2f6d57]">{{
+              trip.passengers
+            }}</span>
+          </div>
+        </div>
+      </section>
+    </div>
+  }
+</div>

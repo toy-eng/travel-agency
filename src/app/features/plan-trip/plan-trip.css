@@ -1,0 +1,11 @@
+:host {
+  display: block;
+}
+
+.leg-tabs {
+  scrollbar-width: none;
+}
+
+.leg-tabs::-webkit-scrollbar {
+  display: none;
+}

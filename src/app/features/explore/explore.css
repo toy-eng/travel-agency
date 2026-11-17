@@ -1,0 +1,11 @@
+:host {
+  display: block;
+}
+
+.filter-strip {
+  scrollbar-width: none;
+}
+
+.filter-strip::-webkit-scrollbar {
+  display: none;
+}

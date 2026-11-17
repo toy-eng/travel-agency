@@ -1,0 +1,11 @@
+:host {
+  display: block;
+}
+
+.trip-tabs {
+  scrollbar-width: none;
+}
+
+.trip-tabs::-webkit-scrollbar {
+  display: none;
+}
