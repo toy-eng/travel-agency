@@ -39,11 +39,12 @@ import { ChangeDetectionStrategy, Component, input, output } from '@angular/core
     }
 
     .switch--on {
-      background-color: #8dd3bb;
+      background-color: #112211;
     }
 
     .switch--on .switch__knob {
       translate: 22px 0;
+      background-color: #8dd3bb;
     }
 
     .switch:focus-visible {

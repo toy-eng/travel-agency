@@ -29,7 +29,7 @@ export interface SettingsSection {
       white-space: nowrap;
       cursor: pointer;
       border-radius: 999px;
-      border: 1px solid #e2e9e5;
+      border: 1px solid #dfe7e2;
       background-color: #ffffff;
       padding: 0.5rem 0.95rem;
       font-size: 0.8rem;
@@ -43,7 +43,7 @@ export interface SettingsSection {
     }
 
     .chip:hover {
-      border-color: #8dd3bb;
+      border-color: #b9d9cc;
       color: #112211;
     }
 
@@ -52,9 +52,9 @@ export interface SettingsSection {
     }
 
     .chip--active {
-      border-color: #8dd3bb;
-      background-color: #8dd3bb;
-      color: #112211;
+      border-color: #112211;
+      background-color: #112211;
+      color: #ffffff;
     }
 
     /* Desktop rail */
@@ -64,8 +64,8 @@ export interface SettingsSection {
       width: 100%;
       align-items: center;
       gap: 0.7rem;
-      border-radius: 0.75rem;
-      padding: 0.65rem 1rem;
+      border-radius: 0.9rem;
+      padding: 0.7rem 0.85rem;
       font-size: 0.88rem;
       font-weight: 600;
       color: #52635c;
@@ -77,27 +77,15 @@ export interface SettingsSection {
     }
 
     .rail:hover {
-      background-color: #f1fbf7;
+      background-color: #f2f7f4;
       color: #112211;
       transform: translateX(2px);
     }
 
     .rail--active {
-      background-color: #ffffff;
-      color: #112211;
-      box-shadow: 0 8px 22px rgba(17, 34, 17, 0.06);
-    }
-
-    .rail--active::before {
-      content: '';
-      position: absolute;
-      left: 0;
-      top: 50%;
-      height: 1.5rem;
-      width: 3px;
-      transform: translateY(-50%);
-      border-radius: 999px;
-      background-color: #8dd3bb;
+      background-color: #112211;
+      color: #ffffff;
+      box-shadow: 0 10px 24px rgba(17, 34, 17, 0.14);
     }
 
     .rail__icon {
@@ -107,16 +95,16 @@ export interface SettingsSection {
       height: 1.75rem;
       flex-shrink: 0;
       border-radius: 0.5rem;
-      background-color: #eaf6f2;
-      color: #3f7d68;
+      background-color: #eff7f3;
+      color: #2f6d57;
       transition:
         background-color 0.3s ease,
         color 0.3s ease;
     }
 
     .rail--active .rail__icon {
-      background-color: #8dd3bb;
-      color: #112211;
+      background-color: rgba(255, 255, 255, 0.1);
+      color: #8dd3bb;
     }
 
     .rail:focus-visible,

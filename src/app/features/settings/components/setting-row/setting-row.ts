@@ -7,11 +7,15 @@ import { ChangeDetectionStrategy, Component, input } from '@angular/core';
 @Component({
   selector: 'app-setting-row',
   template: `
-    <div class="flex items-start justify-between gap-4 sm:gap-8" [class.py-4]="!compact()" [class.py-2.5]="compact()">
+    <div
+      class="flex items-start justify-between gap-4 sm:gap-8"
+      [class.py-4]="!compact()"
+      [class.py-2.5]="compact()"
+    >
       <div class="min-w-0">
-        <p class="text-[0.92rem] font-semibold text-[#112211]">{{ label() }}</p>
+        <p class="text-[0.9rem] font-bold text-[#112211]">{{ label() }}</p>
         @if (hint()) {
-          <p class="mt-0.5 max-w-prose text-[0.8rem] leading-snug text-[#52635c]">{{ hint() }}</p>
+          <p class="mt-0.5 max-w-prose text-[0.78rem] leading-snug text-[#6d7972]">{{ hint() }}</p>
         }
       </div>
 

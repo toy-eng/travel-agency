@@ -29,7 +29,8 @@ export interface SegmentedOption {
       gap: 0.25rem;
       padding: 0.25rem;
       border-radius: 999px;
-      background-color: #eff5f2;
+      border: 1px solid #dfe7e2;
+      background-color: #fafcfb;
     }
 
     .seg {
@@ -60,9 +61,9 @@ export interface SegmentedOption {
     }
 
     .seg--active {
-      background-color: #8dd3bb;
-      color: #112211;
-      box-shadow: 0 4px 12px rgba(141, 211, 187, 0.35);
+      background-color: #112211;
+      color: #ffffff;
+      box-shadow: 0 4px 12px rgba(17, 34, 17, 0.16);
     }
   `,
   changeDetection: ChangeDetectionStrategy.OnPush,

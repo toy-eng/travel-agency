@@ -11,7 +11,10 @@ import {
 import { isPlatformBrowser } from '@angular/common';
 
 import { ScrollRevealDirective } from '../../shared/directives/scroll-reveal';
-import { SegmentedControlComponent, SegmentedOption } from './components/segmented-control/segmented-control';
+import {
+  SegmentedControlComponent,
+  SegmentedOption,
+} from './components/segmented-control/segmented-control';
 import { SettingRowComponent } from './components/setting-row/setting-row';
 import { SettingsCardComponent } from './components/settings-card/settings-card';
 import { SettingsNavComponent, SettingsSection } from './components/settings-nav/settings-nav';
@@ -55,17 +58,17 @@ interface ActionSetting {
   styles: `
     .action {
       display: inline-flex;
-      height: 2.5rem;
+      height: 2.4rem;
       flex-shrink: 0;
       cursor: pointer;
       align-items: center;
       gap: 0.5rem;
-      border-radius: 8px;
-      border: 1px solid #8dd3bb;
+      border-radius: 0.75rem;
+      border: 1px solid #dfe7e2;
       background-color: #ffffff;
-      padding: 0 1rem;
+      padding: 0 0.9rem;
       font-size: 0.8rem;
-      font-weight: 600;
+      font-weight: 700;
       color: #112211;
       transition:
         transform 0.2s ease,
@@ -76,9 +79,10 @@ interface ActionSetting {
     }
 
     .action:hover {
-      background-color: #f1fbf7;
-      transform: translateY(-2px);
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+      border-color: #8dd3bb;
+      background-color: #eff7f3;
+      transform: translateY(-1px);
+      box-shadow: 0 6px 16px rgba(17, 34, 17, 0.08);
     }
 
     .action:active {
@@ -87,7 +91,7 @@ interface ActionSetting {
 
     .action--danger {
       border-color: #f3c7c2;
-      color: #c0392b;
+      color: #a44d43;
     }
 
     .action--danger:hover {
@@ -103,8 +107,9 @@ interface ActionSetting {
       display: flex;
       align-items: center;
       gap: 0.85rem;
-      border-radius: 12px;
-      border: 1px solid #e2e9e5;
+      border-radius: 1rem;
+      border: 1px solid #edf1ee;
+      background-color: #fbfdfc;
       padding: 0.9rem 1rem;
       transition:
         transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1),
@@ -115,7 +120,7 @@ interface ActionSetting {
 
     .contact:hover {
       border-color: #8dd3bb;
-      background-color: #f1fbf7;
+      background-color: #eff7f3;
       transform: translateY(-2px);
       box-shadow: 0 10px 24px rgba(17, 34, 17, 0.08);
     }
@@ -126,22 +131,22 @@ interface ActionSetting {
       width: 2.25rem;
       height: 2.25rem;
       flex-shrink: 0;
-      border-radius: 10px;
-      background-color: #eaf6f2;
-      color: #3f7d68;
+      border-radius: 0.75rem;
+      background-color: #eff7f3;
+      color: #2f6d57;
     }
 
     .contact__label {
       display: block;
       font-size: 0.82rem;
-      font-weight: 600;
+      font-weight: 700;
       color: #112211;
     }
 
     .contact__value {
       display: block;
       font-size: 0.76rem;
-      color: #52635c;
+      color: #6d7972;
     }
 
     details[open] .faq-answer {
