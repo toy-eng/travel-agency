@@ -7,7 +7,7 @@ import {
   Router,
   RouterLink,
 } from '@angular/router';
-import { filter, startWith } from 'rxjs';
+import { filter } from 'rxjs';
 
 export interface BreadcrumbItem {
   label: string;
@@ -40,7 +40,6 @@ export class BreadcrumbsComponent {
     this.router.events
       .pipe(
         filter((event): event is NavigationEnd => event instanceof NavigationEnd),
-        startWith(null),
         takeUntilDestroyed(),
       )
       .subscribe(() => this.refresh());
@@ -53,6 +52,11 @@ export class BreadcrumbsComponent {
 
     while (route) {
       const snapshot = route.snapshot;
+      if (!snapshot) {
+        route = route.firstChild;
+        continue;
+      }
+
       const segment = snapshot.url.map((part) => part.path).join('/');
 
       if (segment) {
