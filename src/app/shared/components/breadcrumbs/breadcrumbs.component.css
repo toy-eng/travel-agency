@@ -1,0 +1,9 @@
+:host {
+  display: block;
+}
+
+@media (min-width: 768px) {
+  .breadcrumbs--top-level {
+    display: none;
+  }
+}

@@ -4,13 +4,14 @@ import { NavigationEnd, Router, RouterOutlet } from '@angular/router';
 import { filter, map, startWith } from 'rxjs';
 
 import { Header } from '../header/header';
+import { BreadcrumbsComponent } from '../../shared/components/breadcrumbs/breadcrumbs.component';
 import { Footer } from '../footer/footer';
 import { routeTransition } from '../../shared/animations/transitions';
 import { prefersReducedMotion } from '../../shared/motion/prefers-reduced-motion';
 
 @Component({
   selector: 'app-shell',
-  imports: [RouterOutlet, Header, Footer],
+  imports: [RouterOutlet, Header, BreadcrumbsComponent, Footer],
   animations: [routeTransition],
   templateUrl: './shell.html',
   changeDetection: ChangeDetectionStrategy.OnPush,

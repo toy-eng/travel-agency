@@ -1,5 +1,6 @@
 <div class="flex min-h-dvh flex-col">
   <app-header />
+  <app-breadcrumbs />
   <main class="flex-1">
     <div [@routeTransition]="routeKey()" [@.disabled]="reduceMotion()">
       <router-outlet />
