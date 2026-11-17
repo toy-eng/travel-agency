@@ -15,13 +15,7 @@ import { animate, style, transition, trigger } from '@angular/animations';
 import { TripPlannerService } from '../../core/services/trip-planner/trip-planner';
 import { gsap } from '../../shared/motion/gsap';
 import { prefersReducedMotion } from '../../shared/motion/prefers-reduced-motion';
-import type {
-  BookedTrip,
-  FlightOption,
-  StayOption,
-  TripAttraction,
-  TripLeg,
-} from '../../core/models/trip-planner';
+import type { BookedTrip } from '../../core/models/trip-planner';
 
 type TripsTab = 'upcoming' | 'draft' | 'past';
 
@@ -57,7 +51,6 @@ export class MyTrips implements AfterViewInit, OnDestroy {
   ];
 
   readonly activeTab = signal<TripsTab>('upcoming');
-  readonly selectedTicket = signal<BookedTrip | null>(null);
   readonly showConfirmation = signal(false);
   private readonly bookedTripId = signal<string | null>(
     this.route.snapshot.queryParamMap.get('booked'),
@@ -70,7 +63,6 @@ export class MyTrips implements AfterViewInit, OnDestroy {
     const id = this.bookedTripId();
     return id ? this.service.bookedTrips().find((trip) => trip.id === id) : undefined;
   });
-
   readonly draftFlightCount = computed(() => Object.keys(this.service.flights()).length);
   readonly draftStayCount = computed(() => Object.keys(this.service.stays()).length);
 
@@ -110,14 +102,6 @@ export class MyTrips implements AfterViewInit, OnDestroy {
     this.activeTab.set(tab);
   }
 
-  viewTicket(trip: BookedTrip): void {
-    this.selectedTicket.set(trip);
-  }
-
-  closeTicket(): void {
-    this.selectedTicket.set(null);
-  }
-
   rebookTrip(trip: BookedTrip): void {
     this.service.rebookTrip(trip);
     void this.router.navigate(['/plan-trip']);
@@ -136,23 +120,6 @@ export class MyTrips implements AfterViewInit, OnDestroy {
       return this.pastTrips().length;
     }
     return 1;
-  }
-
-  flightFor(trip: BookedTrip, leg: TripLeg): FlightOption | undefined {
-    return trip.flights[leg.id];
-  }
-
-  stayFor(trip: BookedTrip, leg: TripLeg): StayOption | undefined {
-    return trip.stays[leg.id];
-  }
-
-  attractionsFor(trip: BookedTrip, leg: TripLeg): TripAttraction[] {
-    const city = this.service.airportCity(leg.to).toLowerCase();
-    return trip.attractions.filter((attraction) => attraction.city.toLowerCase() === city);
-  }
-
-  legLabel(leg: TripLeg): string {
-    return this.service.legLabel(leg);
   }
 
   tripNights(trip: BookedTrip): number {
