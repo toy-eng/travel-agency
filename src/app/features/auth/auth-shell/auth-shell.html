@@ -1,25 +1,38 @@
-<div class="min-h-screen bg-white p-4 sm:p-8 lg:p-12 font-sans flex items-center justify-center">
+<div
+  class="flex min-h-[calc(100dvh-5rem)] items-center justify-center bg-[#fafbfc] p-4 font-sans sm:p-6 lg:p-8"
+>
   <div
-    class="w-full max-w-[1360px] mx-auto grid grid-cols-1 gap-8 lg:gap-16 items-center"
+    class="mx-auto grid w-full max-w-[1360px] grid-cols-1 items-center gap-6 lg:gap-10"
     [class.lg:grid-cols-2]="layout() === 'equal'"
     [class.lg:grid-cols-5]="layout() === 'form-major'"
   >
-
-    <!-- Left Column: Brand + Projected Form -->
+    <!-- Left column: brand + projected form -->
     <div
-      class="w-full mx-auto lg:mx-0"
+      class="mx-auto w-full lg:mx-0"
       [class.lg:col-span-1]="layout() === 'equal'"
       [class.lg:col-span-3]="layout() === 'form-major'"
     >
-      <a routerLink="/" class="inline-block mb-6">
-        <img src="/Logo.png" alt="Golobe Logo" class="h-9 w-auto" />
-      </a>
-      <ng-content />
+      <div class="mx-auto w-full max-w-[590px] lg:mx-0">
+        <a routerLink="/" class="inline-flex items-center gap-3 px-1">
+          <img src="/Logo2.svg" alt="Golobe" class="h-9 w-auto" />
+        </a>
+
+        <div
+          class="mt-6 rounded-[28px] border border-[#dfe7e2] bg-white p-5 shadow-[0_18px_50px_rgba(17,34,17,0.07)] sm:p-8 lg:p-9"
+        >
+          <ng-content />
+        </div>
+
+        <p class="mt-5 px-2 text-center text-xs leading-relaxed text-[#87938c] lg:text-left">
+          Secure sign-in powered by Golobe. By continuing you agree to our travel terms and privacy
+          policy.
+        </p>
+      </div>
     </div>
 
-    <!-- Right Column: Image Carousel -->
+    <!-- Right column: image carousel -->
     <div
-      class="relative hidden lg:block w-full h-[640px] rounded-[30px] overflow-hidden shadow-xl border border-gray-100"
+      class="relative hidden h-[680px] w-full overflow-hidden rounded-[30px] bg-[#112211] shadow-[0_20px_54px_rgba(17,34,17,0.18)] lg:block"
       [class.lg:col-span-1]="layout() === 'equal'"
       [class.lg:col-span-2]="layout() === 'form-major'"
       role="region"
@@ -31,13 +44,29 @@
         <img
           [src]="img"
           [alt]="'Golobe Auth Showcase ' + (i + 1)"
-          class="absolute inset-0 h-full w-full object-cover transition-opacity duration-500"
+          class="absolute inset-0 h-full w-full object-cover transition-opacity duration-700"
           [class.opacity-100]="activeIndex() === i"
           [class.opacity-0]="activeIndex() !== i"
         />
       }
 
-      <!-- Previous Arrow -->
+      <div
+        class="absolute inset-0 bg-gradient-to-t from-[#112211] via-[#112211]/20 to-[#112211]/5"
+        aria-hidden="true"
+      ></div>
+      <div
+        class="absolute inset-0 bg-[radial-gradient(circle_at_85%_12%,rgba(141,211,187,0.22),transparent_32%)]"
+        aria-hidden="true"
+      ></div>
+
+      <span
+        class="absolute left-6 top-6 inline-flex items-center gap-2 rounded-full border border-white/15 bg-black/20 px-3 py-2 text-[10px] font-bold uppercase tracking-[0.16em] text-white/85 backdrop-blur-md"
+      >
+        <span class="size-1.5 rounded-full bg-[#8DD3BB]"></span>
+        Golobe travel
+      </span>
+
+      <!-- Previous arrow -->
       <button
         type="button"
         (click)="prev()"
@@ -49,7 +78,7 @@
         </svg>
       </button>
 
-      <!-- Next Arrow -->
+      <!-- Next arrow -->
       <button
         type="button"
         (click)="next()"
@@ -61,15 +90,29 @@
         </svg>
       </button>
 
-      <!-- Carousel Dots Indicator -->
-      <div class="absolute bottom-6 left-1/2 -translate-x-1/2 flex items-center gap-2.5 z-10">
+      <div class="absolute inset-x-0 bottom-0 z-10 p-7 sm:p-9">
+        <span class="text-[10px] font-bold uppercase tracking-[0.2em] text-[#8DD3BB]">
+          Go somewhere worth remembering
+        </span>
+        <p
+          class="mt-3 max-w-md font-display text-3xl font-semibold leading-[1.1] tracking-[-0.04em] text-white"
+        >
+          One account. Every route, stay and saved idea in one place.
+        </p>
+        <p class="mt-3 max-w-sm text-sm leading-relaxed text-white/60">
+          Plan with confidence, keep your favourites close, and pick up exactly where you left off.
+        </p>
+      </div>
+
+      <!-- Carousel dots -->
+      <div class="absolute bottom-7 right-7 z-10 flex items-center gap-2.5">
         @for (img of images(); track img; let i = $index) {
           <button
             type="button"
             (click)="goTo(i)"
             [attr.aria-label]="'Go to slide ' + (i + 1)"
             [attr.aria-current]="activeIndex() === i ? 'true' : null"
-            class="h-2.5 rounded-full transition-all cursor-pointer"
+            class="h-2.5 cursor-pointer rounded-full transition-all"
             [class.w-8]="activeIndex() === i"
             [class.w-2.5]="activeIndex() !== i"
             [class.bg-mint]="activeIndex() === i"
@@ -80,6 +123,5 @@
         }
       </div>
     </div>
-
   </div>
 </div>
