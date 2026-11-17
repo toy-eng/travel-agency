@@ -26,7 +26,9 @@ import { gsap } from '../../../../../../shared/motion/gsap';
         class="absolute inset-0 bg-gradient-to-b from-black/60 via-black/30 to-black/50"
         aria-hidden="true"
       ></div>
-      <div class="relative z-10 mx-auto max-w-[1240px] px-4 pb-44 pt-8 sm:px-6 sm:pb-52 sm:pt-10">
+      <div
+        class="relative z-10 mx-auto max-w-[1360px] px-4 pb-44 pt-8 sm:px-6 sm:pb-52 sm:pt-10 lg:px-8"
+      >
         <h1
           #heroTitle
           class="max-w-2xl text-4xl font-display font-extrabold leading-[1.08] text-white drop-shadow-md sm:text-5xl lg:text-[56px]"
