@@ -59,22 +59,6 @@ export class Header implements AfterViewInit, OnDestroy {
     ),
   );
 
-  readonly isFlightsRoute = toSignal(
-    this.router.events.pipe(
-      filter((event): event is NavigationEnd => event instanceof NavigationEnd),
-      map(() => this.router.url.startsWith('/flights')),
-      startWith(this.router.url.startsWith('/flights')),
-    ),
-  );
-
-  readonly isStaysRoute = toSignal(
-    this.router.events.pipe(
-      filter((event): event is NavigationEnd => event instanceof NavigationEnd),
-      map(() => this.router.url.startsWith('/stays')),
-      startWith(this.router.url.startsWith('/stays')),
-    ),
-  );
-
   readonly isFavouritesRoute = toSignal(
     this.router.events.pipe(
       filter((event): event is NavigationEnd => event instanceof NavigationEnd),
@@ -128,6 +112,44 @@ export class Header implements AfterViewInit, OnDestroy {
     this.document.body.style.overflow = '';
   }
 
+  planTrip(event?: Event): void {
+    event?.preventDefault();
+    this.closeMenu();
+
+    if (this.isHomeRoute()) {
+      this.focusJourneyBuilder();
+      return;
+    }
+
+    void this.router.navigate(['/']).then(() => {
+      this.focusJourneyBuilderWhenReady();
+    });
+  }
+
+  private focusJourneyBuilderWhenReady(attempt = 0): void {
+    const builder = this.document.getElementById('journey-builder');
+    if (!builder && attempt < 12) {
+      this.window.setTimeout(() => this.focusJourneyBuilderWhenReady(attempt + 1), 100);
+      return;
+    }
+
+    if (!builder) {
+      return;
+    }
+
+    this.focusJourneyBuilder();
+  }
+
+  private focusJourneyBuilder(): void {
+    const builder = this.document.getElementById('journey-builder');
+    if (!builder) {
+      return;
+    }
+
+    builder.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    builder.querySelector<HTMLElement>('select, input')?.focus({ preventScroll: true });
+  }
+
   private onDocumentClick(event: Event): void {
     const target = event.target as Node | null;
     const button = this.profileButton()?.nativeElement;
@@ -141,4 +163,3 @@ export class Header implements AfterViewInit, OnDestroy {
     }
   }
 }
-
