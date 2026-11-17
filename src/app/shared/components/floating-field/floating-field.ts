@@ -62,10 +62,10 @@ import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
       background: #ffffff;
       padding: 0 0.35rem;
       font-size: 0.7rem;
-      font-weight: 600;
+      font-weight: 700;
       line-height: 1;
       letter-spacing: 0.01em;
-      color: #112211;
+      color: #4f8b75;
       font-family: var(--font-sans);
     }
 
@@ -74,21 +74,23 @@ import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
       display: flex;
       align-items: center;
       width: 100%;
-      height: 56px;
-      border: 1px solid #79747e;
-      border-radius: 4px;
-      background: #ffffff;
+      height: 52px;
+      border: 1px solid #dfe7e2;
+      border-radius: 0.75rem;
+      background: #fafcfb;
       padding: 0 0.75rem;
-      transition: border-color 0.2s ease, box-shadow 0.2s ease;
+      transition:
+        border-color 0.2s ease,
+        box-shadow 0.2s ease;
     }
 
     .floating-field:focus-within .floating-field__control {
       border-color: #8dd3bb;
-      box-shadow: 0 0 0 1px #8dd3bb;
+      box-shadow: 0 0 0 2px rgba(141, 211, 187, 0.22);
     }
 
     .floating-field--disabled .floating-field__control {
-      background: #f3f4f6;
+      background: #f2f5f3;
       opacity: 0.8;
       cursor: not-allowed;
     }
@@ -108,7 +110,7 @@ import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
     }
 
     input::placeholder {
-      color: #6b7280;
+      color: #9aa59e;
     }
 
     select {
@@ -124,7 +126,7 @@ import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
       align-items: center;
       justify-content: center;
       pointer-events: none;
-      color: #112211;
+      color: #4f8b75;
       font-size: 1rem;
       line-height: 1;
     }
