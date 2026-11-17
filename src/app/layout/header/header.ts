@@ -20,6 +20,7 @@ import { MobileMenuComponent } from './components/mobile-menu/mobile-menu';
   selector: 'app-header',
   imports: [RouterLink, RouterLinkActive, MobileMenuComponent],
   templateUrl: './header.html',
+  styleUrl: './header.css',
   changeDetection: ChangeDetectionStrategy.OnPush,
   host: {
     // On inner pages the whole <app-header> host sticks (the host's parent is the
@@ -110,44 +111,6 @@ export class Header implements AfterViewInit, OnDestroy {
   closeMenu(): void {
     this.menuOpen.set(false);
     this.document.body.style.overflow = '';
-  }
-
-  planTrip(event?: Event): void {
-    event?.preventDefault();
-    this.closeMenu();
-
-    if (this.isHomeRoute()) {
-      this.focusJourneyBuilder();
-      return;
-    }
-
-    void this.router.navigate(['/']).then(() => {
-      this.focusJourneyBuilderWhenReady();
-    });
-  }
-
-  private focusJourneyBuilderWhenReady(attempt = 0): void {
-    const builder = this.document.getElementById('journey-builder');
-    if (!builder && attempt < 12) {
-      this.window.setTimeout(() => this.focusJourneyBuilderWhenReady(attempt + 1), 100);
-      return;
-    }
-
-    if (!builder) {
-      return;
-    }
-
-    this.focusJourneyBuilder();
-  }
-
-  private focusJourneyBuilder(): void {
-    const builder = this.document.getElementById('journey-builder');
-    if (!builder) {
-      return;
-    }
-
-    builder.scrollIntoView({ behavior: 'smooth', block: 'center' });
-    builder.querySelector<HTMLElement>('select, input')?.focus({ preventScroll: true });
   }
 
   private onDocumentClick(event: Event): void {

@@ -1,599 +1,319 @@
-@if (isHomeRoute()) {
-  <header
-    class="fixed inset-x-0 top-0 z-50 transition-all duration-500"
-    [style.background-color]="'rgba(255, 255, 255, ' + headerOpacity() + ')'"
-    [style.box-shadow]="'0 4px 6px -1px rgba(0, 0, 0, ' + shadowOpacity() + ')'"
+<header
+  class="transition-all duration-500"
+  [class.fixed]="isHomeRoute()"
+  [class.inset-x-0]="isHomeRoute()"
+  [class.top-0]="isHomeRoute()"
+  [class.z-50]="isHomeRoute()"
+  [class.bg-white]="!isHomeRoute()"
+  [class.shadow-sm]="!isHomeRoute()"
+  [style.background-color]="isHomeRoute() ? 'rgba(255, 255, 255, ' + headerOpacity() + ')' : null"
+  [style.box-shadow]="
+    isHomeRoute() ? '0 4px 6px -1px rgba(0, 0, 0, ' + shadowOpacity() + ')' : null
+  "
+>
+  <nav
+    class="mx-auto flex h-14 max-w-7xl items-center justify-between gap-4 px-4 sm:px-6 lg:px-8"
+    [class.text-white]="isHomeRoute() && textWhite()"
+    [class.text-[#112211]]="!isHomeRoute() || !textWhite()"
+    aria-label="Primary"
   >
-    <nav
-      class="mx-auto grid max-w-[1440px] grid-cols-[1fr_auto_1fr] items-center gap-4 px-6 py-3 sm:px-8 sm:py-4 lg:px-12"
-      [class.text-white]="textWhite()"
-      [class.text-[#112211]]="!textWhite()"
-      aria-label="Primary"
-    >
-      <!-- Mobile: favourites shortcut -->
-      <div class="flex items-center md:hidden">
-        @if (isAuthenticated()) {
-          <a
-            routerLink="/favourites"
-            class="grid size-10 place-items-center rounded-full border border-current/15 bg-current/5 transition hover:bg-current/10"
-            aria-label="Favourites"
-          >
-            <svg class="size-5" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
-              <path
-                d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"
-              />
-            </svg>
-          </a>
-        }
-      </div>
-
-      <!-- Desktop nav -->
-      <div class="hidden items-center gap-7 text-sm font-semibold md:flex">
-        <button
-          type="button"
-          (click)="planTrip($event)"
-          class="relative py-1 transition after:absolute after:inset-x-0 after:-bottom-1 after:h-[2px] after:origin-left after:scale-x-0 after:rounded-full after:bg-[#8DD3BB] after:transition-transform hover:after:scale-x-100"
-          [class.nav-hover-mint]="textWhite()"
-        >
-          Plan Trip
-        </button>
-        <a
-          routerLink="/explore"
-          class="relative py-1 transition after:absolute after:inset-x-0 after:-bottom-1 after:h-[2px] after:origin-left after:scale-x-0 after:rounded-full after:bg-[#8DD3BB] after:transition-transform hover:after:scale-x-100"
-          [class.nav-hover-mint]="textWhite()"
-        >
-          Explore
-        </a>
-        <a
-          routerLink="/my-trips"
-          class="relative py-1 transition after:absolute after:inset-x-0 after:-bottom-1 after:h-[2px] after:origin-left after:scale-x-0 after:rounded-full after:bg-[#8DD3BB] after:transition-transform hover:after:scale-x-100"
-          [class.nav-hover-mint]="textWhite()"
-        >
-          My Trips
-        </a>
-      </div>
-
-      <!-- Center logo -->
-      <a routerLink="/" class="flex items-center justify-center" aria-label="Go home">
-        <img
-          [src]="textWhite() ? '/Logo.svg' : '/Logo2.svg'"
+    <!-- Mobile: logo + hamburger -->
+    <div class="flex md:hidden items-center gap-4">
+      <a routerLink="/" class="flex items-center" aria-label="Go home"
+        ><img
+          [src]="isHomeRoute() && textWhite() ? '/Logo.svg' : '/Logo2.svg'"
           alt="Golobe"
-          class="h-8 w-auto transition-opacity duration-500 sm:h-9"
-        />
-      </a>
-
-      <!-- Desktop right side -->
-      <div class="hidden items-center justify-end gap-5 text-sm font-semibold md:flex">
-        @if (isAuthenticated()) {
-          <a
-            routerLink="/favourites"
-            routerLinkActive="after:absolute after:inset-x-0 after:-bottom-1 after:content-[''] after:h-[2px] after:rounded-full after:bg-[#8DD3BB]"
-            class="relative flex items-center gap-2 py-1 transition"
-            [class.nav-hover-mint]="textWhite()"
+          class="h-8 w-auto"
+      /></a>
+    </div>
+    <div class="flex md:hidden items-center">
+      <button
+        type="button"
+        class="p-2"
+        [attr.aria-label]="menuOpen() ? 'Close menu' : 'Open menu'"
+        [attr.aria-expanded]="menuOpen()"
+        (click)="toggleMenu()"
+      >
+        @if (menuOpen()) {
+          <svg
+            class="size-6"
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            aria-hidden="true"
           >
-            <svg class="size-[18px]" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
-              <path
-                d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"
-              />
-            </svg>
-            <span>Favourites</span>
-          </a>
-
-          <span class="h-4 w-px bg-current/20" aria-hidden="true"></span>
-
-          <div class="relative">
-            <button
-              #profileButton
-              type="button"
-              (click)="toggleProfileMenu(); $event.stopPropagation()"
-              class="flex items-center gap-2.5 transition hover:opacity-80"
-              aria-label="User profile"
-              [attr.aria-expanded]="showProfileMenu()"
-            >
-              <span class="relative size-9 overflow-hidden rounded-full border border-current/20">
-                <img
-                  src="https://i.pravatar.cc/80?img=12"
-                  alt="John D."
-                  class="size-full object-cover"
-                />
-                <span
-                  class="absolute bottom-0 right-0 size-2.5 rounded-full border-2 border-white bg-[#8dd3bb]"
-                  aria-label="Verified"
-                ></span>
-              </span>
-              <span class="text-sm">John D.</span>
-            </button>
-
-            @if (showProfileMenu()) {
-              <div
-                class="absolute right-0 top-full z-50 mt-3 w-[270px] rounded-xl border border-[#e2e9e5] bg-white p-4 text-[#112211] shadow-[0_12px_40px_rgba(17,34,17,0.15)]"
-              >
-                <div class="flex items-center gap-3 pb-4">
-                  <span
-                    class="relative size-12 overflow-hidden rounded-full border border-[#e2e9e5]"
-                  >
-                    <img
-                      src="https://i.pravatar.cc/80?img=12"
-                      alt="John Doe."
-                      class="size-full object-cover"
-                    />
-                    <span
-                      class="absolute bottom-0 right-0 size-3 rounded-full border-2 border-white bg-[#8dd3bb]"
-                    ></span>
-                  </span>
-                  <div>
-                    <strong class="block text-sm">John Doe.</strong>
-                    <span class="text-xs text-[#71807a]">Online</span>
-                  </div>
-                </div>
-
-                <div class="border-t border-[#e2e9e5] pt-2">
-                  <a
-                    routerLink="/account"
-                    class="flex items-center justify-between rounded-lg px-2 py-2.5 text-sm transition hover:bg-[#f1fbf7]"
-                    (click)="closeProfileMenu()"
-                  >
-                    <span class="flex items-center gap-3">
-                      <svg class="size-4 text-[#52635c]" viewBox="0 0 24 24" fill="currentColor">
-                        <path
-                          d="M12 12c2.7 0 4.8-2.1 4.8-4.8S14.7 2.4 12 2.4 7.2 4.5 7.2 7.2 9.1 12 12 12zm0 2.4c-3.2 0-9.6 1.6-9.6 4.8v1.2h19.2v-1.2c0-3.2-6.4-4.8-9.6-4.8z"
-                        />
-                      </svg>
-                      My account
-                    </span>
-                    <svg
-                      class="size-4 text-[#a7a7ad]"
-                      viewBox="0 0 24 24"
-                      fill="none"
-                      stroke="currentColor"
-                      stroke-width="2"
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
-                    >
-                      <polyline points="9 18 15 12 9 6" />
-                    </svg>
-                  </a>
-
-                  <a
-                    routerLink="/payments"
-                    class="flex items-center justify-between rounded-lg px-2 py-2.5 text-sm transition hover:bg-[#f1fbf7]"
-                    (click)="closeProfileMenu()"
-                  >
-                    <span class="flex items-center gap-3">
-                      <svg class="size-4 text-[#52635c]" viewBox="0 0 24 24" fill="currentColor">
-                        <path
-                          d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 14H4v-6h16v6zm0-10H4V6h16v2z"
-                        />
-                      </svg>
-                      Payments
-                    </span>
-                    <svg
-                      class="size-4 text-[#a7a7ad]"
-                      viewBox="0 0 24 24"
-                      fill="none"
-                      stroke="currentColor"
-                      stroke-width="2"
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
-                    >
-                      <polyline points="9 18 15 12 9 6" />
-                    </svg>
-                  </a>
-
-                  <a
-                    routerLink="/settings"
-                    class="flex items-center justify-between rounded-lg px-2 py-2.5 text-sm transition hover:bg-[#f1fbf7]"
-                    (click)="closeProfileMenu()"
-                  >
-                    <span class="flex items-center gap-3">
-                      <svg class="size-4 text-[#52635c]" viewBox="0 0 24 24" fill="currentColor">
-                        <path
-                          d="M19.14 12.94c.04-.3.06-.61.06-.94 0-.32-.02-.64-.07-.94l2.03-1.58c.12-.09.15-.27.12-.43l-1.92-3.32c-.12-.22-.37-.29-.59-.22l-2.39.96c-.5-.38-1.03-.7-1.62-.94l-.36-2.54c-.04-.24-.24-.41-.48-.41h-3.84c-.24 0-.43.17-.47.41l-.36 2.54c-.59.24-1.13.56-1.62.94l-2.39-.96c-.22-.08-.47 0-.59.22L2.74 8.87c-.12.21-.08.47.12.61l2.03 1.58c-.05.3-.07.62-.07.94s.02.64.07.94l-2.03 1.58c-.12.09-.15.27-.12.43l1.92 3.32c.12.22.37.29.59.22l2.39-.96c.5.38 1.03.7 1.62.94l.36 2.54c.05.24.24.41.48.41h3.84c.24 0 .44-.17.47-.41l.36-2.54c.59-.24 1.13-.56 1.62-.94l2.39.96c.22.08.47 0 .59-.22l1.92-3.32c.12-.22.07-.47-.12-.61l-2.01-1.58zM12 15.6c-1.98 0-3.6-1.62-3.6-3.6s1.62-3.6 3.6-3.6 3.6 1.62 3.6 3.6-1.62 3.6-3.6 3.6z"
-                        />
-                      </svg>
-                      Settings
-                    </span>
-                    <svg
-                      class="size-4 text-[#a7a7ad]"
-                      viewBox="0 0 24 24"
-                      fill="none"
-                      stroke="currentColor"
-                      stroke-width="2"
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
-                    >
-                      <polyline points="9 18 15 12 9 6" />
-                    </svg>
-                  </a>
-                </div>
-
-                <div class="border-t border-[#e2e9e5] pt-2">
-                  <a
-                    routerLink="/support"
-                    class="flex items-center justify-between rounded-lg px-2 py-2.5 text-sm transition hover:bg-[#f1fbf7]"
-                    (click)="closeProfileMenu()"
-                  >
-                    <span class="flex items-center gap-3">
-                      <svg class="size-4 text-[#52635c]" viewBox="0 0 24 24" fill="currentColor">
-                        <path
-                          d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 17h-2v-2h2v2zm2.07-7.75l-.9.92C13.45 12.9 13 13.5 13 15h-2v-.5c0-1.1.45-2.1 1.17-2.83l1.24-1.26c.37-.36.59-.86.59-1.41 0-1.1-.9-2-2-2s-2 .9-2 2H8c0-2.21 1.79-4 4-4s4 1.79 4 4c0 .88-.36 1.68-.93 2.25z"
-                        />
-                      </svg>
-                      Support
-                    </span>
-                    <svg
-                      class="size-4 text-[#a7a7ad]"
-                      viewBox="0 0 24 24"
-                      fill="none"
-                      stroke="currentColor"
-                      stroke-width="2"
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
-                    >
-                      <polyline points="9 18 15 12 9 6" />
-                    </svg>
-                  </a>
-
-                  <a
-                    routerLink="/logout"
-                    class="flex items-center gap-3 rounded-lg px-2 py-2.5 text-sm transition hover:bg-[#f1fbf7]"
-                    (click)="closeProfileMenu()"
-                  >
-                    <svg class="size-4 text-[#52635c]" viewBox="0 0 24 24" fill="currentColor">
-                      <path
-                        d="M17 7l-1.41 1.41L18.17 11H8v2h10.17l-2.58 2.58L17 17l5-5zM4 5h8V3H4c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h8v-2H4V5z"
-                      />
-                    </svg>
-                    Logout
-                  </a>
-                </div>
-              </div>
-            }
-          </div>
+            <path d="M18 6L6 18M6 6l12 12" />
+          </svg>
         } @else {
-          <a routerLink="/login" class="transition hover:opacity-80">Login</a>
-          <a
-            routerLink="/create-account"
-            class="rounded-[8px] bg-white px-5 py-2.5 text-sm font-semibold text-[#112211] shadow-sm transition hover:bg-gray-100"
-            >Sign up</a
+          <svg
+            class="size-6"
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 24 24"
+            fill="currentColor"
+            aria-hidden="true"
           >
+            <path d="M3 5h18v2H3zm0 6h18v2H3zm0 6h18v2H3z" />
+          </svg>
         }
-      </div>
+      </button>
+    </div>
 
-      <!-- Mobile: menu trigger -->
-      <div class="flex justify-end md:hidden">
-        <button
-          type="button"
-          class="grid size-10 place-items-center rounded-full border border-current/15 bg-current/5 transition hover:bg-current/10 active:scale-95"
-          [attr.aria-label]="menuOpen() ? 'Close menu' : 'Open menu'"
-          [attr.aria-expanded]="menuOpen()"
-          (click)="toggleMenu()"
-        >
-          @if (menuOpen()) {
-            <svg
-              class="size-6"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              stroke-width="2"
-              stroke-linecap="round"
-              aria-hidden="true"
-            >
-              <path d="M18 6L6 18M6 6l12 12" />
-            </svg>
-          } @else {
-            <svg
-              class="size-6"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              stroke-width="2"
-              stroke-linecap="round"
-              aria-hidden="true"
-            >
-              <path d="M4 7h16M4 12h16M4 17h16" />
-            </svg>
-          }
-        </button>
-      </div>
-    </nav>
-  </header>
-
-  <!-- Mobile slide-in menu -->
-  <app-mobile-menu
-    [open]="menuOpen()"
-    [isAuthenticated]="isAuthenticated()"
-    (planTrip)="planTrip()"
-    (closed)="closeMenu()"
-  />
-} @else {
-  <header class="bg-white shadow-sm">
-    <nav
-      class="mx-auto flex max-w-[1360px] items-stretch justify-between px-6 py-3 sm:px-6 sm:py-0 lg:px-8"
-      aria-label="Primary"
-    >
-      <!-- Mobile: logo + hamburger -->
-      <div class="flex md:hidden items-center gap-4">
-        <a routerLink="/" class="flex items-center" aria-label="Go home"
-          ><img src="/Logo2.svg" alt="Golobe" class="h-8 w-auto"
-        /></a>
-      </div>
-      <div class="flex md:hidden items-center">
-        <button
-          type="button"
-          class="p-2 text-[#112211]"
-          [attr.aria-label]="menuOpen() ? 'Close menu' : 'Open menu'"
-          [attr.aria-expanded]="menuOpen()"
-          (click)="toggleMenu()"
-        >
-          @if (menuOpen()) {
-            <svg
-              class="size-6"
-              xmlns="http://www.w3.org/2000/svg"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              stroke-width="2"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              aria-hidden="true"
-            >
-              <path d="M18 6L6 18M6 6l12 12" />
-            </svg>
-          } @else {
-            <svg
-              class="size-6"
-              xmlns="http://www.w3.org/2000/svg"
-              viewBox="0 0 24 24"
-              fill="currentColor"
-              aria-hidden="true"
-            >
-              <path d="M3 5h18v2H3zm0 6h18v2H3zm0 6h18v2H3z" />
-            </svg>
-          }
-        </button>
-      </div>
-
-      <!-- Desktop nav links -->
-      <div class="hidden items-center gap-7 text-sm font-semibold text-[#112211] md:flex">
-        <button
-          type="button"
-          (click)="planTrip($event)"
-          class="relative py-4 transition after:absolute after:inset-x-0 after:bottom-0 after:h-[3px] after:origin-left after:scale-x-0 after:rounded-full after:bg-mint after:transition-transform hover:after:scale-x-100"
-        >
-          Plan Trip
-        </button>
-        <a
-          routerLink="/explore"
-          routerLinkActive="after:absolute after:inset-x-0 after:bottom-0 after:content-[''] after:h-[3px] after:rounded-full after:bg-mint"
-          class="relative py-4 transition nav-hover-mint-dark"
-        >
-          Explore
-        </a>
-        <a
-          routerLink="/my-trips"
-          routerLinkActive="after:absolute after:inset-x-0 after:bottom-0 after:content-[''] after:h-[3px] after:rounded-full after:bg-mint"
-          class="relative py-4 transition nav-hover-mint-dark"
-        >
-          My Trips
-        </a>
-      </div>
-
-      <!-- Desktop: center logo -->
+    <!-- Desktop nav links -->
+    <div class="hidden flex-1 items-center gap-7 text-sm font-semibold md:flex">
       <a
         routerLink="/"
-        class="hidden md:flex items-center justify-center py-4"
-        aria-label="Go home"
+        routerLinkActive="active"
+        [routerLinkActiveOptions]="{ exact: true }"
+        class="nav-link text-sm font-semibold transition"
+        [class.nav-hover-mint]="isHomeRoute() && textWhite()"
+        [class.nav-hover-mint-dark]="!isHomeRoute() || !textWhite()"
       >
-        <img src="/Logo2.svg" alt="Golobe" class="h-9 w-auto" />
+        Home
       </a>
+      <a
+        routerLink="/plan-trip"
+        routerLinkActive="active"
+        class="nav-link text-sm font-semibold transition"
+        [class.nav-hover-mint]="isHomeRoute() && textWhite()"
+        [class.nav-hover-mint-dark]="!isHomeRoute() || !textWhite()"
+      >
+        Plan Trip
+      </a>
+      <a
+        routerLink="/explore"
+        routerLinkActive="active"
+        class="nav-link text-sm font-semibold transition"
+        [class.nav-hover-mint]="isHomeRoute() && textWhite()"
+        [class.nav-hover-mint-dark]="!isHomeRoute() || !textWhite()"
+      >
+        Explore
+      </a>
+      <a
+        routerLink="/my-trips"
+        routerLinkActive="active"
+        class="nav-link text-sm font-semibold transition"
+        [class.nav-hover-mint]="isHomeRoute() && textWhite()"
+        [class.nav-hover-mint-dark]="!isHomeRoute() || !textWhite()"
+      >
+        My Trips
+      </a>
+    </div>
 
-      <!-- Desktop: right side -->
-      <div class="hidden md:flex items-stretch gap-5 text-sm font-semibold text-[#112211]">
-        @if (isAuthenticated()) {
-          <a
-            routerLink="/favourites"
-            routerLinkActive="after:absolute after:inset-x-0 after:bottom-0 after:content-[''] after:h-[3px] after:rounded-full after:bg-mint"
-            [class.nav-hover-mint-dark]="!isFavouritesRoute()"
-            class="relative flex items-center gap-2 py-4 transition"
+    <!-- Desktop: center logo -->
+    <a
+      routerLink="/"
+      class="hidden h-14 shrink-0 items-center justify-center md:flex"
+      aria-label="Go home"
+    >
+      <img
+        [src]="isHomeRoute() && textWhite() ? '/Logo.svg' : '/Logo2.svg'"
+        alt="Golobe"
+        class="h-9 w-auto"
+      />
+    </a>
+
+    <!-- Desktop: right side -->
+    <div class="hidden flex-1 items-stretch justify-end gap-5 text-sm font-semibold md:flex">
+      @if (isAuthenticated()) {
+        <a
+          routerLink="/favourites"
+          routerLinkActive="active"
+          class="nav-link flex h-14 items-center gap-2 transition"
+          [class.nav-hover-mint]="isHomeRoute() && textWhite()"
+          [class.nav-hover-mint-dark]="!isFavouritesRoute() && (!isHomeRoute() || !textWhite())"
+        >
+          <svg class="h-5 w-5" viewBox="0 0 24 24" aria-hidden="true">
+            <path
+              fill="currentColor"
+              d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"
+            />
+          </svg>
+          <span>Favourites</span>
+        </a>
+
+        <span class="h-4 w-px self-center bg-current/20" aria-hidden="true"></span>
+
+        <div class="relative flex h-14 items-center">
+          <button
+            #profileButton
+            type="button"
+            (click)="toggleProfileMenu(); $event.stopPropagation()"
+            class="flex items-center gap-2.5 transition hover:opacity-80"
+            aria-label="User profile"
+            [attr.aria-expanded]="showProfileMenu()"
           >
-            <svg class="h-5 w-5" viewBox="0 0 24 24" aria-hidden="true">
-              <path
-                fill="currentColor"
-                d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"
+            <span class="relative size-9 overflow-hidden rounded-full border border-[#e2e9e5]">
+              <img
+                src="https://i.pravatar.cc/80?img=12"
+                alt="John D."
+                class="size-full object-cover"
               />
-            </svg>
-            <span>Favourites</span>
-          </a>
+              <span
+                class="absolute bottom-0 right-0 size-2.5 rounded-full border-2 border-white bg-[#8dd3bb]"
+                aria-label="Verified"
+              ></span>
+            </span>
+            <span class="text-sm">John D.</span>
+          </button>
 
-          <span class="h-4 w-px self-center bg-[#112211]/20" aria-hidden="true"></span>
-
-          <div class="relative flex items-center py-4">
-            <button
-              #profileButton
-              type="button"
-              (click)="toggleProfileMenu(); $event.stopPropagation()"
-              class="flex items-center gap-2.5 transition hover:opacity-80"
-              aria-label="User profile"
-              [attr.aria-expanded]="showProfileMenu()"
+          @if (showProfileMenu()) {
+            <div
+              class="absolute right-0 top-full z-50 mt-3 w-[270px] rounded-xl border border-[#e2e9e5] bg-white p-4 text-[#112211] shadow-[0_12px_40px_rgba(17,34,17,0.15)]"
             >
-              <span class="relative size-9 overflow-hidden rounded-full border border-[#e2e9e5]">
-                <img
-                  src="https://i.pravatar.cc/80?img=12"
-                  alt="John D."
-                  class="size-full object-cover"
-                />
-                <span
-                  class="absolute bottom-0 right-0 size-2.5 rounded-full border-2 border-white bg-[#8dd3bb]"
-                  aria-label="Verified"
-                ></span>
-              </span>
-              <span class="text-sm">John D.</span>
-            </button>
-
-            @if (showProfileMenu()) {
-              <div
-                class="absolute right-0 top-full z-50 mt-3 w-[270px] rounded-xl border border-[#e2e9e5] bg-white p-4 text-[#112211] shadow-[0_12px_40px_rgba(17,34,17,0.15)]"
-              >
-                <div class="flex items-center gap-3 pb-4">
+              <div class="flex items-center gap-3 pb-4">
+                <span class="relative size-12 overflow-hidden rounded-full border border-[#e2e9e5]">
+                  <img
+                    src="https://i.pravatar.cc/80?img=12"
+                    alt="John Doe."
+                    class="size-full object-cover"
+                  />
                   <span
-                    class="relative size-12 overflow-hidden rounded-full border border-[#e2e9e5]"
-                  >
-                    <img
-                      src="https://i.pravatar.cc/80?img=12"
-                      alt="John Doe."
-                      class="size-full object-cover"
-                    />
-                    <span
-                      class="absolute bottom-0 right-0 size-3 rounded-full border-2 border-white bg-[#8dd3bb]"
-                    ></span>
-                  </span>
-                  <div>
-                    <strong class="block text-sm">John Doe.</strong>
-                    <span class="text-xs text-[#71807a]">Online</span>
-                  </div>
-                </div>
-
-                <div class="border-t border-[#e2e9e5] pt-2">
-                  <a
-                    routerLink="/account"
-                    class="flex items-center justify-between rounded-lg px-2 py-2.5 text-sm transition hover:bg-[#f1fbf7]"
-                    (click)="closeProfileMenu()"
-                  >
-                    <span class="flex items-center gap-3">
-                      <svg class="size-4 text-[#52635c]" viewBox="0 0 24 24" fill="currentColor">
-                        <path
-                          d="M12 12c2.7 0 4.8-2.1 4.8-4.8S14.7 2.4 12 2.4 7.2 4.5 7.2 7.2 9.1 12 12 12zm0 2.4c-3.2 0-9.6 1.6-9.6 4.8v1.2h19.2v-1.2c0-3.2-6.4-4.8-9.6-4.8z"
-                        />
-                      </svg>
-                      My account
-                    </span>
-                    <svg
-                      class="size-4 text-[#a7a7ad]"
-                      viewBox="0 0 24 24"
-                      fill="none"
-                      stroke="currentColor"
-                      stroke-width="2"
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
-                    >
-                      <polyline points="9 18 15 12 9 6" />
-                    </svg>
-                  </a>
-
-                  <a
-                    routerLink="/payments"
-                    class="flex items-center justify-between rounded-lg px-2 py-2.5 text-sm transition hover:bg-[#f1fbf7]"
-                    (click)="closeProfileMenu()"
-                  >
-                    <span class="flex items-center gap-3">
-                      <svg class="size-4 text-[#52635c]" viewBox="0 0 24 24" fill="currentColor">
-                        <path
-                          d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 14H4v-6h16v6zm0-10H4V6h16v2z"
-                        />
-                      </svg>
-                      Payments
-                    </span>
-                    <svg
-                      class="size-4 text-[#a7a7ad]"
-                      viewBox="0 0 24 24"
-                      fill="none"
-                      stroke="currentColor"
-                      stroke-width="2"
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
-                    >
-                      <polyline points="9 18 15 12 9 6" />
-                    </svg>
-                  </a>
-
-                  <a
-                    routerLink="/settings"
-                    class="flex items-center justify-between rounded-lg px-2 py-2.5 text-sm transition hover:bg-[#f1fbf7]"
-                    (click)="closeProfileMenu()"
-                  >
-                    <span class="flex items-center gap-3">
-                      <svg class="size-4 text-[#52635c]" viewBox="0 0 24 24" fill="currentColor">
-                        <path
-                          d="M19.14 12.94c.04-.3.06-.61.06-.94 0-.32-.02-.64-.07-.94l2.03-1.58c.12-.09.15-.27.12-.43l-1.92-3.32c-.12-.22-.37-.29-.59-.22l-2.39.96c-.5-.38-1.03-.7-1.62-.94l-.36-2.54c-.04-.24-.24-.41-.48-.41h-3.84c-.24 0-.43.17-.47.41l-.36 2.54c-.59.24-1.13.56-1.62.94l-2.39-.96c-.22-.08-.47 0-.59.22L2.74 8.87c-.12.21-.08.47.12.61l2.03 1.58c-.05.3-.07.62-.07.94s.02.64.07.94l-2.03 1.58c-.12.09-.15.27-.12.43l1.92 3.32c.12.22.37.29.59.22l2.39-.96c.5.38 1.03.7 1.62.94l.36 2.54c.05.24.24.41.48.41h3.84c.24 0 .44-.17.47-.41l.36-2.54c.59-.24 1.13-.56 1.62-.94l2.39.96c.22.08.47 0 .59-.22l1.92-3.32c.12-.22.07-.47-.12-.61l-2.01-1.58zM12 15.6c-1.98 0-3.6-1.62-3.6-3.6s1.62-3.6 3.6-3.6 3.6 1.62 3.6 3.6-1.62 3.6-3.6 3.6z"
-                        />
-                      </svg>
-                      Settings
-                    </span>
-                    <svg
-                      class="size-4 text-[#a7a7ad]"
-                      viewBox="0 0 24 24"
-                      fill="none"
-                      stroke="currentColor"
-                      stroke-width="2"
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
-                    >
-                      <polyline points="9 18 15 12 9 6" />
-                    </svg>
-                  </a>
-                </div>
-
-                <div class="border-t border-[#e2e9e5] pt-2">
-                  <a
-                    routerLink="/support"
-                    class="flex items-center justify-between rounded-lg px-2 py-2.5 text-sm transition hover:bg-[#f1fbf7]"
-                    (click)="closeProfileMenu()"
-                  >
-                    <span class="flex items-center gap-3">
-                      <svg class="size-4 text-[#52635c]" viewBox="0 0 24 24" fill="currentColor">
-                        <path
-                          d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 17h-2v-2h2v2zm2.07-7.75l-.9.92C13.45 12.9 13 13.5 13 15h-2v-.5c0-1.1.45-2.1 1.17-2.83l1.24-1.26c.37-.36.59-.86.59-1.41 0-1.1-.9-2-2-2s-2 .9-2 2H8c0-2.21 1.79-4 4-4s4 1.79 4 4c0 .88-.36 1.68-.93 2.25z"
-                        />
-                      </svg>
-                      Support
-                    </span>
-                    <svg
-                      class="size-4 text-[#a7a7ad]"
-                      viewBox="0 0 24 24"
-                      fill="none"
-                      stroke="currentColor"
-                      stroke-width="2"
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
-                    >
-                      <polyline points="9 18 15 12 9 6" />
-                    </svg>
-                  </a>
-
-                  <a
-                    routerLink="/logout"
-                    class="flex items-center gap-3 rounded-lg px-2 py-2.5 text-sm transition hover:bg-[#f1fbf7]"
-                    (click)="closeProfileMenu()"
-                  >
-                    <svg class="size-4 text-[#52635c]" viewBox="0 0 24 24" fill="currentColor">
-                      <path
-                        d="M17 7l-1.41 1.41L18.17 11H8v2h10.17l-2.58 2.58L17 17l5-5zM4 5h8V3H4c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h8v-2H4V5z"
-                      />
-                    </svg>
-                    Logout
-                  </a>
+                    class="absolute bottom-0 right-0 size-3 rounded-full border-2 border-white bg-[#8dd3bb]"
+                  ></span>
+                </span>
+                <div>
+                  <strong class="block text-sm">John Doe.</strong>
+                  <span class="text-xs text-[#71807a]">Online</span>
                 </div>
               </div>
-            }
-          </div>
-        } @else {
-          <a routerLink="/login" class="transition hover:opacity-80">Login</a>
-          <a
-            routerLink="/create-account"
-            class="rounded-[8px] bg-[#112211] px-5 py-2.5 text-sm font-semibold text-white shadow-sm transition hover:bg-[#1c2c18]"
-            >Sign up</a
-          >
-        }
-      </div>
-    </nav>
-  </header>
 
-  <!-- Mobile slide-in menu -->
-  <app-mobile-menu
-    [open]="menuOpen()"
-    [isAuthenticated]="isAuthenticated()"
-    (planTrip)="planTrip()"
-    (closed)="closeMenu()"
-  />
-}
+              <div class="border-t border-[#e2e9e5] pt-2">
+                <a
+                  routerLink="/account"
+                  class="flex items-center justify-between rounded-lg px-2 py-2.5 text-sm transition hover:bg-[#f1fbf7]"
+                  (click)="closeProfileMenu()"
+                >
+                  <span class="flex items-center gap-3">
+                    <svg class="size-4 text-[#52635c]" viewBox="0 0 24 24" fill="currentColor">
+                      <path
+                        d="M12 12c2.7 0 4.8-2.1 4.8-4.8S14.7 2.4 12 2.4 7.2 4.5 7.2 7.2 9.1 12 12 12zm0 2.4c-3.2 0-9.6 1.6-9.6 4.8v1.2h19.2v-1.2c0-3.2-6.4-4.8-9.6-4.8z"
+                      />
+                    </svg>
+                    My account
+                  </span>
+                  <svg
+                    class="size-4 text-[#a7a7ad]"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  >
+                    <polyline points="9 18 15 12 9 6" />
+                  </svg>
+                </a>
+
+                <a
+                  routerLink="/payments"
+                  class="flex items-center justify-between rounded-lg px-2 py-2.5 text-sm transition hover:bg-[#f1fbf7]"
+                  (click)="closeProfileMenu()"
+                >
+                  <span class="flex items-center gap-3">
+                    <svg class="size-4 text-[#52635c]" viewBox="0 0 24 24" fill="currentColor">
+                      <path
+                        d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 14H4v-6h16v6zm0-10H4V6h16v2z"
+                      />
+                    </svg>
+                    Payments
+                  </span>
+                  <svg
+                    class="size-4 text-[#a7a7ad]"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  >
+                    <polyline points="9 18 15 12 9 6" />
+                  </svg>
+                </a>
+
+                <a
+                  routerLink="/settings"
+                  class="flex items-center justify-between rounded-lg px-2 py-2.5 text-sm transition hover:bg-[#f1fbf7]"
+                  (click)="closeProfileMenu()"
+                >
+                  <span class="flex items-center gap-3">
+                    <svg class="size-4 text-[#52635c]" viewBox="0 0 24 24" fill="currentColor">
+                      <path
+                        d="M19.14 12.94c.04-.3.06-.61.06-.94 0-.32-.02-.64-.07-.94l2.03-1.58c.12-.09.15-.27.12-.43l-1.92-3.32c-.12-.22-.37-.29-.59-.22l-2.39.96c-.5-.38-1.03-.7-1.62-.94l-.36-2.54c-.04-.24-.24-.41-.48-.41h-3.84c-.24 0-.43.17-.47.41l-.36 2.54c-.59.24-1.13.56-1.62.94l-2.39-.96c-.22-.08-.47 0-.59.22L2.74 8.87c-.12.21-.08.47.12.61l2.03 1.58c-.05.3-.07.62-.07.94s.02.64.07.94l-2.03 1.58c-.12.09-.15.27-.12.43l1.92 3.32c.12.22.37.29.59.22l2.39-.96c.5.38 1.03.7 1.62.94l.36 2.54c.05.24.24.41.48.41h3.84c.24 0 .44-.17.47-.41l.36-2.54c.59-.24 1.13-.56 1.62-.94l2.39.96c.22.08.47 0 .59-.22l1.92-3.32c.12-.22.07-.47-.12-.61l-2.01-1.58zM12 15.6c-1.98 0-3.6-1.62-3.6-3.6s1.62-3.6 3.6-3.6 3.6 1.62 3.6 3.6-1.62 3.6-3.6 3.6z"
+                      />
+                    </svg>
+                    Settings
+                  </span>
+                  <svg
+                    class="size-4 text-[#a7a7ad]"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  >
+                    <polyline points="9 18 15 12 9 6" />
+                  </svg>
+                </a>
+              </div>
+
+              <div class="border-t border-[#e2e9e5] pt-2">
+                <a
+                  routerLink="/support"
+                  class="flex items-center justify-between rounded-lg px-2 py-2.5 text-sm transition hover:bg-[#f1fbf7]"
+                  (click)="closeProfileMenu()"
+                >
+                  <span class="flex items-center gap-3">
+                    <svg class="size-4 text-[#52635c]" viewBox="0 0 24 24" fill="currentColor">
+                      <path
+                        d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 17h-2v-2h2v2zm2.07-7.75l-.9.92C13.45 12.9 13 13.5 13 15h-2v-.5c0-1.1.45-2.1 1.17-2.83l1.24-1.26c.37-.36.59-.86.59-1.41 0-1.1-.9-2-2-2s-2 .9-2 2H8c0-2.21 1.79-4 4-4s4 1.79 4 4c0 .88-.36 1.68-.93 2.25z"
+                      />
+                    </svg>
+                    Support
+                  </span>
+                  <svg
+                    class="size-4 text-[#a7a7ad]"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  >
+                    <polyline points="9 18 15 12 9 6" />
+                  </svg>
+                </a>
+
+                <a
+                  routerLink="/logout"
+                  class="flex items-center gap-3 rounded-lg px-2 py-2.5 text-sm transition hover:bg-[#f1fbf7]"
+                  (click)="closeProfileMenu()"
+                >
+                  <svg class="size-4 text-[#52635c]" viewBox="0 0 24 24" fill="currentColor">
+                    <path
+                      d="M17 7l-1.41 1.41L18.17 11H8v2h10.17l-2.58 2.58L17 17l5-5zM4 5h8V3H4c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h8v-2H4V5z"
+                    />
+                  </svg>
+                  Logout
+                </a>
+              </div>
+            </div>
+          }
+        </div>
+      } @else {
+        <a routerLink="/login" class="transition hover:opacity-80">Login</a>
+        <a
+          routerLink="/create-account"
+          class="rounded-[8px] bg-[#8DD3BB] px-5 py-2.5 text-sm font-semibold text-[#112211] shadow-sm transition hover:bg-[#74C0A3]"
+          >Sign up</a
+        >
+      }
+    </div>
+  </nav>
+</header>
+
+<app-mobile-menu [open]="menuOpen()" [isAuthenticated]="isAuthenticated()" (closed)="closeMenu()" />

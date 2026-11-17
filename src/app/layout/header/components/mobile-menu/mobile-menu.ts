@@ -17,8 +17,7 @@ import { RouterLink, RouterLinkActive } from '@angular/router';
 export interface MobileNavItem {
   path: string;
   label: string;
-  icon: 'heart' | 'compass' | 'globe' | 'suitcase';
-  action?: 'plan-trip';
+  icon: 'heart' | 'home' | 'compass' | 'globe' | 'suitcase';
   /** Match the exact URL only (used for the home link). */
   exact?: boolean;
 }
@@ -44,10 +43,10 @@ export class MobileMenuComponent implements OnDestroy {
   readonly isAuthenticated = input(true);
 
   readonly closed = output<void>();
-  readonly planTrip = output<void>();
 
   readonly navItems: MobileNavItem[] = [
-    { path: '/', label: 'Plan Trip', icon: 'compass', action: 'plan-trip' },
+    { path: '/', label: 'Home', icon: 'home', exact: true },
+    { path: '/plan-trip', label: 'Plan Trip', icon: 'compass' },
     { path: '/explore', label: 'Explore', icon: 'globe' },
     { path: '/my-trips', label: 'My Trips', icon: 'suitcase' },
     { path: '/favourites', label: 'Favourites', icon: 'heart' },
@@ -86,11 +85,8 @@ export class MobileMenuComponent implements OnDestroy {
     this.showProfileMenu.set(false);
   }
 
-  handleNavClick(item: MobileNavItem): void {
+  handleNavClick(): void {
     this.closed.emit();
-    if (item.action === 'plan-trip') {
-      this.planTrip.emit();
-    }
   }
 
   private onDocumentClick(event: Event): void {
