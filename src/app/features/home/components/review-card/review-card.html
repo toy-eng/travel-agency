@@ -1,59 +1,62 @@
-<div class="relative inline-block w-full">
-  <div class="absolute inset-0 translate-x-4 translate-y-5 rounded-[20px] bg-[#8DD3BB]/40"></div>
-
-  <article class="relative z-10 flex h-[500px] w-full flex-col overflow-hidden rounded-[20px] bg-[#ffffff] p-5 text-[#1f1f1f] shadow-md">
-    <h3 class="w-full font-display text-[1.5rem] font-bold leading-[1.18] tracking-[0em] text-[#1f1f1f]">
-      {{ review.quote }}
-    </h3>
-
-    <p class="mt-3 w-full font-sans font-medium text-[0.88rem] leading-[1.65] text-[#4f4f4f]">
-      {{ review.body }}
-    </p>
-
-    <div class="mt-4 flex items-center justify-between gap-3">
-      <div class="flex items-center gap-1.5">
-        @for (star of stars; track star) {
-          <svg class="h-6 w-6" viewBox="0 0 64 64" aria-hidden="true">
-            <path fill="#ffce31" d="M62 25.2H39.1L32 3l-7.1 22.2H2l18.5 13.7l-7 22.1L32 47.3L50.5 61l-7.1-22.2z" />
-          </svg>
-        }
-      </div>
-
-      <button type="button" class="font-display text-[0.88rem] font-bold lowercase tracking-[0em] text-[#1f1f1f] hover:text-[#4c4c4c]">
-        <span class="uppercase">V</span>iew more
-      </button>
-    </div>
-
-    <div class="mt-5 flex flex-col items-start gap-2">
-      <div>
-        <div class="font-display text-[1.02rem] font-semibold text-[#1f1f1f]">{{ review.author }}</div>
-        <div class="mt-1 font-sans text-[0.73rem] text-[#4f4f4f]">{{ review.role }}</div>
-      </div>
-
-      <div class="flex items-center gap-2 self-start">
-        <div class="flex h-8 w-8 items-center justify-center rounded-full bg-[#e8f7ff]">
-          <svg class="h-4 w-4" viewBox="0 0 128 128" aria-hidden="true">
-            <path d="M0 0h128v128H0z" fill="none" />
-            <path fill="#fff" d="M44.59 4.21a63.28 63.28 0 0 0 4.33 120.9a67.6 67.6 0 0 0 32.36.35a57.13 57.13 0 0 0 25.9-13.46a57.44 57.44 0 0 0 16-26.26a74.3 74.3 0 0 0 1.61-33.58H65.27v24.69h34.47a29.72 29.72 0 0 1-12.66 19.52a36.2 36.2 0 0 1-13.93 5.5a41.3 41.3 0 0 1-15.1 0A37.2 37.2 0 0 1 44 95.74a39.3 39.3 0 0 1-14.5-19.42a38.3 38.3 0 0 1 0-24.63a39.25 39.25 0 0 1 9.18-14.91A37.17 37.17 0 0 1 76.13 27a34.3 34.3 0 0 1 13.64 8q5.83-5.8 11.64-11.63c2-2.09 4.18-4.08 6.15-6.22A61.2 61.2 0 0 0 87.2 4.59a64 64 0 0 0-42.61-.38" />
-            <path fill="#e33629" d="M44.59 4.21a64 64 0 0 1 42.61.37a61.2 61.2 0 0 1 20.35 12.62c-2 2.14-4.11 4.14-6.15 6.22Q95.58 29.23 89.77 35a34.3 34.3 0 0 0-13.64-8a37.17 37.17 0 0 0-37.46 9.74a39.25 39.25 0 0 0-9.18 14.91L8.76 35.6A63.53 63.53 0 0 1 44.59 4.21" />
-            <path fill="#f8bd00" d="M3.26 51.5a63 63 0 0 1 5.5-15.9l20.73 16.09a38.3 38.3 0 0 0 0 24.63q-10.36 8-20.73 16.08a63.33 63.33 0 0 1-5.5-40.9" />
-            <path fill="#587dbd" d="M65.27 52.15h59.52a74.3 74.3 0 0 1-1.61 33.58a57.44 57.44 0 0 1-16 26.26c-6.69-5.22-13.41-10.4-20.1-15.62a29.72 29.72 0 0 0 12.66-19.54H65.27c-.01-8.22 0-16.45 0-24.68" />
-            <path fill="#319f43" d="M8.75 92.4q10.37-8 20.73-16.08A39.3 39.3 0 0 0 44 95.74a37.2 37.2 0 0 0 14.08 6.08a41.3 41.3 0 0 0 15.1 0a36.2 36.2 0 0 0 13.93-5.5c6.69 5.22 13.41 10.4 20.1 15.62a57.13 57.13 0 0 1-25.9 13.47a67.6 67.6 0 0 1-32.36-.35a63 63 0 0 1-23-11.59A63.7 63.7 0 0 1 8.75 92.4" />
-          </svg>
-        </div>
-        <span class="font-display text-[0.82rem] tracking-[0em] text-[#1f1f1f]">{{ review.source }}</span>
-      </div>
-    </div>
-
-    <div class="mt-auto overflow-hidden rounded-[14px] bg-[#dfe5e1]">
-      <img
-        [ngSrc]="review.imageUrl"
-        [alt]="review.author + ' review photo'"
-        width="800"
-        height="220"
-        sizes="(min-width: 1280px) 33vw, 100vw"
-        class="h-[170px] w-full object-cover"
+<article
+  class="group flex h-full min-h-[330px] flex-col rounded-[24px] border border-[#dfe7e2] bg-white p-6 shadow-[0_8px_30px_rgba(17,34,17,0.06)] transition duration-300 hover:-translate-y-1.5 hover:shadow-[0_18px_44px_rgba(17,34,17,0.12)]"
+>
+  <div class="flex items-start justify-between gap-4">
+    <svg class="size-8 text-[#8DD3BB]" viewBox="0 0 32 32" fill="currentColor" aria-hidden="true">
+      <path
+        d="M12.8 6.4C7.4 8.9 4.8 12.7 4.8 17.8c0 4.4 2.5 7.2 6.1 7.2 3.2 0 5.6-2.3 5.6-5.4 0-3-2-5.1-4.8-5.1-.6 0-1.1.1-1.8.3.5-2.4 2.1-4.4 4.9-6l-2-2.4zm14 0c-5.4 2.5-8 6.3-8 11.4 0 4.4 2.5 7.2 6.1 7.2 3.2 0 5.6-2.3 5.6-5.4 0-3-2-5.1-4.8-5.1-.6 0-1.1.1-1.8.3.5-2.4 2.1-4.4 4.9-6l-2-2.4z"
       />
+    </svg>
+    <div class="flex items-center gap-1">
+      @for (star of stars; track star) {
+        <svg
+          class="size-4 text-[#ffce31]"
+          viewBox="0 0 24 24"
+          fill="currentColor"
+          aria-hidden="true"
+        >
+          <path
+            d="M12 2.8l2.8 5.7 6.2.9-4.5 4.4 1.1 6.2-5.6-2.9-5.6 2.9 1.1-6.2L3 9.4l6.2-.9L12 2.8z"
+          />
+        </svg>
+      }
     </div>
-  </article>
-</div>
+  </div>
+
+  <h3
+    class="mt-5 font-display text-[1.55rem] font-semibold leading-[1.12] tracking-[-0.03em] text-[#112211]"
+  >
+    {{ review.quote }}
+  </h3>
+  <p class="mt-3 text-sm leading-relaxed text-[#5d6962]">{{ review.body }}</p>
+
+  <div class="mt-auto flex items-center gap-3 border-t border-[#edf1ee] pt-5">
+    <img
+      [src]="review.imageUrl"
+      [alt]="review.author"
+      width="48"
+      height="48"
+      class="size-11 rounded-full object-cover ring-2 ring-[#e7f3ee]"
+      loading="lazy"
+    />
+    <div class="min-w-0">
+      <span class="block truncate text-sm font-bold text-[#112211]">{{ review.author }}</span>
+      <span class="block truncate text-xs text-[#748079]">{{ review.role }}</span>
+    </div>
+    <span
+      class="ml-auto hidden items-center gap-1 rounded-full bg-[#eff7f3] px-2.5 py-1 text-[10px] font-semibold text-[#3f7d68] sm:flex"
+    >
+      <svg
+        class="size-3"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2.5"
+        aria-hidden="true"
+      >
+        <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" />
+      </svg>
+      {{ review.source }}
+    </span>
+  </div>
+</article>

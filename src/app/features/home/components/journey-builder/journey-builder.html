@@ -1,0 +1,353 @@
+<section
+  class="rounded-[28px] border border-white/70 bg-white/95 p-4 shadow-[0_26px_80px_rgba(8,31,17,0.28)] backdrop-blur-xl sm:p-6"
+>
+  <div class="flex flex-wrap items-center justify-between gap-4 border-b border-[#e6ece8] pb-4">
+    <div
+      class="flex flex-wrap items-center gap-1 rounded-full bg-[#f2f7f4] p-1"
+      aria-label="Trip type"
+    >
+      @for (mode of tripModes; track mode) {
+        <button
+          type="button"
+          (click)="setMode(mode)"
+          class="rounded-full px-3.5 py-2 text-xs font-semibold transition-all duration-200 active:scale-[0.97] sm:px-4 sm:text-sm cursor-pointer"
+          [class]="
+            tripMode() === mode
+              ? 'bg-[#112211] text-white shadow-sm'
+              : 'text-[#5d6b63] hover:text-[#112211]'
+          "
+          [attr.aria-pressed]="tripMode() === mode"
+        >
+          {{ mode }}
+        </button>
+      }
+    </div>
+
+    <div class="hidden items-center gap-2 text-xs font-medium text-[#52635c] sm:flex">
+      <span class="size-2 rounded-full bg-[#8DD3BB]"></span>
+      Flights and stays stay in sync
+    </div>
+  </div>
+
+  <form class="mt-5" (submit)="$event.preventDefault(); buildItinerary()">
+    <div class="space-y-3">
+      @for (leg of legs(); track leg.id; let index = $index) {
+        <div
+          @legTransition
+          class="rounded-[20px] border border-[#e3eae6] bg-[#fbfcfa] p-3.5 sm:p-4"
+        >
+          <div class="mb-3 flex items-center justify-between gap-3">
+            <div class="flex items-center gap-2">
+              <span
+                class="inline-flex items-center rounded-full bg-[#dfeee8] px-2.5 py-1 text-[10px] font-bold uppercase tracking-[0.14em] text-[#2f6d57]"
+              >
+                Leg {{ index + 1 }}
+              </span>
+              @if (tripMode() === 'Multi-City' && legs().length > 1) {
+                <span class="text-xs font-medium text-[#748079]">
+                  {{ airportCity(leg.from) }} → {{ airportCity(leg.to) }}
+                </span>
+              }
+            </div>
+
+            @if (legs().length > 1) {
+              <button
+                type="button"
+                (click)="removeLeg(index)"
+                class="flex size-8 items-center justify-center rounded-full text-[#7a8780] transition hover:bg-[#fbe9e7] hover:text-[#b5473c] active:scale-95 cursor-pointer"
+                [attr.aria-label]="'Remove leg ' + (index + 1)"
+              >
+                <svg
+                  class="size-4"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  aria-hidden="true"
+                >
+                  <path stroke-linecap="round" d="M6 6l12 12M18 6L6 18" />
+                </svg>
+              </button>
+            }
+          </div>
+
+          <div
+            class="grid gap-3 sm:grid-cols-2 xl:grid-cols-[minmax(0,1fr)_34px_minmax(0,1fr)_minmax(145px,0.8fr)_minmax(125px,0.6fr)] xl:items-end"
+          >
+            <label class="block min-w-0">
+              <span
+                class="mb-1.5 block text-[10px] font-bold uppercase tracking-[0.12em] text-[#7c8881]"
+                >From</span
+              >
+              <span class="relative block">
+                <select
+                  [value]="leg.from"
+                  (change)="updateLeg(index, 'from', $any($event.target).value)"
+                  class="h-11 w-full appearance-none rounded-xl border border-[#dce5df] bg-white px-3 pr-9 text-sm font-semibold text-[#112211] outline-none transition focus:border-[#8DD3BB] focus:ring-2 focus:ring-[#8DD3BB]/25"
+                  [attr.aria-label]="'Origin for leg ' + (index + 1)"
+                >
+                  @for (airport of airports; track airport.code) {
+                    <option [value]="airport.code">{{ airport.city }} ({{ airport.code }})</option>
+                  }
+                </select>
+                <svg
+                  class="pointer-events-none absolute right-3 top-1/2 size-4 -translate-y-1/2 text-[#66736c]"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  aria-hidden="true"
+                >
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M6 9l6 6 6-6" />
+                </svg>
+              </span>
+            </label>
+
+            <span
+              class="hidden h-11 items-center justify-center text-[#8DD3BB] xl:flex"
+              aria-hidden="true"
+            >
+              <svg
+                class="size-5"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+              >
+                <path stroke-linecap="round" stroke-linejoin="round" d="M5 12h14M13 6l6 6-6 6" />
+              </svg>
+            </span>
+
+            <label class="block min-w-0">
+              <span
+                class="mb-1.5 block text-[10px] font-bold uppercase tracking-[0.12em] text-[#7c8881]"
+                >To</span
+              >
+              <span class="relative block">
+                <select
+                  [value]="leg.to"
+                  (change)="updateLeg(index, 'to', $any($event.target).value)"
+                  class="h-11 w-full appearance-none rounded-xl border border-[#dce5df] bg-white px-3 pr-9 text-sm font-semibold text-[#112211] outline-none transition focus:border-[#8DD3BB] focus:ring-2 focus:ring-[#8DD3BB]/25"
+                  [attr.aria-label]="'Destination for leg ' + (index + 1)"
+                >
+                  @for (airport of airports; track airport.code) {
+                    <option [value]="airport.code">{{ airport.city }} ({{ airport.code }})</option>
+                  }
+                </select>
+                <svg
+                  class="pointer-events-none absolute right-3 top-1/2 size-4 -translate-y-1/2 text-[#66736c]"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  aria-hidden="true"
+                >
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M6 9l6 6 6-6" />
+                </svg>
+              </span>
+            </label>
+
+            <label class="block min-w-0">
+              <span
+                class="mb-1.5 block text-[10px] font-bold uppercase tracking-[0.12em] text-[#7c8881]"
+                >Depart</span
+              >
+              <input
+                type="date"
+                [value]="leg.departDate"
+                (input)="updateLeg(index, 'departDate', $any($event.target).value)"
+                class="h-11 w-full rounded-xl border border-[#dce5df] bg-white px-3 text-sm font-semibold text-[#112211] outline-none transition focus:border-[#8DD3BB] focus:ring-2 focus:ring-[#8DD3BB]/25"
+                [attr.aria-label]="'Departure date for leg ' + (index + 1)"
+              />
+            </label>
+
+            <label class="block min-w-0">
+              <span
+                class="mb-1.5 block text-[10px] font-bold uppercase tracking-[0.12em] text-[#7c8881]"
+                >Stay</span
+              >
+              <span class="relative block">
+                <select
+                  [value]="leg.nights"
+                  (change)="updateLeg(index, 'nights', +$any($event.target).value)"
+                  class="h-11 w-full appearance-none rounded-xl border border-[#dce5df] bg-white px-3 pr-9 text-sm font-semibold text-[#112211] outline-none transition focus:border-[#8DD3BB] focus:ring-2 focus:ring-[#8DD3BB]/25"
+                  [attr.aria-label]="'Stay duration for leg ' + (index + 1)"
+                >
+                  @for (nights of stayOptions; track nights) {
+                    <option [value]="nights">
+                      {{ nights === 0 ? 'Return' : nights + (nights === 1 ? ' night' : ' nights') }}
+                    </option>
+                  }
+                </select>
+                <svg
+                  class="pointer-events-none absolute right-3 top-1/2 size-4 -translate-y-1/2 text-[#66736c]"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  aria-hidden="true"
+                >
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M6 9l6 6 6-6" />
+                </svg>
+              </span>
+            </label>
+          </div>
+
+          <div class="mt-3 flex items-center gap-2 text-[11px] font-medium text-[#617068]">
+            <svg
+              class="size-3.5 shrink-0 text-[#4e947a]"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="1.8"
+              aria-hidden="true"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                d="M3 20V9.5a2 2 0 0 1 1.1-1.8l7-3.5a2 2 0 0 1 1.8 0l7 3.5A2 2 0 0 1 21 9.5V20M7 20v-5h10v5M3 20h18"
+              />
+            </svg>
+            <span>Hotel window: {{ hotelWindow(leg) }}</span>
+          </div>
+        </div>
+      }
+    </div>
+
+    @if (tripMode() === 'Multi-City') {
+      <button
+        type="button"
+        (click)="addStop()"
+        class="mt-3 flex w-full items-center justify-center gap-2 rounded-[16px] border border-dashed border-[#a9cfc1] bg-[#f7fbf9] px-4 py-3 text-sm font-semibold text-[#2f6d57] transition hover:border-[#8DD3BB] hover:bg-[#eff8f4] active:scale-[0.99] cursor-pointer"
+      >
+        <span class="grid size-5 place-items-center rounded-full bg-[#112211] text-white">
+          <svg
+            class="size-3"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2.5"
+            aria-hidden="true"
+          >
+            <path stroke-linecap="round" d="M12 5v14M5 12h14" />
+          </svg>
+        </span>
+        Add another stop
+      </button>
+    }
+
+    <div class="mt-5 grid gap-3 lg:grid-cols-[minmax(0,1fr)_minmax(0,0.8fr)_auto] lg:items-end">
+      <div class="grid grid-cols-2 gap-3">
+        <label class="block min-w-0">
+          <span
+            class="mb-1.5 block text-[10px] font-bold uppercase tracking-[0.12em] text-[#7c8881]"
+            >Passengers</span
+          >
+          <span class="relative block">
+            <select
+              [value]="passengers()"
+              (change)="passengers.set($any($event.target).value)"
+              class="h-11 w-full appearance-none rounded-xl border border-[#dce5df] bg-white px-3 pr-8 text-sm font-semibold text-[#112211] outline-none transition focus:border-[#8DD3BB] focus:ring-2 focus:ring-[#8DD3BB]/25"
+            >
+              @for (option of passengerOptions; track option) {
+                <option [value]="option">{{ option }}</option>
+              }
+            </select>
+            <svg
+              class="pointer-events-none absolute right-2.5 top-1/2 size-4 -translate-y-1/2 text-[#66736c]"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              aria-hidden="true"
+            >
+              <path stroke-linecap="round" stroke-linejoin="round" d="M6 9l6 6 6-6" />
+            </svg>
+          </span>
+        </label>
+
+        <label class="block min-w-0">
+          <span
+            class="mb-1.5 block text-[10px] font-bold uppercase tracking-[0.12em] text-[#7c8881]"
+            >Class</span
+          >
+          <span class="relative block">
+            <select
+              [value]="cabinClass()"
+              (change)="cabinClass.set($any($event.target).value)"
+              class="h-11 w-full appearance-none rounded-xl border border-[#dce5df] bg-white px-3 pr-8 text-sm font-semibold text-[#112211] outline-none transition focus:border-[#8DD3BB] focus:ring-2 focus:ring-[#8DD3BB]/25"
+            >
+              @for (option of cabinOptions; track option) {
+                <option [value]="option">{{ option }}</option>
+              }
+            </select>
+            <svg
+              class="pointer-events-none absolute right-2.5 top-1/2 size-4 -translate-y-1/2 text-[#66736c]"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              aria-hidden="true"
+            >
+              <path stroke-linecap="round" stroke-linejoin="round" d="M6 9l6 6 6-6" />
+            </svg>
+          </span>
+        </label>
+      </div>
+
+      <div class="rounded-xl bg-[#f4f8f6] px-4 py-2.5">
+        <span class="block text-[10px] font-bold uppercase tracking-[0.12em] text-[#7c8881]"
+          >Your journey</span
+        >
+        <span class="mt-0.5 block text-sm font-semibold text-[#112211]">{{
+          itinerarySummary()
+        }}</span>
+        @if (experienceCount() > 0) {
+          <span class="mt-0.5 block text-[11px] font-medium text-[#4e7f6d]">
+            + {{ experienceCount() }} experience{{ experienceCount() === 1 ? '' : 's' }}
+          </span>
+        }
+      </div>
+
+      <button
+        type="submit"
+        class="inline-flex h-12 items-center justify-center gap-2 rounded-xl bg-[#8DD3BB] px-6 text-sm font-bold text-[#112211] shadow-[0_8px_22px_rgba(141,211,187,0.35)] transition hover:bg-[#74C0A3] active:translate-y-px active:scale-[0.99] cursor-pointer"
+      >
+        Build Itinerary
+        <svg
+          class="size-4"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+          aria-hidden="true"
+        >
+          <path stroke-linecap="round" stroke-linejoin="round" d="M5 12h14M13 6l6 6-6 6" />
+        </svg>
+      </button>
+    </div>
+
+    @if (builtItinerary()) {
+      <div
+        class="mt-4 flex items-start gap-3 rounded-[14px] border border-[#cfe8de] bg-[#eff9f5] px-4 py-3 text-sm text-[#285b49] animate-fade-in"
+        role="status"
+      >
+        <span
+          class="mt-0.5 grid size-5 shrink-0 place-items-center rounded-full bg-[#8DD3BB] text-[#112211]"
+        >
+          <svg
+            class="size-3"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="3"
+            aria-hidden="true"
+          >
+            <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" />
+          </svg>
+        </span>
+        <span>{{ builtItinerary() }}</span>
+      </div>
+    }
+  </form>
+</section>

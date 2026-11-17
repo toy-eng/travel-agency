@@ -1,5 +1,4 @@
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
-import { NgOptimizedImage } from '@angular/common';
 
 export interface ReviewCardItem {
   quote: string;
@@ -13,7 +12,6 @@ export interface ReviewCardItem {
 
 @Component({
   selector: 'app-review-card',
-  imports: [NgOptimizedImage],
   templateUrl: './review-card.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

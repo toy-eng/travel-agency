@@ -1,14 +1,138 @@
-<div class="font-sans">
-  <div class="px-4 pt-2 sm:px-6 sm:pt-3 lg:px-8 lg:pt-4">
-    <app-hero (tabChange)="setTab($event)" />
+<div class="overflow-x-clip bg-[#fafbfc] font-sans">
+  <app-hero>
+    <div #journeyBuilderShell id="journey-builder" class="scroll-mt-28">
+      <app-journey-builder [experienceCount]="selectedAttractionIds().size" />
+    </div>
+  </app-hero>
+
+  <div id="explore" class="scroll-mt-24">
+    <app-curated-routes [routes]="curatedRoutes" (routeSelected)="useCuratedRoute($event)" />
+
+    <section class="mx-auto max-w-[1360px] px-4 pb-16 sm:px-6 sm:pb-20 lg:px-8">
+      <div
+        class="overflow-hidden rounded-[28px] bg-[#112211] px-5 py-8 text-white sm:px-8 sm:py-10 lg:px-10"
+      >
+        <div
+          class="flex flex-col justify-between gap-5 border-b border-white/10 pb-7 sm:flex-row sm:items-end"
+        >
+          <div class="max-w-2xl">
+            <span class="text-[11px] font-bold uppercase tracking-[0.2em] text-[#8DD3BB]"
+              >How Golobe works</span
+            >
+            <h2
+              class="mt-3 font-display text-3xl font-semibold leading-[1.04] tracking-[-0.04em] sm:text-4xl lg:text-5xl"
+            >
+              From first stop to final boarding pass.
+            </h2>
+          </div>
+          <p class="max-w-sm text-sm leading-relaxed text-white/65">
+            Build the whole journey in one place, then keep every booking and experience together.
+          </p>
+        </div>
+
+        <div class="mt-8 grid gap-4 md:grid-cols-3" data-reveal-group>
+          @for (step of howItWorksSteps; track step.number) {
+            <article
+              data-stagger-item
+              class="group relative overflow-hidden rounded-[22px] border border-white/10 bg-white/[0.055] p-5 transition duration-300 hover:-translate-y-1 hover:bg-white/[0.08]"
+            >
+              <div class="flex items-start justify-between gap-4">
+                <span
+                  class="grid size-11 place-items-center rounded-[14px] bg-[#8DD3BB] text-[#112211]"
+                >
+                  @switch (step.icon) {
+                    @case ('map') {
+                      <svg
+                        class="size-5"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="2"
+                        aria-hidden="true"
+                      >
+                        <path
+                          stroke-linecap="round"
+                          stroke-linejoin="round"
+                          d="M3 6l6-3 6 3 6-3v15l-6 3-6-3-6 3V6zM9 3v15M15 6v15"
+                        />
+                      </svg>
+                    }
+                    @case ('bundle') {
+                      <svg
+                        class="size-5"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="2"
+                        aria-hidden="true"
+                      >
+                        <path
+                          stroke-linecap="round"
+                          stroke-linejoin="round"
+                          d="M4 7h16v13H4V7zM8 7V4h8v3M4 12h16M10 12v3h4v-3"
+                        />
+                      </svg>
+                    }
+                    @case ('itinerary') {
+                      <svg
+                        class="size-5"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="2"
+                        aria-hidden="true"
+                      >
+                        <path
+                          stroke-linecap="round"
+                          stroke-linejoin="round"
+                          d="M8 4h11a2 2 0 0 1 2 2v14H8a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2zM6 8H3v12a2 2 0 0 0 2 2h14M11 8h6M11 12h6M11 16h4"
+                        />
+                      </svg>
+                    }
+                  }
+                </span>
+                <span
+                  class="font-display text-2xl font-semibold tracking-[-0.04em] text-white/25"
+                  >{{ step.number }}</span
+                >
+              </div>
+              <h3 class="mt-6 text-lg font-bold text-white">{{ step.title }}</h3>
+              <p class="mt-2 text-sm leading-relaxed text-white/65">{{ step.description }}</p>
+            </article>
+          }
+        </div>
+      </div>
+    </section>
   </div>
 
-  <div class="p-4 sm:p-6 lg:p-8">
-    <app-search-form [activeTab]="activeTab()" (tabChange)="setTab($event)" />
+  <app-attractions
+    [items]="attractions"
+    [selectedIds]="selectedAttractionIds()"
+    (addToTrip)="toggleAttraction($event)"
+  />
 
-    <app-promo-section [cards]="promoCards" />
+  <app-reviews-section [reviews]="reviews" />
 
-    <app-reviews-section [reviews]="reviews" />
-  </div>
+  @if (tripFeedback()) {
+    <div
+      class="fixed bottom-5 left-1/2 z-[70] flex max-w-[calc(100%-2rem)] -translate-x-1/2 items-center gap-2 rounded-full bg-[#112211] px-4 py-3 text-sm font-semibold text-white shadow-[0_14px_40px_rgba(17,34,17,0.3)] animate-fade-in"
+      role="status"
+    >
+      <span
+        class="grid size-5 shrink-0 place-items-center rounded-full bg-[#8DD3BB] text-[#112211]"
+      >
+        <svg
+          class="size-3"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="3"
+          aria-hidden="true"
+        >
+          <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" />
+        </svg>
+      </span>
+      {{ tripFeedback() }}
+    </div>
+  }
 </div>
-

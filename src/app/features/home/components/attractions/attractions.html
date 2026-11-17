@@ -1,0 +1,176 @@
+<section class="bg-[#f2f6f3] py-16 sm:py-20">
+  <div class="mx-auto max-w-[1360px] px-4 sm:px-6 lg:px-8">
+    <div class="mb-8 flex flex-col justify-between gap-4 sm:flex-row sm:items-end">
+      <div class="max-w-2xl">
+        <span class="text-[11px] font-bold uppercase tracking-[0.2em] text-[#4f8b75]"
+          >Featured attractions</span
+        >
+        <h2
+          class="mt-3 font-display text-3xl font-semibold leading-[1.04] tracking-[-0.04em] text-[#112211] sm:text-4xl lg:text-5xl"
+        >
+          The moments worth building a trip around.
+        </h2>
+        <p class="mt-3 max-w-xl text-sm leading-relaxed text-[#5f6b64] sm:text-base">
+          Add a locally curated experience to any stop. Dates and pricing stay tied to your
+          itinerary.
+        </p>
+      </div>
+
+      <a
+        routerLink="/explore"
+        class="inline-flex w-fit items-center gap-2 rounded-full bg-[#112211] px-4 py-2.5 text-xs font-bold text-white transition hover:bg-[#1c2c18]"
+      >
+        <svg
+          class="size-4 text-[#8DD3BB]"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+          aria-hidden="true"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            d="M12 3l2.6 5.3 5.8.8-4.2 4.1 1 5.8-5.2-2.7-5.2 2.7 1-5.8L3.6 9.1l5.8-.8L12 3z"
+          />
+        </svg>
+        See all experiences
+        <svg
+          class="size-3.5 text-[#8DD3BB]"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+          aria-hidden="true"
+        >
+          <path stroke-linecap="round" stroke-linejoin="round" d="M5 12h14M13 6l6 6-6 6" />
+        </svg>
+      </a>
+    </div>
+
+    <div class="grid gap-5 md:grid-cols-2 lg:grid-cols-3" data-reveal-group>
+      @for (item of items(); track item.id) {
+        <article
+          data-stagger-item
+          class="group flex h-full flex-col overflow-hidden rounded-[24px] border border-[#dce6e0] bg-white shadow-[0_8px_30px_rgba(17,34,17,0.05)] transition duration-300 hover:-translate-y-1.5 hover:shadow-[0_18px_44px_rgba(17,34,17,0.12)]"
+        >
+          <div class="relative h-[230px] overflow-hidden bg-[#dfe7e2]">
+            <img
+              [src]="item.imageUrl"
+              [alt]="item.name"
+              class="h-full w-full object-cover transition duration-700 ease-out group-hover:scale-[1.06]"
+              loading="lazy"
+            />
+            <div
+              class="absolute inset-x-0 top-0 h-24 bg-gradient-to-b from-black/35 to-transparent"
+            ></div>
+            <div class="absolute inset-x-4 top-4 flex items-center justify-between gap-3">
+              <span
+                class="rounded-full bg-white/92 px-3 py-1 text-[10px] font-bold uppercase tracking-[0.12em] text-[#2f6d57] backdrop-blur-sm"
+              >
+                {{ item.category }}
+              </span>
+              <span
+                class="flex items-center gap-1 rounded-full bg-[#112211]/75 px-2.5 py-1 text-[11px] font-semibold text-white backdrop-blur-sm"
+              >
+                <svg
+                  class="size-3.5 text-[#ffce31]"
+                  viewBox="0 0 24 24"
+                  fill="currentColor"
+                  aria-hidden="true"
+                >
+                  <path
+                    d="M12 2.8l2.8 5.7 6.2.9-4.5 4.4 1.1 6.2-5.6-2.9-5.6 2.9 1.1-6.2L3 9.4l6.2-.9L12 2.8z"
+                  />
+                </svg>
+                {{ item.rating }}
+              </span>
+            </div>
+          </div>
+
+          <div class="flex flex-1 flex-col p-5">
+            <div class="flex items-start justify-between gap-3">
+              <div>
+                <h3
+                  class="font-display text-[1.35rem] font-semibold leading-tight tracking-[-0.025em] text-[#112211]"
+                >
+                  {{ item.name }}
+                </h3>
+                <p class="mt-1 flex items-center gap-1.5 text-xs font-medium text-[#6d7972]">
+                  <svg
+                    class="size-3.5 text-[#5b9c84]"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    aria-hidden="true"
+                  >
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      d="M12 21s7-5.1 7-11a7 7 0 1 0-14 0c0 5.9 7 11 7 11z"
+                    />
+                    <circle cx="12" cy="10" r="2.5" />
+                  </svg>
+                  {{ item.location }}
+                </p>
+              </div>
+              <div class="text-right">
+                <span
+                  class="block text-[10px] font-semibold uppercase tracking-[0.12em] text-[#8a948e]"
+                  >From</span
+                >
+                <span class="mt-0.5 block text-base font-bold text-[#112211]"
+                  >{{ item.currency }} {{ item.price | number }}</span
+                >
+              </div>
+            </div>
+
+            <div
+              class="mt-4 flex items-center justify-between gap-3 border-t border-[#edf1ee] pt-4"
+            >
+              <span class="text-xs font-medium text-[#6d7972]">{{ item.duration }}</span>
+              <button
+                type="button"
+                (click)="addToTrip.emit(item)"
+                class="inline-flex items-center gap-1.5 rounded-full px-3.5 py-2 text-xs font-bold transition active:scale-95 cursor-pointer"
+                [class]="
+                  selectedIds().has(item.id)
+                    ? 'bg-[#112211] text-white'
+                    : 'bg-[#eff7f3] text-[#2f6d57] hover:bg-[#8DD3BB] hover:text-[#112211]'
+                "
+                [attr.aria-pressed]="selectedIds().has(item.id)"
+              >
+                @if (selectedIds().has(item.id)) {
+                  <svg
+                    class="size-3.5"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="3"
+                    aria-hidden="true"
+                  >
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" />
+                  </svg>
+                  Added
+                } @else {
+                  <svg
+                    class="size-3.5"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2.5"
+                    aria-hidden="true"
+                  >
+                    <path stroke-linecap="round" d="M12 5v14M5 12h14" />
+                  </svg>
+                  Add to trip
+                }
+              </button>
+            </div>
+          </div>
+        </article>
+      }
+    </div>
+  </div>
+</section>
