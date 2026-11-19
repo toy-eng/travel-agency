@@ -1,30 +1,41 @@
-<footer class="relative w-full bg-[#F4F5F7]">
+<footer class="relative w-full bg-[#fafbfc]">
   <!-- Top: Newsletter Subscription Banner Card -->
   <div class="relative z-20 mx-auto -mb-28 max-w-7xl px-4 sm:-mb-32 sm:px-6 lg:px-8">
-    <div class="rounded-[28px] bg-[#CDEAE1] p-8 sm:p-10 lg:p-12 shadow-[0_16px_44px_rgba(17,34,17,0.08)] flex flex-col lg:flex-row items-center justify-between gap-8">
+    <div
+      class="flex flex-col items-center justify-between gap-8 rounded-[28px] border border-[#dfe7e2] bg-white p-8 shadow-[0_18px_50px_rgba(17,34,17,0.08)] sm:p-10 lg:flex-row lg:p-12"
+    >
       <!-- Left Content -->
       <div class="w-full lg:max-w-xl">
-        <h2 class="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-[#112211] font-display tracking-tight leading-tight">
-          Subscribe<br />Newsletter
+        <h2
+          class="font-display text-3xl font-extrabold leading-tight tracking-tight text-[#112211] sm:text-4xl lg:text-5xl"
+        >
+          Subscribe<br /><span class="text-[#4f8b75]">Newsletter</span>
         </h2>
-        <h3 class="mt-4 text-lg sm:text-xl font-bold text-[#112211]/80 font-display">
-          The Travel
-        </h3>
-        <p class="mt-2 text-sm sm:text-base font-medium text-[#112211]/70">
+        <h3 class="mt-4 font-display text-lg font-bold text-[#4f8b75] sm:text-xl">The Travel</h3>
+        <p class="mt-2 text-sm font-medium text-[#5f6b64] sm:text-base">
           Get inspired! Receive travel discounts, tips and behind the scenes stories.
         </p>
 
         <!-- Subscription Form -->
-        <form (submit)="onSubscribe(); $event.preventDefault()" class="mt-6">
+        <form class="mt-6" (submit)="onSubscribe(); $event.preventDefault()">
           @if (subscribed()) {
-            <div class="inline-flex items-center gap-2 rounded-full bg-[#112211] px-5 py-3 text-sm font-semibold text-white">
-              <svg class="h-5 w-5 text-[#8DD3BB]" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/>
+            <div
+              class="inline-flex items-center gap-2 rounded-full border border-[#cfe8de] bg-[#eff9f5] px-5 py-3 text-sm font-semibold text-[#285b49]"
+            >
+              <svg
+                class="h-5 w-5 text-[#4f8b75]"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                viewBox="0 0 24 24"
+                aria-hidden="true"
+              >
+                <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" />
               </svg>
               Thank you for subscribing!
             </div>
           } @else {
-            <div class="flex flex-col sm:flex-row items-center gap-4">
+            <div class="flex flex-col items-center gap-4 sm:flex-row">
               <input
                 type="email"
                 [ngModel]="email()"
@@ -32,11 +43,11 @@
                 name="email"
                 placeholder="Your email address"
                 required
-                class="w-full sm:w-80 h-[52px] rounded-xl bg-white px-4 text-sm font-medium text-[#112211] placeholder:text-[#9aa59e] outline-none border border-[#dfe7e2] shadow-sm focus:ring-2 focus:ring-[#112211]/15"
+                class="h-[52px] w-full rounded-xl border border-[#dfe7e2] bg-[#fbfcfa] px-4 text-sm font-medium text-[#112211] outline-none shadow-sm placeholder:text-[#9aa59e] focus:border-[#8DD3BB] focus:ring-2 focus:ring-[#8DD3BB]/25 sm:w-80"
               />
               <button
                 type="submit"
-                class="w-full sm:w-auto h-[52px] rounded-xl bg-[#112211] px-8 text-sm font-bold text-white hover:bg-[#1b3020] transition-colors cursor-pointer shrink-0"
+                class="h-[52px] w-full shrink-0 cursor-pointer rounded-xl bg-[#112211] px-8 text-sm font-bold text-white transition-colors hover:bg-[#1c2c18] sm:w-auto"
               >
                 Subscribe
               </button>
@@ -50,22 +61,21 @@
         <img
           src="/mailbox.png"
           alt="Subscribe Newsletter Mailbox"
-          class="h-auto max-h-[220px] lg:max-h-[260px] object-contain"
+          class="h-auto max-h-[220px] object-contain lg:max-h-[260px]"
         />
       </div>
     </div>
   </div>
 
   <!-- Bottom: Main Footer Links & Branding -->
-  <div class="bg-[#8DD3BB] text-[#112211] pt-36 sm:pt-44 pb-16">
+  <div class="bg-[#112211] pb-16 pt-36 text-white sm:pt-44">
     <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
       <div class="grid grid-cols-2 gap-8 sm:gap-10 md:grid-cols-6">
-        
         <!-- Column 1: Logo & Social Icons -->
-        <div class="col-span-2 md:col-span-1 flex flex-col justify-between">
+        <div class="col-span-2 flex flex-col justify-between md:col-span-1">
           <div>
-            <a routerLink="/" class="inline-block">
-              <img src="/Logo2.png" alt="Golobe Logo" class="h-10 w-auto" />
+            <a routerLink="/" class="inline-block" aria-label="Go home">
+              <img src="/Logo.svg" alt="Golobe Logo" class="h-10 w-auto" />
             </a>
           </div>
 
@@ -75,10 +85,12 @@
             <a
               href="#"
               aria-label="Facebook"
-              class="flex h-8 w-8 items-center justify-center rounded-full text-[#112211] hover:opacity-75 transition-opacity"
+              class="flex h-8 w-8 items-center justify-center rounded-full text-white/70 transition-colors hover:text-[#8DD3BB]"
             >
-              <svg class="h-5 w-5 fill-current" viewBox="0 0 24 24">
-                <path d="M22 12c0-5.52-4.48-10-10-10S2 6.48 2 12c0 4.84 3.44 8.87 8 9.8V15H8v-3h2V9.5C10 7.57 11.57 6 13.5 6H16v3h-2c-.55 0-1 .45-1 1v2h3v3h-3v6.95c5.05-.5 9-4.76 9-9.95z"/>
+              <svg class="h-5 w-5 fill-current" viewBox="0 0 24 24" aria-hidden="true">
+                <path
+                  d="M22 12c0-5.52-4.48-10-10-10S2 6.48 2 12c0 4.84 3.44 8.87 8 9.8V15H8v-3h2V9.5C10 7.57 11.57 6 13.5 6H16v3h-2c-.55 0-1 .45-1 1v2h3v3h-3v6.95c5.05-.5 9-4.76 9-9.95z"
+                />
               </svg>
             </a>
 
@@ -86,10 +98,12 @@
             <a
               href="#"
               aria-label="Twitter"
-              class="flex h-8 w-8 items-center justify-center rounded-full text-[#112211] hover:opacity-75 transition-opacity"
+              class="flex h-8 w-8 items-center justify-center rounded-full text-white/70 transition-colors hover:text-[#8DD3BB]"
             >
-              <svg class="h-5 w-5 fill-current" viewBox="0 0 24 24">
-                <path d="M22.46 6c-.77.35-1.6.58-2.46.69.88-.53 1.56-1.37 1.88-2.38-.83.5-1.75.85-2.72 1.05C18.37 4.5 17.26 4 16 4c-2.35 0-4.27 1.92-4.27 4.29 0 .34.04.67.11.98C8.28 9.09 5.11 7.38 3 4.79c-.37.63-.58 1.37-.58 2.15 0 1.49.75 2.81 1.91 3.56-.71 0-1.37-.2-1.95-.5v.05c0 2.08 1.48 3.82 3.44 4.21a4.22 4.22 0 0 1-1.93.07 4.28 4.28 0 0 0 4 2.98 8.521 8.521 0 0 1-5.33 1.84c-.34 0-.68-.02-1.02-.06C3.44 20.29 5.7 21 8.12 21 16 21 20.33 14.46 20.33 8.79c0-.19 0-.37-.01-.56.84-.6 1.56-1.36 2.14-2.23z"/>
+              <svg class="h-5 w-5 fill-current" viewBox="0 0 24 24" aria-hidden="true">
+                <path
+                  d="M22.46 6c-.77.35-1.6.58-2.46.69.88-.53 1.56-1.37 1.88-2.38-.83.5-1.75.85-2.72 1.05C18.37 4.5 17.26 4 16 4c-2.35 0-4.27 1.92-4.27 4.29 0 .34.04.67.11.98C8.28 9.09 5.11 7.38 3 4.79c-.37.63-.58 1.37-.58 2.15 0 1.49.75 2.81 1.91 3.56-.71 0-1.37-.2-1.95-.5v.05c0 2.08 1.48 3.82 3.44 4.21a4.22 4.22 0 0 1-1.93.07 4.28 4.28 0 0 0 4 2.98 8.521 8.521 0 0 1-5.33 1.84c-.34 0-.68-.02-1.02-.06C3.44 20.29 5.7 21 8.12 21 16 21 20.33 14.46 20.33 8.79c0-.19 0-.37-.01-.56.84-.6 1.56-1.36 2.14-2.23z"
+                />
               </svg>
             </a>
 
@@ -97,10 +111,12 @@
             <a
               href="#"
               aria-label="YouTube"
-              class="flex h-8 w-8 items-center justify-center rounded-full text-[#112211] hover:opacity-75 transition-opacity"
+              class="flex h-8 w-8 items-center justify-center rounded-full text-white/70 transition-colors hover:text-[#8DD3BB]"
             >
-              <svg class="h-5 w-5 fill-current" viewBox="0 0 24 24">
-                <path d="M21.58 7.19c-.23-.86-.91-1.54-1.77-1.77C18.25 5 12 5 12 5s-6.25 0-7.81.42c-.86.23-1.54.91-1.77 1.77C2 8.75 2 12 2 12s0 3.25.42 4.81c.23.86.91 1.54 1.77 1.77C5.75 19 12 19 12 19s6.25 0 7.81-.42c.86-.23 1.54-.91 1.77-1.77C22 15.25 22 12 22 12s0-3.25-.42-4.81zM9.75 15.02V8.98L15.5 12l-5.75 3.02z"/>
+              <svg class="h-5 w-5 fill-current" viewBox="0 0 24 24" aria-hidden="true">
+                <path
+                  d="M21.58 7.19c-.23-.86-.91-1.54-1.77-1.77C18.25 5 12 5 12 5s-6.25 0-7.81.42c-.86.23-1.54.91-1.77 1.77C2 8.75 2 12 2 12s0 3.25.42 4.81c.23.86.91 1.54 1.77 1.77C5.75 19 12 19 12 19s6.25 0 7.81-.42c.86-.23 1.54-.91 1.77-1.77C22 15.25 22 12 22 12s0-3.25-.42-4.81zM9.75 15.02V8.98L15.5 12l-5.75 3.02z"
+                />
               </svg>
             </a>
 
@@ -108,10 +124,12 @@
             <a
               href="#"
               aria-label="Instagram"
-              class="flex h-8 w-8 items-center justify-center rounded-full text-[#112211] hover:opacity-75 transition-opacity"
+              class="flex h-8 w-8 items-center justify-center rounded-full text-white/70 transition-colors hover:text-[#8DD3BB]"
             >
-              <svg class="h-5 w-5 fill-current" viewBox="0 0 24 24">
-                <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/>
+              <svg class="h-5 w-5 fill-current" viewBox="0 0 24 24" aria-hidden="true">
+                <path
+                  d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"
+                />
               </svg>
             </a>
           </div>
@@ -119,57 +137,111 @@
 
         <!-- Column 2: Our Destinations -->
         <div>
-          <h4 class="text-base font-bold text-[#112211] font-display mb-4">Our Destinations</h4>
-          <ul class="space-y-2.5 text-sm font-medium text-[#112211]/80">
-            <li><a class="hover:text-[#112211] hover:underline transition-colors cursor-pointer">Canada</a></li>
-            <li><a class="hover:text-[#112211] hover:underline transition-colors cursor-pointer">Alaksa</a></li>
-            <li><a class="hover:text-[#112211] hover:underline transition-colors cursor-pointer">France</a></li>
-            <li><a class="hover:text-[#112211] hover:underline transition-colors cursor-pointer">Iceland</a></li>
+          <h4
+            class="mb-4 font-display text-sm font-bold uppercase tracking-[0.14em] text-[#8DD3BB]"
+          >
+            Our Destinations
+          </h4>
+          <ul class="space-y-2.5 text-sm font-medium text-white/65">
+            <li>
+              <a class="cursor-pointer transition-colors hover:text-white">Canada</a>
+            </li>
+            <li>
+              <a class="cursor-pointer transition-colors hover:text-white">Alaksa</a>
+            </li>
+            <li>
+              <a class="cursor-pointer transition-colors hover:text-white">France</a>
+            </li>
+            <li>
+              <a class="cursor-pointer transition-colors hover:text-white">Iceland</a>
+            </li>
           </ul>
         </div>
 
         <!-- Column 3: Our Activities -->
         <div>
-          <h4 class="text-base font-bold text-[#112211] font-display mb-4">Our Activities</h4>
-          <ul class="space-y-2.5 text-sm font-medium text-[#112211]/80">
-            <li><a class="hover:text-[#112211] hover:underline transition-colors cursor-pointer">Northern Lights</a></li>
-            <li><a class="hover:text-[#112211] hover:underline transition-colors cursor-pointer">Cruising &amp; sailing</a></li>
-            <li><a class="hover:text-[#112211] hover:underline transition-colors cursor-pointer">Multi-activities</a></li>
-            <li><a class="hover:text-[#112211] hover:underline transition-colors cursor-pointer">Kayaing</a></li>
+          <h4
+            class="mb-4 font-display text-sm font-bold uppercase tracking-[0.14em] text-[#8DD3BB]"
+          >
+            Our Activities
+          </h4>
+          <ul class="space-y-2.5 text-sm font-medium text-white/65">
+            <li>
+              <a class="cursor-pointer transition-colors hover:text-white">Northern Lights</a>
+            </li>
+            <li>
+              <a class="cursor-pointer transition-colors hover:text-white"
+                >Cruising &amp; sailing</a
+              >
+            </li>
+            <li>
+              <a class="cursor-pointer transition-colors hover:text-white">Multi-activities</a>
+            </li>
+            <li>
+              <a class="cursor-pointer transition-colors hover:text-white">Kayaing</a>
+            </li>
           </ul>
         </div>
 
         <!-- Column 4: Travel Blogs -->
         <div>
-          <h4 class="text-base font-bold text-[#112211] font-display mb-4">Travel Blogs</h4>
-          <ul class="space-y-2.5 text-sm font-medium text-[#112211]/80">
-            <li><a class="hover:text-[#112211] hover:underline transition-colors cursor-pointer">Bali Travel Guide</a></li>
-            <li><a class="hover:text-[#112211] hover:underline transition-colors cursor-pointer">Sri Lanks Travel Guide</a></li>
-            <li><a class="hover:text-[#112211] hover:underline transition-colors cursor-pointer">Peru Travel Guide</a></li>
-            <li><a class="hover:text-[#112211] hover:underline transition-colors cursor-pointer">Bali Travel Guide</a></li>
+          <h4
+            class="mb-4 font-display text-sm font-bold uppercase tracking-[0.14em] text-[#8DD3BB]"
+          >
+            Travel Blogs
+          </h4>
+          <ul class="space-y-2.5 text-sm font-medium text-white/65">
+            <li>
+              <a class="cursor-pointer transition-colors hover:text-white">Bali Travel Guide</a>
+            </li>
+            <li>
+              <a class="cursor-pointer transition-colors hover:text-white"
+                >Sri Lanks Travel Guide</a
+              >
+            </li>
+            <li>
+              <a class="cursor-pointer transition-colors hover:text-white">Peru Travel Guide</a>
+            </li>
+            <li>
+              <a class="cursor-pointer transition-colors hover:text-white">Bali Travel Guide</a>
+            </li>
           </ul>
         </div>
 
         <!-- Column 5: About Us -->
         <div>
-          <h4 class="text-base font-bold text-[#112211] font-display mb-4">About Us</h4>
-          <ul class="space-y-2.5 text-sm font-medium text-[#112211]/80">
-            <li><a class="hover:text-[#112211] hover:underline transition-colors cursor-pointer">Our Story</a></li>
-            <li><a class="hover:text-[#112211] hover:underline transition-colors cursor-pointer">Work with us</a></li>
+          <h4
+            class="mb-4 font-display text-sm font-bold uppercase tracking-[0.14em] text-[#8DD3BB]"
+          >
+            About Us
+          </h4>
+          <ul class="space-y-2.5 text-sm font-medium text-white/65">
+            <li>
+              <a class="cursor-pointer transition-colors hover:text-white">Our Story</a>
+            </li>
+            <li>
+              <a class="cursor-pointer transition-colors hover:text-white">Work with us</a>
+            </li>
           </ul>
         </div>
 
         <!-- Column 6: Contact Us -->
         <div>
-          <h4 class="text-base font-bold text-[#112211] font-display mb-4">Contact Us</h4>
-          <ul class="space-y-2.5 text-sm font-medium text-[#112211]/80">
-            <li><a class="hover:text-[#112211] hover:underline transition-colors cursor-pointer">Our Story</a></li>
-            <li><a class="hover:text-[#112211] hover:underline transition-colors cursor-pointer">Work with us</a></li>
+          <h4
+            class="mb-4 font-display text-sm font-bold uppercase tracking-[0.14em] text-[#8DD3BB]"
+          >
+            Contact Us
+          </h4>
+          <ul class="space-y-2.5 text-sm font-medium text-white/65">
+            <li>
+              <a class="cursor-pointer transition-colors hover:text-white">Our Story</a>
+            </li>
+            <li>
+              <a class="cursor-pointer transition-colors hover:text-white">Work with us</a>
+            </li>
           </ul>
         </div>
-
       </div>
     </div>
   </div>
 </footer>
-
