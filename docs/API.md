@@ -100,7 +100,8 @@ Search responses may add a `facets` object for filter controls:
 
 ### Idempotency
 
-`POST /bookings/flights`, `POST /bookings/hotels`, and `POST /bookings/:bookingId/payments` should accept:
+`POST /bookings/flights`, `POST /bookings/hotels`, `POST /bookings/trips`, and
+`POST /bookings/:bookingId/payments` should accept:
 
 ```text
 Idempotency-Key: <client-generated-uuid>
@@ -152,6 +153,13 @@ Repeating the same request with the same key and body must return the original r
 | 38 | Favourites | `GET` | `/favourites` | yes | List saved flights and hotels |
 | 39 | Favourites | `POST` | `/favourites` | yes | Save a flight or hotel |
 | 40 | Favourites | `DELETE` | `/favourites/:favouriteId` | yes | Remove a favourite |
+| 41 | Discovery | `GET` | `/attractions` | no | List attractions and tours by city or region |
+| 42 | Trips | `GET` | `/trips/draft` | yes | Load the editable trip draft |
+| 43 | Trips | `PUT` | `/trips/draft` | yes | Replace the trip draft |
+| 44 | Trips | `DELETE` | `/trips/draft` | yes | Clear the trip draft |
+| 45 | Trips | `GET` | `/trips` | yes | List upcoming, draft, and past trips |
+| 46 | Trips | `GET` | `/trips/:tripId` | yes | Load a booked trip and its itinerary |
+| 47 | Bookings | `POST` | `/bookings/trips` | yes | Book the current multi-leg trip draft |
 
 Admin, inventory-management, and supplier endpoints are intentionally excluded. They are not needed by the current customer-facing screens.
 
@@ -1566,7 +1574,193 @@ Auth: yes
 
 `204 No Content`.
 
-## 11. Canonical Schemas
+## 11. Trip Builder
+
+The Plan Trip screen maintains one editable draft per user. A draft is an ordered collection of
+legs. Each leg starts where the previous leg ends, has a flight and stay selection, and can include
+zero or more attractions from the destination city.
+
+The draft and booked-trip responses include display snapshots for the selected flight, stay, and
+attractions. This lets My Trips render an itinerary without additional lookup requests.
+
+### `GET /attractions`
+
+Auth: no
+
+Returns the attraction catalogue used by both Explore and the city-specific choices in Plan Trip.
+
+| Query parameter | Type | Required | Description |
+| --- | --- | --- | --- |
+| `city` | string | no | Exact destination city, such as `Jakarta` |
+| `region` | enum | no | `Asia`, `Middle East`, `Africa`, or `Europe` |
+| `category` | string | no | Nature, Culture, Food, Adventure, History, or Sightseeing |
+| `q` | string | no | Searches name, city, category, and region |
+| `page` | integer | no | Defaults to `1` |
+| `pageSize` | integer | no | Defaults to `20`, maximum `100` |
+
+```text
+GET /api/v1/attractions?city=Jakarta&page=1&pageSize=20
+```
+
+`200 OK`
+
+```json
+{
+  "data": [
+    {
+      "id": "att_01JAKARTAOLDTOWN",
+      "name": "Jakarta Old Town & Street Food",
+      "city": "Jakarta",
+      "region": "Asia",
+      "category": "Culture",
+      "durationLabel": "4 hours",
+      "price": { "amount": 9600, "currency": "USD" },
+      "imageUrl": "https://cdn.golobe.com/attractions/jakarta-old-town.jpg"
+    }
+  ],
+  "meta": { "page": 1, "pageSize": 20, "totalItems": 1, "totalPages": 1 }
+}
+```
+
+### `GET /trips/draft`
+
+Auth: yes
+
+Returns the current editable draft. Return `404 TRIP_DRAFT_NOT_FOUND` when the user has not started a
+trip.
+
+```json
+{
+  "data": {
+    "id": "trip_01JDRAFT",
+    "status": "draft",
+    "legs": [
+      {
+        "id": "leg_01",
+        "sequence": 1,
+        "originCode": "LOS",
+        "destinationCode": "CGK",
+        "departDate": "2027-03-12",
+        "nights": 3,
+        "flight": null,
+        "stay": null,
+        "attractions": []
+      }
+    ],
+    "pricing": {
+      "flights": { "amount": 0, "currency": "USD" },
+      "stays": { "amount": 0, "currency": "USD" },
+      "attractions": { "amount": 0, "currency": "USD" },
+      "taxes": { "amount": 0, "currency": "USD" },
+      "total": { "amount": 0, "currency": "USD" }
+    },
+    "updatedAt": "2027-01-10T12:00:00Z"
+  }
+}
+```
+
+### `PUT /trips/draft`
+
+Auth: yes
+
+Replaces the complete draft. Using one idempotent update avoids partial leg mistakes and keeps leg
+dependencies on the server.
+
+```json
+{
+  "legs": [
+    {
+      "sequence": 1,
+      "originCode": "LOS",
+      "destinationCode": "CGK",
+      "departDate": "2027-03-12",
+      "nights": 3,
+      "flightOfferId": "flt_01J9Z8K2",
+      "hotelId": "htl_01JAKARTA",
+      "roomId": "room_01DELUXE",
+      "attractionIds": ["att_01JAKARTAOLDTOWN", "att_01THOUSANDISLANDS"]
+    },
+    {
+      "sequence": 2,
+      "originCode": "CGK",
+      "destinationCode": "DPS",
+      "departDate": "2027-03-15",
+      "nights": 4,
+      "flightOfferId": "flt_01J9Z8K3",
+      "hotelId": "htl_01BALI",
+      "roomId": null,
+      "attractionIds": ["att_01ULUWATU"]
+    }
+  ]
+}
+```
+
+Validation rules:
+
+- `sequence` values must be contiguous and start at `1`.
+- Each leg's `originCode` must equal the previous leg's `destinationCode`.
+- Adjacent legs cannot have the same origin and destination.
+- `departDate` cannot be before the previous leg's departure plus its nights.
+- Flight, stay, and attraction IDs must belong to the relevant leg or destination.
+- Prices are recalculated server-side; client totals are display-only.
+
+`200 OK` returns the updated draft.
+
+### `DELETE /trips/draft`
+
+Auth: yes
+
+Clears the current draft and its selections. Returns `204 No Content`.
+
+### `GET /trips`
+
+Auth: yes
+
+Lists trips for the My Trips tabs. Use `status=upcoming`, `status=draft`, or `status=past`.
+
+```text
+GET /api/v1/trips?status=upcoming&page=1&pageSize=20
+```
+
+Each item is a `TripSummary` and includes the confirmation code, title, date range, image, total,
+and leg count.
+
+### `GET /trips/:tripId`
+
+Auth: yes
+
+Returns the full booked itinerary, including each leg's flight, stay, attractions, passenger count,
+cabin class, pricing, and confirmation code. Use `404 TRIP_NOT_FOUND` for an unknown or unauthorised
+trip ID.
+
+### `POST /bookings/trips`
+
+Auth: yes
+
+Converts the current draft into a booked trip. The request contains checkout details only; legs and
+selections are read from the server-side draft.
+
+```json
+{
+  "contact": {
+    "email": "john.doe@gmail.com",
+    "phone": "+10000000000"
+  },
+  "passengers": 1,
+  "cabinClass": "economy",
+  "paymentOption": "full",
+  "paymentMethodId": "pm_01J...",
+  "promoCode": "GOLOBE10",
+  "specialRequests": "Vegetarian meal"
+}
+```
+
+`201 Created` returns a `TripDetail` with status `upcoming`, a confirmation code, and the booked leg
+snapshots. After success, clear the draft unless the user explicitly saved it as a reusable plan.
+`TripDetail` is the aggregate booking response and is intentionally separate from the single-item
+`Booking` schema.
+
+## 12. Canonical Schemas
 
 These schemas are the contract-level data models. They can be added under `src/app/core/models` and reused by HTTP services. They intentionally separate API models from the display strings currently hard-coded in the components.
 
@@ -2061,6 +2255,104 @@ export interface CreateHotelBookingRequest {
 }
 ```
 
+### Trip builder schemas
+
+```ts
+export type TripStatus = 'draft' | 'upcoming' | 'past' | 'cancelled';
+
+export interface TripAttraction {
+  id: string;
+  name: string;
+  city: string;
+  region: 'Asia' | 'Middle East' | 'Africa' | 'Europe';
+  category: string;
+  durationLabel: string;
+  price: Money;
+  imageUrl: string;
+}
+
+export interface TripLegStay {
+  hotel: StayBookingDetails;
+  room: StayRoomDetails | null;
+}
+
+export interface TripLeg {
+  id: string;
+  sequence: number;
+  originCode: string;
+  destinationCode: string;
+  departDate: ISODate;
+  nights: number;
+  flight: FlightBookingDetails | null;
+  stay: TripLegStay | null;
+  attractions: TripAttraction[];
+}
+
+export interface TripPricing {
+  flights: Money;
+  stays: Money;
+  attractions: Money;
+  taxes: Money;
+  total: Money;
+}
+
+export interface TripSummary {
+  id: string;
+  status: TripStatus;
+  title: string;
+  imageUrl: string;
+  startDate: ISODate | null;
+  endDate: ISODate | null;
+  legCount: number;
+  total: Money;
+  confirmationCode: string | null;
+  updatedAt: ISODateTime;
+}
+
+export interface TripDraft {
+  id: string;
+  status: 'draft';
+  legs: TripLeg[];
+  pricing: TripPricing;
+  updatedAt: ISODateTime;
+}
+
+export interface TripDetail extends Omit<TripSummary, 'status'> {
+  status: Exclude<TripStatus, 'draft'>;
+  legs: TripLeg[];
+  passengers: number;
+  cabinClass: CabinClass;
+  pricing: TripPricing;
+  bookedAt: ISODateTime | null;
+}
+
+export interface TripLegDraftInput {
+  sequence: number;
+  originCode: string;
+  destinationCode: string;
+  departDate: ISODate;
+  nights: number;
+  flightOfferId: string | null;
+  hotelId: string | null;
+  roomId: string | null;
+  attractionIds: string[];
+}
+
+export interface UpdateTripDraftRequest {
+  legs: TripLegDraftInput[];
+}
+
+export interface CreateTripBookingRequest {
+  contact: ContactDetails;
+  passengers: number;
+  cabinClass: CabinClass;
+  paymentOption: PaymentOption;
+  paymentMethodId: string;
+  promoCode?: string | null;
+  specialRequests?: string | null;
+}
+```
+
 ### Payment and favourite schemas
 
 ```ts
@@ -2134,12 +2426,21 @@ export interface FavouriteFlight {
 export type Favourite = FavouriteHotel | FavouriteFlight;
 ```
 
-## 12. Screen-to-Endpoint Map
+## 13. Screen-to-Endpoint Map
 
 | Screen / component | Endpoints |
 | --- | --- |
 | Home destination cards | `GET /destinations` |
 | Home tour cards | `GET /tours` |
+| Home journey builder | `GET /trips/draft`, `PUT /trips/draft` |
+| Plan Trip legs and selections | `GET /locations/autocomplete`, `GET /flights/search`, `GET /hotels/search`, `GET /attractions`, `GET /trips/draft`, `PUT /trips/draft` |
+| Plan Trip checkout | `POST /bookings/trips`, `GET /payment-methods` |
+| Explore routes | `GET /destinations`, `GET /tours` |
+| Explore Popular > Cities | `GET /destinations`, `GET /tours` |
+| Explore Popular > Attractions & Tours | `GET /attractions`, `GET /tours` |
+| My Trips tabs | `GET /trips?status=upcoming`, `GET /trips?status=draft`, `GET /trips?status=past` |
+| Draft itinerary details | `GET /trips/draft`, `PUT /trips/draft`, `DELETE /trips/draft` |
+| Trip details | `GET /trips/:tripId` |
 | Flight and stay location inputs | `GET /locations/autocomplete` |
 | Flight or stay promo code | `POST /promotions/validate` |
 | Login | `POST /auth/login`, `POST /auth/social` |
@@ -2159,23 +2460,27 @@ export type Favourite = FavouriteHotel | FavouriteFlight;
 | Account payment methods | `GET /payment-methods`, `POST /payment-methods`, `DELETE /payment-methods/:paymentMethodId` |
 | Settings | `GET /users/me/preferences`, `PATCH /users/me/preferences`, `PATCH /users/me/password`, `GET /users/me/sessions`, `DELETE /users/me/sessions/:sessionId`, `GET /users/me/export` |
 
-## 13. Changes Needed in Existing Models
+## 14. Changes Needed in Existing Models
 
 The current models in `src/app/core/models` are useful starting points but are smaller than the API contract:
 
 - `Booking`: replace the flat `tourId`, `travelerName`, `travelerEmail`, `departureDate`, and `guests` fields with `type`, `traveler`, `passengers`, `flight`, `hotel`, `room`, `pricing`, and `payment`. Keep `reference` and `status`.
 - `BookingStatus`: extend from `pending | confirmed | cancelled` to `pending | confirmed | completed | cancelled`. `upcoming` is a list view, not a stored status.
+- `TripLeg`: add `sequence`, use consistent airport codes, and attach the selected flight, stay, and attractions to the leg rather than parallel maps keyed by leg ID.
+- `BookedTrip`: evolve into `TripDetail` with a persisted status, confirmation code, passenger count, and a complete ordered leg itinerary. Keep a separate `TripDraft` for editable plans.
+- `TripAttraction`: add `region` and use a `Money` price so Explore and Plan Trip can share the catalogue.
 - `Tour`: change `price: number` plus `currency: string` to a single `price: Money` field.
 - `Destination`: keep the existing fields and add `tourCount` for the home-page cards.
-- New models: `User`, `AuthSession`, `UserPreferences`, `FlightOfferSummary`, `FlightOfferDetail`, `HotelSummary`, `HotelDetail`, `HotelRoom`, `HotelReview`, `Booking`, `PaymentMethod`, and `Favourite`.
+- New models: `User`, `AuthSession`, `UserPreferences`, `FlightOfferSummary`, `FlightOfferDetail`, `HotelSummary`, `HotelDetail`, `HotelRoom`, `HotelReview`, `Booking`, `TripDraft`, `TripDetail`, `TripLeg`, `TripAttraction`, `PaymentMethod`, and `Favourite`.
 
-## 14. Suggested Implementation Order
+## 15. Suggested Implementation Order
 
 1. `Money`, pagination, error envelope, `User`, and auth endpoints.
 2. Locations, destinations, and tours.
 3. Flight and hotel search/detail endpoints.
-4. Payment methods and booking creation.
-5. Booking history, ticket download, cancellation, and favourites.
-6. Preferences, sessions, and data export.
+4. Attraction catalogue, trip draft, and leg validation.
+5. Payment methods, aggregate trip checkout, and booking creation.
+6. Trip history, trip-detail lookup, ticket download, cancellation, and favourites.
+7. Preferences, sessions, and data export.
 
 Search endpoints can initially wrap a mock or third-party provider. Keep the response envelope stable so the Angular UI does not need to change when the provider is replaced.
