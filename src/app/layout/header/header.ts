@@ -68,7 +68,7 @@ export class Header implements AfterViewInit, OnDestroy {
     ),
   );
 
-  readonly isAuthenticated = signal(true);
+  readonly isAuthenticated = signal(false);
   readonly showProfileMenu = signal(false);
   readonly menuOpen = signal(false);
 

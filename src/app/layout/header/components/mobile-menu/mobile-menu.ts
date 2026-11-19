@@ -5,6 +5,7 @@ import {
   ElementRef,
   OnDestroy,
   afterNextRender,
+  computed,
   effect,
   inject,
   input,
@@ -51,6 +52,12 @@ export class MobileMenuComponent implements OnDestroy {
     { path: '/my-trips', label: 'My Trips', icon: 'suitcase' },
     { path: '/favourites', label: 'Favourites', icon: 'heart' },
   ];
+
+  readonly visibleNavItems = computed(() =>
+    this.isAuthenticated()
+      ? this.navItems
+      : this.navItems.filter((item) => item.path !== '/my-trips'),
+  );
 
   /** Mirrors the desktop profile dropdown. */
   readonly profileLinks: ProfileLink[] = [

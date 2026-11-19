@@ -42,7 +42,7 @@
 
     <!-- Nav links -->
     <nav class="flex-1 overflow-y-auto px-5 pb-4" aria-label="Mobile menu">
-      @for (item of navItems; track item.path) {
+      @for (item of visibleNavItems(); track item.path) {
         <a
           [routerLink]="item.path"
           [routerLinkActiveOptions]="{ exact: item.exact ?? false }"
