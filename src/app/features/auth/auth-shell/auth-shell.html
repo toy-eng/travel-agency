@@ -1,24 +1,51 @@
 <div
-  class="flex min-h-[calc(100dvh-5rem)] items-center justify-center bg-[#fafbfc] p-4 font-sans sm:p-6 lg:p-8"
+  class="relative flex bg-[#fafbfc] font-sans"
+  [class]="
+    layout() === 'form-major'
+      ? 'h-screen overflow-hidden'
+      : 'min-h-[calc(100dvh-5rem)] items-center justify-center p-4 sm:p-6 lg:p-8'
+  "
 >
   <div
-    class="mx-auto grid w-full max-w-7xl grid-cols-1 items-center gap-6 lg:gap-10"
-    [class.lg:grid-cols-2]="layout() === 'equal'"
-    [class.lg:grid-cols-5]="layout() === 'form-major'"
+    class="grid w-full grid-cols-1 items-center"
+    [class]="
+      layout() === 'form-major'
+        ? 'h-full gap-0 lg:grid-cols-10'
+        : 'mx-auto max-w-7xl gap-6 lg:grid-cols-2 lg:gap-10'
+    "
   >
     <!-- Left column: brand + projected form -->
     <div
-      class="mx-auto w-full lg:mx-0"
+      [class]="
+        layout() === 'form-major'
+          ? 'relative no-scrollbar h-full overflow-y-auto px-6 sm:px-10 lg:px-16'
+          : 'mx-auto w-full'
+      "
       [class.lg:col-span-1]="layout() === 'equal'"
-      [class.lg:col-span-3]="layout() === 'form-major'"
+      [class.lg:col-span-6]="layout() === 'form-major'"
     >
-      <div class="mx-auto w-full max-w-[590px] lg:mx-0">
-        <a routerLink="/" class="inline-flex items-center gap-3 px-1">
+      @if (layout() === 'form-major') {
+        <a routerLink="/" class="auth-logo" aria-label="Go home">
           <img src="/Logo2.svg" alt="Golobe" class="h-9 w-auto" />
         </a>
+      }
+
+      <div
+        class="mx-auto w-full max-w-[590px]"
+        [class.my-auto]="layout() === 'form-major'"
+        [class.pt-24]="layout() === 'form-major'"
+        [class.pb-8]="layout() === 'form-major'"
+        [class.lg:mx-0]="layout() === 'equal'"
+      >
+        @if (layout() !== 'form-major') {
+          <a routerLink="/" class="inline-flex items-center gap-3 px-1">
+            <img src="/Logo2.svg" alt="Golobe" class="h-9 w-auto" />
+          </a>
+        }
 
         <div
-          class="mt-6 rounded-[28px] border border-[#dfe7e2] bg-white p-5 shadow-[0_18px_50px_rgba(17,34,17,0.07)] sm:p-8 lg:p-9"
+          class="rounded-[28px] border border-[#dfe7e2] bg-white p-5 shadow-[0_18px_50px_rgba(17,34,17,0.07)] sm:p-8 lg:p-9"
+          [class.mt-6]="layout() !== 'form-major'"
         >
           <ng-content />
         </div>
@@ -32,9 +59,14 @@
 
     <!-- Right column: image carousel -->
     <div
-      class="relative hidden h-[680px] w-full overflow-hidden rounded-[30px] bg-[#112211] shadow-[0_20px_54px_rgba(17,34,17,0.18)] lg:block"
+      class="relative hidden w-full overflow-hidden bg-[#112211] lg:block"
+      [class]="
+        layout() === 'form-major'
+          ? 'h-full rounded-l-[30px]'
+          : 'h-[680px] rounded-[30px] shadow-[0_20px_54px_rgba(17,34,17,0.18)]'
+      "
       [class.lg:col-span-1]="layout() === 'equal'"
-      [class.lg:col-span-2]="layout() === 'form-major'"
+      [class.lg:col-span-4]="layout() === 'form-major'"
       role="region"
       aria-roledescription="carousel"
       aria-label="Golobe showcase"

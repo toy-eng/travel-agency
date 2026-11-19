@@ -5,6 +5,7 @@ import { RouterLink } from '@angular/router';
   selector: 'app-auth-shell',
   imports: [RouterLink],
   templateUrl: './auth-shell.html',
+  styleUrl: './auth-shell.css',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class AuthShell implements OnDestroy {

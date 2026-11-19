@@ -1,0 +1,21 @@
+.auth-logo {
+  position: absolute;
+  top: 1.5rem;
+  left: 1.5rem;
+  z-index: 20;
+  display: inline-flex;
+  align-items: center;
+}
+
+@media (min-width: 640px) {
+  .auth-logo {
+    top: 2rem;
+    left: 1.5rem;
+  }
+}
+
+@media (min-width: 1024px) {
+  .auth-logo {
+    left: max(2rem, calc((100vw - 80rem) / 2 + 2rem));
+  }
+}
