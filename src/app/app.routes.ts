@@ -3,6 +3,12 @@ import { Shell } from './layout/shell/shell';
 
 export const routes: Routes = [
   {
+    path: 'create-account',
+    title: 'Create Account',
+    loadComponent: () =>
+      import('./features/auth/create-account/create-account').then((m) => m.CreateAccount),
+  },
+  {
     path: '',
     component: Shell,
     children: [
@@ -67,13 +73,6 @@ export const routes: Routes = [
         title: 'Login',
         data: { breadcrumb: 'Login' },
         loadComponent: () => import('./features/auth/login/login').then((m) => m.Login),
-      },
-      {
-        path: 'create-account',
-        title: 'Create Account',
-        data: { breadcrumb: 'Create Account' },
-        loadComponent: () =>
-          import('./features/auth/create-account/create-account').then((m) => m.CreateAccount),
       },
       {
         path: 'forgot-password',
